@@ -1,0 +1,40 @@
+// .nav-tabs-custom {
+//     scrollbar-width: thin;
+//     scrollbar-color: #007bff #f1f1f1;
+// }
+
+// .nav-tabs-custom::-webkit-scrollbar {
+//     height: 1px;
+// }
+
+// .nav-tabs-custom::-webkit-scrollbar-track {
+//     background: #f1f1f1;
+//     border-radius: 10px;
+// }
+
+// .nav-tabs-custom::-webkit-scrollbar-thumb {
+//     background: #0056b3;
+//     border-radius: 10px;
+// }
+
+// .nav-tabs-custom::-webkit-scrollbar-thumb:hover {
+//     background: #0056b3;
+// }
+
+.nav-tabs-custom {
+    overflow-x: auto;
+    white-space: nowrap;
+    -ms-overflow-style: none;  /* Internet Explorer et Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+.nav-tabs-custom::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari, Opera */
+}
+
+
+.nav-item .nav-link.active, .nav-item:hover .nav-link {
+    span {
+        display: inline !important;
+    }
+}

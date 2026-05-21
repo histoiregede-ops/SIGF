@@ -1,0 +1,1063 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <div class="mb-sm-0">
+                        <a routerLink="../" class="text-muted fw-meium"><i class="ri-arrow-go-back-line me-1"></i> Retour</a>
+                    </div>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers">Dossiers</a></li>
+                            <li class="breadcrumb-item"><a routerLink="../">Formalités préalables</a></li>
+                            <li class="breadcrumb-item active">Détails</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+    </div>
+
+    <div *ngIf="formalitePrealable" class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card mt-n4 mx-n4">
+                    <div [ngClass]="{'bg-warning-subtle': formalitePrealable.statut == statutsFormalitePrealable.A_VALIDER, 'bg-success-subtle': formalitePrealable.statut == statutsFormalitePrealable.VALIDEE, 'bg-danger-subtle': formalitePrealable.statut == statutsFormalitePrealable.SUSPENDUE || formalitePrealable.statut == statutsFormalitePrealable.REJETEE || formalitePrealable.statut == statutsFormalitePrealable.ANNULEE}">
+                        <div class="card-body pb-0 px-4">
+                            <div class="row mb-3">
+                                <div class="col-md">
+                                    <div class="row align-items-center g-4">
+                                        <div class="col-md-auto">
+                                            <div class="avatar-md">
+                                                <div class="avatar-title bg-white rounded-circle">
+                                                    <!-- <img src="assets/images/brands/slack.png" alt="" class="avatar-xs"> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <div>
+                                                <div class="fs-5 fw-bold text-uppercase mb-1">Formalité N° {{ formalitePrealable.numeroRequisition }}</div>
+                                                <div class="hstack gap-3 flex-wrap">
+                                                    <!-- <div><i class="ri-building-line align-bottom me-1"></i> Themesbrand</div>
+                                                    <div class="vr"></div> -->
+                                                    <div>Date de dépôt : <span class="fw-medium">{{ formalitePrealable.dateDeDepot | date: 'dd MMMM YYYY' | titlecase }}</span></div>
+                                                    <div class="vr"></div>
+                                                    <div>Dernière modification : <span class="fw-medium">{{ formalitePrealable.updatedAt | date: 'dd MMMM YYYY' | titlecase }} à {{ formalitePrealable.updatedAt | date: 'HH:mm' }}</span></div>
+                                                    <div class="vr"></div>
+                                                    <div [ngSwitch]="formalitePrealable.statut"> Statut :
+                                                        <span *ngSwitchCase="statutsFormalitePrealable.A_VALIDER" class="badge rounded bg-warning text-uppercase fs-10">A Valider</span>
+                                                        <span *ngSwitchCase="statutsFormalitePrealable.VALIDEE" class="badge rounded bg-success text-uppercase fs-10">Validée</span>
+                                                        <span *ngSwitchCase="statutsFormalitePrealable.SUSPENDUE" class="badge rounded bg-danger text-uppercase fs-10">Suspendue</span>
+                                                        <span *ngSwitchCase="statutsFormalitePrealable.REJETEE" class="badge rounded bg-danger text-uppercase fs-10">Rejetée</span>
+                                                        <span *ngSwitchCase="statutsFormalitePrealable.ANNULEE" class="badge rounded bg-danger text-uppercase fs-10">Annulée</span>
+                                                        <!-- <div *ngSwitchDefault>output2</div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-auto">
+                                    <div class="hstack gap-1 flex-wrap">
+                                        <!-- <button type="button" class="btn py-0 fs-16 favourite-btn material-shadow-none active">
+                                            <i class="ri-star-fill"></i>
+                                        </button> -->
+                                        <button type="button" class="btn py-0 fs-16 text-body material-shadow-none">
+                                            <i class="ri-share-line"></i>
+                                        </button>
+                                        <!-- <button type="button" class="btn py-0 fs-16 text-body material-shadow-none">
+                                            <i class="ri-flag-line"></i>
+                                        </button> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ul class="nav nav-tabs-custom text-body-secondary border-bottom-0 text-uppercase" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active fs-13 fw-medium" data-bs-toggle="tab" href="#general" role="tab">
+                                        Général
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fs-13 fw-medium" data-bs-toggle="tab" href="#parties-prenantes" role="tab">
+                                        Parties prenantes
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fs-13 fw-medium" data-bs-toggle="tab" href="#publication" role="tab">
+                                        Publication
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fs-13 fw-medium" data-bs-toggle="tab" href="#oppositions" role="tab">
+                                        Oppositions
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fs-13 fw-medium" data-bs-toggle="tab" href="#bornage" role="tab">
+                                        Bornage
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fs-13 fw-medium" data-bs-toggle="tab" href="#procedure-judiciaire" role="tab">
+                                        Procédure judiciaire
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fs-13 fw-medium" data-bs-toggle="tab" href="#titre-foncier" role="tab">
+                                        Titre foncier
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="general" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <!-- <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Description sommaire, nature, contenance et valeur</h6>
+                                            <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English.</p> -->
+
+                                            <div class="">
+                                                <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Nature</h6>
+
+                                                <div class="row pt-2 gx-3 gy-5 text-center text-muted">
+                                                    <div class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Type de l'immeuble:</p>
+
+                                                            <div class="fs-15">
+                                                                <span *ngIf="formalitePrealable.informationsPropriete?.natureTypeImmeuble" class="badge text-uppercase bg-success-subtle text-success p-2">{{ formalitePrealable.informationsPropriete?.natureTypeImmeuble?.libelle }}</span>
+                                                                <span *ngIf="!formalitePrealable.informationsPropriete?.natureTypeImmeuble" class="badge text-uppercase bg-danger-subtle text-danger p-2">Non spécifié</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Etat de l'immeuble:</p>
+
+                                                            <div class="fs-15">
+                                                                <span *ngIf="formalitePrealable.informationsPropriete?.natureEtatImmeuble" class="badge text-uppercase bg-info-subtle text-info p-2">{{ formalitePrealable.informationsPropriete?.natureEtatImmeuble?.libelle }}</span>
+                                                                <span *ngIf="!formalitePrealable.informationsPropriete?.natureEtatImmeuble" class="badge text-uppercase bg-danger-subtle text-danger p-2">Non spécifié</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="pt-3 border-top border-top-dashed mt-4">
+                                                <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Description</h6>
+                                                <p class="fs-14 text-body">{{ formalitePrealable.informationsPropriete?.description ?? 'Aucune description' }}</p>
+                                            </div>
+
+                                            <div class="pt-3 border-top border-top-dashed mt-4">
+                                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                                    <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Contenance</h6>
+                                                    <!-- <p class="text-muted m-0">Superficie = <span class="text-body fs-16 fw-medium mb-0">{{ getSuperficieContenance() | number: '1.0-0' }} m²</span></p> -->
+                                                </div>
+                                                <div class="row gx-3 gy-5 text-center text-muted">
+                                                    <div class="col-md-3 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Hectare (Ha):</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.informationsPropriete?.contenanceEnHectare ?? '--' }} ha</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Are (a):</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.informationsPropriete?.contenanceEnAre ?? '--' }} a</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Centiare (ca):</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.informationsPropriete?.contenanceEnCentiare ?? '--' }} ca</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Superficie en m²:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ getSuperficieContenance(formalitePrealable.informationsPropriete?.contenanceEnHectare, formalitePrealable.informationsPropriete?.contenanceEnAre, formalitePrealable.informationsPropriete?.contenanceEnCentiare) | number: '1.0-0' }} m²</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="pt-3 border-top border-top-dashed mt-4">
+                                                <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Valeur</h6>
+
+                                                <div class="row gx-3 gy-5 text-center text-muted">
+                                                    <div class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Valeur vénale:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.informationsPropriete?.valeurVenale | number: '1.0-0' }} FCFA</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Valeur locative:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.informationsPropriete?.valeurLocative | number: '1.0-0' }} FCFA</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="pt-3 pb-3 border-top border-top-dashed mt-4">
+                                                <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Situation</h6>
+
+                                                <div class="row gx-3 gy-5 text-center text-muted">
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Région:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.situationPropriete?.region?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Préfecture:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.situationPropriete?.prefecture?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Commune:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.situationPropriete?.commune?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Canton:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.situationPropriete?.canton?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Village:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.situationPropriete?.village?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Ville:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.situationPropriete?.ville?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Quartier:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.situationPropriete?.quartier?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Lieudit:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.situationPropriete?.lieudit ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Rue:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ formalitePrealable.situationPropriete?.rue ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                            <div class="col-xl-3 col-lg-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Actions</h6>
+                                        <div class="d-grid gap-2">
+                                            <button *ngIf="formalitePrealable.statut != statutsFormalitePrealable.VALIDEE" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Valider le dossier</button>
+                                            <button *ngIf="formalitePrealable.statut != statutsFormalitePrealable.SUSPENDUE" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Suspendre le dossier</button>
+                                            <button *ngIf="formalitePrealable.statut != statutsFormalitePrealable.ANNULEE" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Annuler le dossier</button>
+                                            <button *ngIf="formalitePrealable.statut != statutsFormalitePrealable.REJETEE" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Rejeter le dossier</button>
+                                            <button *ngIf="true" (click)="null" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Inscrire une opposition</button>
+                                            <button *ngIf="true" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Importer un acte ou une pièce</button>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <h6 class="mb-0 py-2 fw-bold text-uppercase text-primary fs-14">Pièces déposées</h6>
+                                            <div class="flex-shrink-0">
+                                                <button type="button" class="btn btn-soft-primary btn-sm"><i class="ri-add-fill me-1 align-bottom"></i> Ajouter</button>
+                                            </div>
+                                        </div>
+                                        <p class="mb-4 text-muted">Les actes et pièces joints au dossier sont listés ci-dessous:</p>
+                                        <div class="vstack gap-2">
+                                            <app-piece-deposee-card *ngFor="let pieceDeposee of formalitePrealable.piecesDeposees" [pieceDeposee]="pieceDeposee"></app-piece-deposee-card>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="parties-prenantes" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-lg-6 col-md-12">
+                                                <div>
+                                                    <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Réquérants</h6>
+                                                    <p class="text-muted">Sont listés ci-dessous les parties prenantes réclamant la propriété:</p>
+
+                                                    <ul class="ps-2">
+                                                        <div class="acitivity-timeline acitivity-main">
+                                                            <div *ngFor="let partiePrenante of formalitePrealable.partiesPrenantes | getPartiesPrenantes: typesPartiePrenante.REQUERANT" class="acitivity-item mb-2 py-3">
+                                                                <app-partie-prenante-card [partiePrenante]="partiePrenante"></app-partie-prenante-card>
+                                                            </div>
+                                                        </div>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div>
+                                                    <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Propriétaires</h6>
+                                                    <p class="text-muted">Sont listés ci-dessous les parties prenantes possédant la propriété:</p>
+
+                                                    <ul class="ps-2">
+                                                        <div class="acitivity-timeline acitivity-main">
+                                                            <div *ngFor="let partiePrenante of formalitePrealable.partiesPrenantes | getPartiesPrenantes: typesPartiePrenante.PROPRIETAIRE" class="acitivity-item mb-2 py-3">
+                                                                <app-partie-prenante-card [partiePrenante]="partiePrenante"></app-partie-prenante-card>
+                                                            </div>
+                                                        </div>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                            <div class="col-xl-3 col-lg-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="mb-4 fw-bold text-uppercase text-primary fs-14">Actions</h6>
+                                        <div class="d-grid gap-2">
+                                            <button (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Ajouter un réquérant</button>
+                                            <button (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Ajouter un propriétaire</button>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="publication" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <h6 class="mb-3 py-2 fw-bold text-uppercase text-primary fs-14">Insertion au journal officiel du Togo</h6>
+                                            <!-- <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English.</p> -->
+
+                                            <div class="row gx-3 gy-5 text-muted mb-4">
+                                                <div class="col-lg-6 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date de la transmission:</p>
+                                                        <h5 *ngIf="formalitePrealable.publicationDemandes?.dateTransmissionInsertionJournal" class="fs-15 mb-0">{{ formalitePrealable.publicationDemandes?.dateTransmissionInsertionJournal| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.publicationDemandes?.dateTransmissionInsertionJournal" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date de l'insertion:</p>
+                                                        <h5 *ngIf="formalitePrealable.publicationDemandes?.dateInsertionJournal" class="fs-15 mb-0">{{ formalitePrealable.publicationDemandes?.dateInsertionJournal| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.publicationDemandes?.dateInsertionJournal" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Référence du journal officiel:</p>
+                                                        <h5 *ngIf="formalitePrealable.publicationDemandes?.referenceJournalOfficiel" class="fs-15 mb-0">{{ formalitePrealable.publicationDemandes?.referenceJournalOfficiel }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.publicationDemandes?.referenceJournalOfficiel" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <h6 class="mb-3 py-2 fw-bold text-uppercase text-primary fs-14">Proédure du purge</h6>
+                                            <!-- <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English.</p> -->
+
+                                            <div class="mb-5">
+                                                <div class="text-uppercase text-info fw-medium mb-2">Affichage en l'audience du tribunal</div>
+                                                <div class="row gx-3 gy-5">
+                                                    <div class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Date de la transmission:</p>
+                                                            <h5 *ngIf="formalitePrealable.publicationDemandes?.dateTransmissionAffichageAudienceTribunal" class="fs-15 mb-0">{{ formalitePrealable.publicationDemandes?.dateTransmissionAffichageAudienceTribunal| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                            <h5 *ngIf="!formalitePrealable.publicationDemandes?.dateTransmissionAffichageAudienceTribunal" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Date de l'affichage:</p>
+                                                            <h5 *ngIf="formalitePrealable.publicationDemandes?.dateAffichageAudienceTribunal" class="fs-15 mb-0">{{ formalitePrealable.publicationDemandes?.dateAffichageAudienceTribunal| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                            <h5 *ngIf="!formalitePrealable.publicationDemandes?.dateAffichageAudienceTribunal" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-5">
+                                                <div class="text-uppercase text-info fw-medium mb-2">Avis divers - Affichage et publication</div>
+                                                <div class="row gx-3 gy-5">
+                                                    <div class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Date d'envoi:</p>
+                                                            <h5 *ngIf="formalitePrealable.publicationDemandes?.dateEnvoiAffichagePublication" class="fs-15 mb-0">{{ formalitePrealable.publicationDemandes?.dateEnvoiAffichagePublication| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                            <h5 *ngIf="!formalitePrealable.publicationDemandes?.dateEnvoiAffichagePublication" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Date de l'accusé de réception:</p>
+                                                            <h5 *ngIf="formalitePrealable.publicationDemandes?.dateAccuseReceptionAffichagePublication" class="fs-15 mb-0">{{ formalitePrealable.publicationDemandes?.dateAccuseReceptionAffichagePublication| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                            <h5 *ngIf="!formalitePrealable.publicationDemandes?.dateAccuseReceptionAffichagePublication" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-5">
+                                                <div class="text-uppercase text-info fw-medium mb-2">Avis divers - Notifications individuelles</div>
+                                                <div class="row gx-3 gy-5">
+                                                    <div class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Date d'envoi:</p>
+                                                            <h5 *ngIf="formalitePrealable.publicationDemandes?.dateEnvoiNotificationsIndividuelles" class="fs-15 mb-0">{{ formalitePrealable.publicationDemandes?.dateEnvoiNotificationsIndividuelles| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                            <h5 *ngIf="!formalitePrealable.publicationDemandes?.dateEnvoiNotificationsIndividuelles" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Date du retour de l'accusé de réception:</p>
+                                                            <h5 *ngIf="formalitePrealable.publicationDemandes?.dateRetourAccusesReceptionNotificationsIndividuelles" class="fs-15 mb-0">{{ formalitePrealable.publicationDemandes?.dateRetourAccusesReceptionNotificationsIndividuelles| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                            <h5 *ngIf="!formalitePrealable.publicationDemandes?.dateRetourAccusesReceptionNotificationsIndividuelles" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <h6 class="mb-3 py-2 fw-bold text-uppercase text-primary fs-14">Clôture des délais</h6>
+                                            <!-- <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English.</p> -->
+
+                                            <div class="row gx-3 gy-5 text-muted mb-4">
+                                                <div class="col-lg-6 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date normale:</p>
+                                                        <h5 *ngIf="formalitePrealable.publicationDemandes?.dateNormaleClotureDelais" class="fs-15 mb-0">{{ formalitePrealable.publicationDemandes?.dateNormaleClotureDelais| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.publicationDemandes?.dateNormaleClotureDelais" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Prorogation à raison d'absence:</p>
+                                                        <h5 *ngIf="formalitePrealable.publicationDemandes?.propagationRaisonAbsencesClotureDelais" class="fs-15 mb-0">{{ formalitePrealable.publicationDemandes?.propagationRaisonAbsencesClotureDelais| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.publicationDemandes?.propagationRaisonAbsencesClotureDelais" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                            <div class="col-xl-3 col-lg-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="mb-4 fw-bold text-uppercase text-primary fs-14">Actions</h6>
+                                        <div class="d-grid gap-2">
+                                            <button (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Envoyer au Journal Officiel</button>
+                                            <button (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Importer le PDF du journal associé</button>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <h6 class="mb-0 py-2 fw-bold text-uppercase text-primary fs-14">Pièces jointes</h6>
+                                            <div class="flex-shrink-0">
+                                                <button type="button" class="btn btn-soft-primary btn-sm"><i class="ri-add-fill me-1 align-bottom"></i> Ajouter</button>
+                                            </div>
+                                        </div>
+                                        <p class="mb-4 text-muted">Les actes et pièces relatifs à la publication de la demande sont listés ci-dessous:</p>
+
+                                        <div class="vstack gap-2">
+                                            <div *ngFor="let e of [1,1]" class="border rounded border-dashed p-2">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <div class="avatar-sm">
+                                                            <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                                <!-- <i class="ri-folder-zip-line"></i> -->
+                                                                <div [ngClass]="getFichierRessourceIcone('App-pages.pdf')" class="file-icon flex-shrink-0"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 overflow-hidden">
+                                                        <div class="fs-13 mb-1 text-body">Journal Officiel du 24 Mars 2000</div>
+                                                        <div class="text-muted">2.2MB</div>
+                                                    </div>
+                                                    <div class="flex-shrink-0 ms-2">
+                                                        <div class="d-flex gap-1">
+                                                            <button type="button" class="btn btn-icon text-muted btn-sm fs-18 material-shadow-none" title="Télécharger"><i class="ri-download-2-line"></i></button>
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-icon text-muted btn-sm fs-18 dropdown material-shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="ri-more-fill"></i>
+                                                                </button>
+                                                                <ul class="dropdown-menu">
+                                                                    <li><a class="dropdown-item" href="#"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Renommer</a></li>
+                                                                    <li><a class="dropdown-item text-danger" href="#"><i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i> Supprimer</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="oppositions" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <form [formGroup]="filtresListeOppositionsForm">
+                                            <div class="row g-3 justify-content-between">
+                                                <div class="col-lg-10 col-md-8">
+                                                    <div class="row g-3">
+                                                        <div class="col-lg-5 col-md-12 col-sm-12">
+                                                            <div class="search-box">
+                                                                <input type="text" class="form-control" formControlName="numeroOrdre" placeholder="Filtrer par le numéro d'ordre...">
+                                                                <i class="ri-search-line search-icon"></i>
+                                                            </div>
+                                                        </div>
+                                                        <!--end col-->
+
+                                                        <div class="col-lg-3 col-md-4">
+                                                            <ng-select (change)="null" formControlName="statut" placeholder="Toutes les statuts">
+                                                                <ng-option [value]="statutsOpposition.RECEVABLE">Recevable</ng-option>
+                                                                <ng-option [value]="statutsOpposition.REJETEE">Rejetée</ng-option>
+                                                                <ng-option [value]="statutsOpposition.LEVEE">Levée</ng-option>
+                                                            </ng-select>
+                                                        </div>
+                                                        <!--end col-->
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-md-4">
+                                                    <div class="d-flex align-items-center justify-content-end">
+                                                        <button (click)="filtrerListeOppositions()" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                                                    </div>
+                                                </div>
+                                                <!--end col-->
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive mt-2 mb-3">
+                                            <table class="table table-borderless table-striped table-hover align-middle mb-0">
+                                                <thead class="">
+                                                    <tr class="">
+                                                        <th>#</th>
+                                                        <th scope="col">N° d'ordre</th>
+                                                        <th scope="col">Statut</th>
+                                                        <th scope="col">Intervenant(s)</th>
+                                                        <th scope="col">N° de réquisition</th>
+                                                        <th scope="col">Date de l'opposition</th>
+                                                        <th class="text-end">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let opposition of listeOppositions.data; index as oppositionIndex">
+                                                        <td>
+                                                            {{ (listeOppositions.paginationSize! * listeOppositions.currentPage!) + oppositionIndex + 1 }}
+                                                        </td>
+                                                        <td>{{ opposition.acteRegistre?.numeroOrdre }}</td>
+                                                        <td>
+                                                            <div [ngSwitch]="opposition.statut">
+                                                                <div *ngSwitchCase="statutsOpposition.RECEVABLE"><span class="badge bg-success-subtle text-success text-uppercase">Recevable</span></div>
+                                                                <div *ngSwitchCase="statutsOpposition.REJETEE"><span class="badge bg-danger-subtle text-danger text-uppercase">Rejetée</span></div>
+                                                                <div *ngSwitchCase="statutsOpposition.LEVEE"><span class="badge bg-info-subtle text-info text-uppercase">Levée</span></div>
+                                                                <div *ngSwitchDefault>----</div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <app-parties-prenantes-table [partiesPrenantes]="opposition.partiesPrenantes ?? []" [typePartiePrenante]="typesPartiePrenante.INTERVENANT" noPartiePrenanteText="Aucun intervenant"></app-parties-prenantes-table>
+                                                        </td>
+                                                        <td>
+                                                            <span *ngIf="!opposition.oppositionsRequisitions || opposition.oppositionsRequisitions.length == 0" class="text-muted"><i>Aucune réquisition</i></span>
+                                                            <app-card-numero-requisition-details *ngFor="let oppositionRequisition of opposition.oppositionsRequisitions" [numeroRequisition]="oppositionRequisition.numeroRequisition"></app-card-numero-requisition-details>
+                                                        </td>
+                                                        <td>{{ opposition.dateOpposition | date: 'dd MMM YYYY HH:mm' | titlecase }}</td>
+                                                        <!-- <td>{{ opposition.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}</td> -->
+                                                        <td class="text-end">
+                                                            <a [routerLink]="['/dossiers/oppositions/', opposition.id]"><i class="ri-edit-box-line fs-5"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div>
+                                                <app-custom-pagination-controls [currentPage]="listeOppositions.currentPage" [totalItems]="listeOppositions.totalItems" [totalPages]="listeOppositions.totalPages" (paginationChange)="getOppositions($event)"></app-custom-pagination-controls>
+                                            </div>
+
+                                            <app-no-data-banner [show]="listeOppositions.data.length == 0" text="Aucune opposition"></app-no-data-banner>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                            <div class="col-xl-3 col-lg-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="mb-4 fw-bold text-uppercase text-primary fs-14">Actions</h6>
+                                        <div class="d-grid gap-2">
+                                            <button (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Inscrire une opposition</button>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="bornage" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <h6 class="mb-3 py-2 fw-bold text-uppercase text-primary fs-14">Publicité préalable</h6>
+                                            <!-- <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English.</p> -->
+
+                                            <div class="row gx-3 gy-5 text-muted mb-4">
+                                                <div class="col-lg-6 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date de l'insertion au journal officiel:</p>
+                                                        <h5 *ngIf="formalitePrealable.bornage?.dateInsertionJournalOfficiel" class="fs-15 mb-0">{{ formalitePrealable.bornage?.dateInsertionJournalOfficiel| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.bornage?.dateInsertionJournalOfficiel" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date des avis individuels:</p>
+                                                        <h5 *ngIf="formalitePrealable.bornage?.dateAvisIndividuels" class="fs-15 mb-0">{{ formalitePrealable.bornage?.dateAvisIndividuels| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.bornage?.dateAvisIndividuels" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <h6 class="mb-3 py-2 fw-bold text-uppercase text-primary fs-14">Exécution</h6>
+                                            <!-- <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English.</p> -->
+
+                                            <div class="row gx-3 gy-5 text-muted mb-4">
+                                                <div class="col-lg-6 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date du procès-verbal:</p>
+                                                        <h5 *ngIf="formalitePrealable.bornage?.dateProcesVerbal" class="fs-15 mb-0">{{ formalitePrealable.bornage?.dateProcesVerbal| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.bornage?.dateProcesVerbal" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                            <div class="col-xl-3 col-lg-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="mb-4 fw-bold text-uppercase text-primary fs-14">Actions</h6>
+                                        <div class="d-grid gap-2">
+                                            <button (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Importer le PV de bornage</button>
+                                            <button (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Importer le plan de la propriété</button>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <h6 class="mb-0 py-2 fw-bold text-uppercase text-primary fs-14">Pièces jointes</h6>
+                                            <div class="flex-shrink-0">
+                                                <button type="button" class="btn btn-soft-primary btn-sm"><i class="ri-add-fill me-1 align-bottom"></i> Ajouter</button>
+                                            </div>
+                                        </div>
+                                        <p class="mb-4 text-muted">Les actes et pièces relatifs au bornage sont listés ci-dessous:</p>
+
+                                        <div class="vstack gap-2">
+                                            <div *ngFor="let e of [1,1,1]" class="border rounded border-dashed p-2">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <div class="avatar-sm">
+                                                            <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                                <!-- <i class="ri-folder-zip-line"></i> -->
+                                                                <div [ngClass]="getFichierRessourceIcone('App-pages.pdf')" class="file-icon flex-shrink-0"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 overflow-hidden">
+                                                        <div class="fs-13 mb-1 text-body">PV de bornage</div>
+                                                        <div class="text-muted">2.2MB</div>
+                                                    </div>
+                                                    <div class="flex-shrink-0 ms-2">
+                                                        <div class="d-flex gap-1">
+                                                            <button type="button" class="btn btn-icon text-muted btn-sm fs-18 material-shadow-none" title="Télécharger"><i class="ri-download-2-line"></i></button>
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-icon text-muted btn-sm fs-18 dropdown material-shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="ri-more-fill"></i>
+                                                                </button>
+                                                                <ul class="dropdown-menu">
+                                                                    <li><a class="dropdown-item" href="#"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Renommer</a></li>
+                                                                    <li><a class="dropdown-item text-danger" href="#"><i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i> Supprimer</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="procedure-judiciaire" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <h6 class="mb-3 py-2 fw-bold text-uppercase text-primary fs-14">en Première instance</h6>
+                                            <!-- <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English.</p> -->
+
+                                            <div class="row gx-3 gy-5 text-muted mb-4">
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date du jugement:</p>
+                                                        <h5 *ngIf="formalitePrealable.procedureJudiciaire?.dateJugementEnPremiereInstance" class="fs-15 mb-0">{{ formalitePrealable.procedureJudiciaire?.dateJugementEnPremiereInstance| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.procedureJudiciaire?.dateJugementEnPremiereInstance" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date de la remise de l'expédition:</p>
+                                                            <h5 *ngIf="formalitePrealable.procedureJudiciaire?.dateRemiseExpeditionEnPremiereInstance" class="fs-15 mb-0">{{ formalitePrealable.procedureJudiciaire?.dateRemiseExpeditionEnPremiereInstance| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                            <h5 *ngIf="!formalitePrealable.procedureJudiciaire?.dateRemiseExpeditionEnPremiereInstance" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date du recours:</p>
+                                                        <h5 *ngIf="formalitePrealable.procedureJudiciaire?.dateRecoursEnPremiereInstance" class="fs-15 mb-0">{{ formalitePrealable.procedureJudiciaire?.dateRecoursEnPremiereInstance| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.procedureJudiciaire?.dateRecoursEnPremiereInstance" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <h6 class="mb-3 py-2 fw-bold text-uppercase text-primary fs-14">en Appel</h6>
+                                            <!-- <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English.</p> -->
+
+                                            <div class="row gx-3 gy-5 text-muted mb-4">
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date de l'arrê:</p>
+                                                        <h5 *ngIf="formalitePrealable.procedureJudiciaire?.dateArreEnAppel" class="fs-15 mb-0">{{ formalitePrealable.procedureJudiciaire?.dateArreEnAppel| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.procedureJudiciaire?.dateArreEnAppel" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date de la remise de l'expédition:</p>
+                                                        <h5 *ngIf="formalitePrealable.procedureJudiciaire?.dateRemiseExpeditionEnAppel" class="fs-15 mb-0">{{ formalitePrealable.procedureJudiciaire?.dateRemiseExpeditionEnAppel| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.procedureJudiciaire?.dateRemiseExpeditionEnAppel" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date du recours:</p>
+                                                        <h5 *ngIf="formalitePrealable.procedureJudiciaire?.dateRecoursEnAppel" class="fs-15 mb-0">{{ formalitePrealable.procedureJudiciaire?.dateRecoursEnAppel| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.procedureJudiciaire?.dateRecoursEnAppel" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <h6 class="mb-3 py-2 fw-bold text-uppercase text-primary fs-14">en Cassation</h6>
+                                            <!-- <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English.</p> -->
+
+                                            <div class="row gx-3 gy-5 text-muted mb-4">
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date de l'arrê:</p>
+                                                        <h5 *ngIf="formalitePrealable.procedureJudiciaire?.dateArreEnCassation" class="fs-15 mb-0">{{ formalitePrealable.procedureJudiciaire?.dateArreEnCassation| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.procedureJudiciaire?.dateArreEnCassation" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date de la remise de l'expédition:</p>
+                                                        <h5 *ngIf="formalitePrealable.procedureJudiciaire?.dateRemiseExpeditionEnCassation" class="fs-15 mb-0">{{ formalitePrealable.procedureJudiciaire?.dateRemiseExpeditionEnCassation| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                                        <h5 *ngIf="!formalitePrealable.procedureJudiciaire?.dateRemiseExpeditionEnCassation" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                            <div class="col-xl-3 col-lg-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="mb-4 fw-bold text-uppercase text-primary fs-14">Actions</h6>
+                                        <div class="d-grid gap-2">
+                                            <button (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Importer un acte ou une pièce</button>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <h6 class="mb-0 py-2 fw-bold text-uppercase text-primary fs-14">Pièces jointes</h6>
+                                            <div class="flex-shrink-0">
+                                                <button type="button" class="btn btn-soft-primary btn-sm"><i class="ri-add-fill me-1 align-bottom"></i> Ajouter</button>
+                                            </div>
+                                        </div>
+                                        <p class="mb-4 text-muted">Les actes et pièces relatifs aux procédures judiciaires sont listés ci-dessous:</p>
+
+                                        <div class="vstack gap-2">
+                                            <div *ngFor="let e of [1,1]" class="border rounded border-dashed p-2">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <div class="avatar-sm">
+                                                            <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                                <!-- <i class="ri-folder-zip-line"></i> -->
+                                                                <div [ngClass]="getFichierRessourceIcone('App-pages.pdf')" class="file-icon flex-shrink-0"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 overflow-hidden">
+                                                        <div class="fs-13 mb-1 text-body">Ordre du tribunal</div>
+                                                        <div class="text-muted">2.2MB</div>
+                                                    </div>
+                                                    <div class="flex-shrink-0 ms-2">
+                                                        <div class="d-flex gap-1">
+                                                            <button type="button" class="btn btn-icon text-muted btn-sm fs-18 material-shadow-none" title="Télécharger"><i class="ri-download-2-line"></i></button>
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-icon text-muted btn-sm fs-18 dropdown material-shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="ri-more-fill"></i>
+                                                                </button>
+                                                                <ul class="dropdown-menu">
+                                                                    <li><a class="dropdown-item" href="#"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Renommer</a></li>
+                                                                    <li><a class="dropdown-item text-danger" href="#"><i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i> Supprimer</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="titre-foncier" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-8">
+                                <div *ngIf="titreFoncier" class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <h6 class="mb-3 py-2 fw-bold text-uppercase text-primary fs-14">Informations générales</h6>
+                                            <!-- <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English.</p> -->
+
+                                            <div class="row gx-3 gy-5 text-muted mb-4">
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Numéro du titre foncier:</p>
+                                                        <h5 class="fs-15 mb-0">GL-13065-RT</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Date de création:</p>
+                                                        <h5 class="fs-15 mb-0">29 Décembre 2021</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div>
+                                                        <p class="mb-2">Statut:</p>
+                                                        <div class="fs-15" [ngSwitch]="formalitePrealable.statut">
+                                                            <span *ngSwitchCase="statutsFormalitePrealable.VALIDEE" class="badge rounded bg-success text-uppercase fs-10">Validée</span>
+                                                            <span *ngSwitchCase="statutsFormalitePrealable.SUSPENDUE" class="badge rounded bg-info text-uppercase fs-10">Suspendue</span>
+                                                            <span *ngSwitchCase="statutsFormalitePrealable.REJETEE" class="badge rounded bg-danger text-uppercase fs-10">Rejetée</span>
+                                                            <span *ngSwitchCase="statutsFormalitePrealable.ANNULEE" class="badge rounded bg-danger text-uppercase fs-10">Annulée</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="pt-3 border-top border-top-dashed mt-4">
+                                                <!-- <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Description</h6> -->
+                                                <p>Les informations du livre foncier physique dont provient ce titre sont renseignées ci-dessous: </p>
+
+                                                <div class="row gx-3 gy-5 text-muted mb-4">
+                                                    <!-- <div class="col-lg-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">N°:</p>
+                                                            <h5 class="fs-15 mb-0">LF_TT_20_13532-664465</h5>
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Volume:</p>
+                                                            <h5 class="fs-15 mb-0">20</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Folio:</p>
+                                                            <h5 class="fs-15 mb-0">101</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <h6 class="mb-3 py-2 fw-bold text-uppercase text-primary fs-14">Titre foncier</h6>
+                                            <!-- <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English.</p> -->
+
+                                            <div *ngIf="!titreFoncier" class="mb-4">
+                                                <app-no-data-banner [show]="true" text="Aucun titre créé pour ce numéro de réquisition"></app-no-data-banner>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                            <div class="col-xl-3 col-lg-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="mb-4 fw-bold text-uppercase text-primary fs-14">Actions</h6>
+
+                                        <div class="d-grid gap-2">
+                                            <!-- <button (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Inscrire une opposition</button>
+                                            <button (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Importer un acte ou une pièce</button>
+                                             -->
+                                             <div class="mb-4">
+                                                <app-no-data-banner [show]="true" text="Aucune action disponible"></app-no-data-banner>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->

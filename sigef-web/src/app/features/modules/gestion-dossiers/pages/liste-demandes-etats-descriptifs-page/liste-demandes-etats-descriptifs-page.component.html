@@ -1,0 +1,277 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Etats descriptifs</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers">Dossiers</a></li>
+                            <li class="breadcrumb-item active">Etats descriptifs</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeDemandesEtatsDescriptifsForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeDemandesEtatsDescriptifs()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher une demande de transfert..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheDemandeEtatDescriptif()" *ngIf="filtresListeDemandesEtatsDescriptifsForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary" role="link" routerLink="./nouveau"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un region</button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- <div class="d-flex justify-content-between align-items-center"> -->
+                            <!-- <h4 class="card-title mb-0 flex-grow-1">Filtres</h4> -->
+                            <div class="d-flex justify-content-end align-items-center form-check-success">
+                                <label class="form-check-label me-2" for="formCheck8">
+                                    Masquer les filtres
+                                </label>
+                                <input [(ngModel)]="masquerfiltresListeDemandesEtatsDescriptifs" class="form-check-input" type="checkbox" id="formCheck8">
+                            </div>
+                        <!-- </div> -->
+                        
+                        <form *ngIf="!masquerfiltresListeDemandesEtatsDescriptifs" [formGroup]="filtresListeDemandesEtatsDescriptifsForm">
+                            <div class="row gy-4 mt-4 mb-4">   
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="creatDebut" class="form-label text-muted">Date de demande (Début)</label>
+                                        <input (change)="onDateDemandeDebut()" type="datetime-local" class="form-control" id="creatDebut" formControlName="creatDebut">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="creatFin" class="form-label text-muted">Date de demande (Fin)</label>
+                                        <input type="datetime-local" class="form-control" id="creatFin" formControlName="creatFin">
+
+                                        <div *ngIf="filtresListeDemandesEtatsDescriptifsForm.get('creatFin')!.invalid && (filtresListeDemandesEtatsDescriptifsForm.get('creatFin')!.dirty || filtresListeDemandesEtatsDescriptifsForm.get('creatFin')!.touched)">
+                                            <app-form-message [show]="filtresListeDemandesEtatsDescriptifsForm.get('creatFin')!.errors?.['required']" type="danger" text="Saisir la date de fin"></app-form-message>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="statut" class="form-label text-muted">Statut</label>
+                                        <ng-select id="statut" formControlName="statut" [items]="statuts" bindValue="id" bindLabel="libelle" placeholder="Tous les statuts"></ng-select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="titre" class="form-label text-muted">N° Titre foncier</label>
+                                        <input type="text" class="form-control" id="titre" formControlName="titre">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="requerant" class="form-label text-muted">Réquérant</label>
+                                        <input type="text" class="form-control" id="requerant" formControlName="requerant">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="region" class="form-label text-muted">Région</label>
+                                        <ng-select formControlName="region" (open)="getRegions()" bindLabel="">
+                                            <!-- <ng-option [value]="'null'">Non assigné</ng-option> -->
+                                            <ng-option *ngFor="let utilisateur of listeUtilisateurs" [value]="utilisateur.id">
+                                                {{ utilisateur.nom }} {{ utilisateur.prenoms }} 
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="demandeur" class="form-label text-muted">Faite par</label>
+                                        <ng-select formControlName="demandeur" (open)="getUtilisateurs()" [searchFn]="customUtilisateurSearchFn">
+                                            <!-- <ng-option [value]="'null'">Non assigné</ng-option> -->
+                                            <ng-option *ngFor="let utilisateur of listeUtilisateurs" [value]="utilisateur.id">
+                                                {{ utilisateur.nom }} {{ utilisateur.prenoms }} 
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="validateur" class="form-label text-muted">Traitée par</label>
+                                        <ng-select formControlName="validateur" (open)="getUtilisateurs()" [searchFn]="customUtilisateurSearchFn">
+                                            <!-- <ng-option [value]="'null'">Non assigné</ng-option> -->
+                                            <ng-option *ngFor="let utilisateur of listeUtilisateurs" [value]="utilisateur.id">
+                                                {{ utilisateur.nom }} {{ utilisateur.prenoms }} 
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="dateTraitement" class="form-label text-muted">Date de traitement</label>
+                                        <input type="date" class="form-control" id="dateTraitement" formControlName="dateTraitement">
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4 gap-2">
+                                <button (click)="effacerFiltresListeDemandesEtatsDescriptifs()" class="btn btn-light">Effacer</button>
+                                <button (click)="filtrerListeDemandesEtatsDescriptifs(0, listeDemandesEtatsDescriptifs.paginationSize)" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <!-- <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des dossiers</h4>
+                    </div> -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="text-mute">
+                                        <!-- <th scope="col" style="width: 50px;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedAllDemandesEtatsDescriptifs" (change)="onSelectedAllDemandesEtatsDescriptifsChange()">
+                                            </div>
+                                        </th> -->
+                                        <th scope="col">#</th>
+                                        <th scope="col">Statut</th>
+                                        <th scope="col">N° Titre foncier</th>
+                                        <th scope="col">Demandeur</th>
+                                        <th scope="col">Faite par</th>
+                                        <th scope="col">Date de demande</th>
+                                        <th scope="col">Traitée par</th>
+                                        <th scope="col">Date de traitement</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let demandeEtatDescriptif of listeDemandesEtatsDescriptifs.data; index as demandeEtatDescriptifIndex">
+                                        <td>
+                                            {{ (listeDemandesEtatsDescriptifs.paginationSize! * listeDemandesEtatsDescriptifs.currentPage!) + demandeEtatDescriptifIndex + 1 }}
+                                        </td> 
+                                        <td>
+                                            <div [ngSwitch]="demandeEtatDescriptif.statut">
+                                                <div *ngSwitchCase="statutsDemandeEtatDescriptif.A_TRAITER"><span class="badge bg-danger-subtle text-danger text-uppercase">A traiter</span></div>
+                                                <div *ngSwitchCase="statutsDemandeEtatDescriptif.EN_COURS"><span class="badge bg-info-subtle text-info text-uppercase">En cours</span></div>
+                                                <div *ngSwitchCase="statutsDemandeEtatDescriptif.TRAITEE"><span class="badge bg-success-subtle text-success text-uppercase">Traitée</span></div>
+                                                <div *ngSwitchCase="statutsDemandeEtatDescriptif.ANNULEE"><span class="badge bg-danger-subtle text-danger text-uppercase">Annulée</span></div>
+                                                <div *ngSwitchCase="statutsDemandeEtatDescriptif.REJETEE"><span class="badge bg-danger-subtle text-danger text-uppercase">Rejetée</span></div>
+                                                <div *ngSwitchDefault>----</div>
+                                            </div>
+                                        </td>
+                                        <td>{{ demandeEtatDescriptif.titreFoncier?.numero | getNumeroTitreFoncier: demandeEtatDescriptif.titreFoncier?.numeroPrefixe: demandeEtatDescriptif.titreFoncier?.numeroSuffixe }}</td>
+                                        <td>{{ demandeEtatDescriptif.requerant }}</td>
+                                        <td>
+                                            <span *ngIf="!demandeEtatDescriptif.utilisateurDemande" class="badge bg-primary-subtle text-primary text-uppercase">-----</span>
+                                            <div *ngIf="demandeEtatDescriptif.utilisateurDemande">
+                                                <app-user-avatar [photoDeProfil]="demandeEtatDescriptif.utilisateurDemande.photoDeProfil" [type]="2"></app-user-avatar>
+                                                <span>{{ demandeEtatDescriptif.utilisateurDemande.nom }} {{ demandeEtatDescriptif.utilisateurDemande.prenoms }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="!demandeEtatDescriptif.dateDemande" class="text-muted text-end"><i>----</i></span>
+                                            <span *ngIf="demandeEtatDescriptif.dateDemande">{{ demandeEtatDescriptif.dateDemande | date: 'dd MMM YYYY HH:mm' | titlecase }}</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="!demandeEtatDescriptif.utilisateurTraitement" class="text-muted text-end"><i>En attente</i></span>
+                                            <div *ngIf="demandeEtatDescriptif.utilisateurTraitement">
+                                                <app-user-avatar [photoDeProfil]="demandeEtatDescriptif.utilisateurTraitement.photoDeProfil" [type]="2"></app-user-avatar>
+                                                <span>{{ demandeEtatDescriptif.utilisateurTraitement.nom }} {{ demandeEtatDescriptif.utilisateurTraitement.prenoms }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="!demandeEtatDescriptif.dateTraitement" class="text-muted text-end"><i>En attente</i></span>
+                                            <span *ngIf="demandeEtatDescriptif.dateTraitement">{{ demandeEtatDescriptif.dateTraitement | date: 'dd MMM YYYY HH:mm' | titlecase }}</span>
+                                        </td>
+                                        <td>
+                                            {{ demandeEtatDescriptif.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td align="center">
+                                            <div class="d-flex align-items-center justify-content-end gap-3">
+                                                <a role="button" (click)="openDetailsDemandeEtatDescriptifModal(demandeEtatDescriptif)"><i class="ri-edit-box-line fs-4"></i></a>
+                                                <a role="button" (click)="annulerDemandeEtatDescriptif(demandeEtatDescriptif)"><i class="ri-chat-delete-line text-danger fs-4"></i></a>
+                                                <div class="dropdown">
+                                                    <a role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="ri-more-2-fill fs-4"></i></a>
+                                                    <!-- <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button> -->
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" role="button" (click)="traiterDemandeEtatDescriptif(demandeEtatDescriptif)">Traiter la demande</a></li>
+                                                        <li class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a class="dropdown-item text-danger" role="button" (click)="rejeterDemandeEtatDescriptif(demandeEtatDescriptif)">Rejeter la demande</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeDemandesEtatsDescriptifs.currentPage" [totalItems]="listeDemandesEtatsDescriptifs.totalItems" [totalPages]="listeDemandesEtatsDescriptifs.totalPages" (paginationChange)="onPaginationChange($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeDemandesEtatsDescriptifs.data.length == 0" text="Aucune demande de transfert"></app-no-data-banner>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+<!-- Modals -->
+<app-custom-modal title="Détails de la demande" size="xl" [show]="showDetailsDemandeEtatDescriptifModal" (modalClose)="closeDetailsDemandeEtatDescriptifModal()">
+    <div body>
+        <form>
+            <div class="row gap-4" *ngIf="selectedDemandeEtatDescriptif">
+                <!-- <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="typeRegistreId" class="form-label">Type de registre</label>
+                        <input type="text" class="form-control" [value]="selectedDemandeEtatDescriptif.typeRegistre ? selectedDemandeEtatDescriptif.typeRegistre.libelle : '----'" disabled>
+                    </div>
+                </div> -->
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="requerant" class="form-label ">Réquérant</label>
+                        <textarea readonly class="form-control" id="requerant" rows="5" [value]="selectedDemandeEtatDescriptif.requerant"></textarea>
+                    </div>
+                </div>
+                
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="reponse" class="form-label ">Réponse</label>
+                        <textarea readonly class="form-control" id="reponse" rows="5" [value]="selectedDemandeEtatDescriptif.reponse"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeDetailsDemandeEtatDescriptifModal()" class="btn btn-light">Fermer</button>
+        </div>
+    </div>
+</app-custom-modal>

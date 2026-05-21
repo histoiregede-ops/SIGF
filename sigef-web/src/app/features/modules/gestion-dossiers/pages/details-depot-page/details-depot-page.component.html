@@ -1,0 +1,245 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <div class="mb-sm-0">
+                        <a routerLink="../" class="text-muted fw-meium"><i class="ri-arrow-go-back-line me-1"></i> Retour</a>
+                    </div>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers">Dossiers</a></li>
+                            <li class="breadcrumb-item"><a routerLink="../">Dépôts</a></li>
+                            <li class="breadcrumb-item active">Détails</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+    </div>
+
+    <div *ngIf="depot" class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card mt-n4 mx-n4">
+                    <div [ngClass]="{'bg-warning-subtle': depot.statut == statutsDepot.A_VALIDER, 'bg-success-subtle': depot.statut == statutsDepot.VALIDE, 'bg-danger-subtle': depot.statut == statutsDepot.ANNULE}">
+                        <div class="card-body py-4 px-4">
+                            <div class="row">
+                                <div class="col-md">
+                                    <div class="row align-items-center g-4">
+                                        <div class="col-md-auto">
+                                            <div class="avatar-md">
+                                                <div class="avatar-title bg-white rounded-circle">
+                                                    <!-- <img src="assets/images/brands/slack.png" alt="" class="avatar-xs"> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <div>
+                                                <div class="fs-5 fw-bold text-uppercase mb-1">Dépôt N° {{ depot.acteRegistre?.numeroOrdre?.padStart(5, '0') ?? '-----' }}</div>
+                                                <div class="hstack gap-3 flex-wrap">
+                                                    <!-- <div><i class="ri-building-line align-bottom me-1"></i> Themesbrand</div>
+                                                    <div class="vr"></div> -->
+                                                    <div>Date de dépôt : <span class="fw-medium">{{ depot.dateDepot | date: 'dd MMMM YYYY' | titlecase }}</span></div>
+                                                    <div class="vr"></div>
+                                                    <div>Dernière modification : <span class="fw-medium">{{ depot.updatedAt | date: 'dd MMMM YYYY' | titlecase }} à {{ depot.updatedAt | date: 'HH:mm' }}</span></div>
+                                                    <div class="vr"></div>
+                                                    <div [ngSwitch]="depot.statut"> Statut : 
+                                                        <span *ngSwitchCase="statutsDepot.A_VALIDER" class="badge rounded bg-warning text-uppercase fs-10">A Valider</span>
+                                                        <span *ngSwitchCase="statutsDepot.VALIDE" class="badge rounded bg-success text-uppercase fs-10">Valide</span>
+                                                        <span *ngSwitchCase="statutsDepot.ANNULE" class="badge rounded bg-danger text-uppercase fs-10">Annulé</span>
+                                                        <!-- <div *ngSwitchDefault>output2</div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-auto">
+                                    <div class="hstack gap-1 flex-wrap">
+                                        <!-- <button type="button" class="btn py-0 fs-16 favourite-btn material-shadow-none active">
+                                            <i class="ri-star-fill"></i>
+                                        </button> -->
+                                        <button type="button" class="btn py-0 fs-16 text-body material-shadow-none">
+                                            <i class="ri-share-line"></i>
+                                        </button>
+                                        <!-- <button type="button" class="btn py-0 fs-16 text-body material-shadow-none">
+                                            <i class="ri-flag-line"></i>
+                                        </button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+
+        <div class="row">
+            <div class="col-xl-9 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-muted">
+                            <div class="">
+                                <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Général</h6>
+                                
+                                <div class="row pt-2 gx-3 gy-5 text-center text-muted">
+                                    <div class="col-lg-6 col-sm-6">
+                                        <div>
+                                            <p class="mb-2">Type de dépôt:</p>
+
+                                            <div class="fs-15">
+                                                <span *ngIf="depot.typeDepot" class="badge text-uppercase bg-success-subtle text-success p-2">{{ depot.typeDepot.libelle }}</span>
+                                                <span *ngIf="!depot.typeDepot" class="badge text-uppercase bg-danger-subtle text-danger p-2">Non spécifié</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-6">
+                                        <div>
+                                            <p class="mb-2">Type d'opération post-immatriculation:</p>
+                                            
+                                            <div class="fs-15">
+                                                <span *ngIf="depot.typeOperationPostImmatriculation" class="badge text-uppercase bg-info-subtle text-info p-2">{{ depot.typeOperationPostImmatriculation.libelle }}</span>
+                                                <span *ngIf="!depot.typeOperationPostImmatriculation" class="badge text-uppercase bg-danger-subtle text-danger p-2">Non spécifié</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="depot.typeDepot" class="pt-3 border-top border-top-dashed mt-4">
+                                <div *ngIf="depot.typeDepot.post == false" class="row gx-3 gy-5 text-center text-muted py-3">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div>
+                                            <p class="mb-2">N° de réquisition:</p>
+                                            <h5 class="fs-15 mb-0 fw-medium">
+                                                <app-card-numero-requisition-details [numeroRequisition]="depot.numeroRequisition"></app-card-numero-requisition-details>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-6">
+                                        <div>
+                                            <p class="mb-2">Date de la transmission:</p>
+                                            <h5 *ngIf="depot.dateDepotRequisition" class="fs-15 mb-0">{{ depot.dateDepotRequisition| date: 'dd MMMM YYYY' | titlecase }}</h5>
+                                            <h5 *ngIf="!depot.dateDepotRequisition" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="depot.typeDepot.post == true" class="row gx-3 gy-5 text-center text-muted py-3">
+                                    <div class="col-lg-6 col-sm-6">
+                                        <div>
+                                            <p class="mb-2">Montant de l'opération:</p>
+                                            <h5 *ngIf="depot.montantOperation" class="fs-15 mb-0 fw-medium">{{ depot.montantOperation | number: '1.0-0' }} FCFA</h5>
+                                            <h5 *ngIf="!depot.montantOperation" class="fs-15 mb-0">{{ '-- ---- ----' }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-3 border-top border-top-dashed mt-4">
+                                <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Désignation du droit réel à constituer</h6>
+                                <p class="fs-14 text-body">{{ depot.designationDroitReel ?? 'Aucune désignation' }}</p>
+                            </div>
+
+                            <div *ngIf="depot.typeDepot && depot.typeDepot.post == true" class="pt-3 border-top border-top-dashed mt-4">
+                                <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Titres fonciers concernés</h6>
+                                <p>Les titres fonciers concernés par cette opération post-immatriculation sont listés ci-dessous:</p>
+
+                                <div>
+                                    <span *ngIf="!depot.depotsTitresFonciers || depot.depotsTitresFonciers.length == 0" class="text-muted"><i>Aucun titre foncier</i></span>
+                                    <ul>
+                                        <li class="mb-2" *ngFor="let depotTitreFoncier of depot.depotsTitresFonciers">
+                                            <app-card-numero-titre-foncier-details class="fs-15 fw-medium text-body" [numeroTitreFoncier]="depotTitreFoncier.numeroTitreFoncier"></app-card-numero-titre-foncier-details>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-lg-6 col-md-12">
+                                <div>
+                                    <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Aliénateurs</h6>
+                                    <p class="text-muted">Sont listés ci-dessous les aliénateurs ou constituants d'un droit réel immobilier:</p>
+
+                                    <ul class="ps-2">
+                                        <div class="acitivity-timeline acitivity-main">
+                                            <div *ngFor="let partiePrenante of depot.partiesPrenantes | getPartiesPrenantes: typesPartiePrenante.ALIENATEUR" class="acitivity-item mb-2 py-3">
+                                                <app-partie-prenante-card [partiePrenante]="partiePrenante"></app-partie-prenante-card>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <div>
+                                    <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Acquéreur</h6>
+                                    <p class="text-muted">Sont listés ci-dessous les acquéreurs ou bénéficiaires du droit aliéné ou constitué:</p>
+
+                                    <ul class="ps-2">
+                                        <div class="acitivity-timeline acitivity-main">
+                                            <div *ngFor="let partiePrenante of depot.partiesPrenantes | getPartiesPrenantes: typesPartiePrenante.ACQUEREUR" class="acitivity-item mb-2 py-3">
+                                                <app-partie-prenante-card [partiePrenante]="partiePrenante"></app-partie-prenante-card>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+
+            <div class="col-xl-3 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Actions</h6>
+                        <div class="d-grid gap-2">
+                            <button *ngIf="depot.statut != statutsDepot.VALIDE" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Valider le dossier</button>
+                            <button *ngIf="depot.statut != statutsDepot.ANNULE" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Annuler le dossier</button>
+                            <button *ngIf="true" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Importer un acte ou une pièce</button>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="mb-0 py-2 fw-bold text-uppercase text-primary fs-14">Pièces déposées</h6>
+                            <div class="flex-shrink-0">
+                                <button type="button" class="btn btn-soft-primary btn-sm"><i class="ri-add-fill me-1 align-bottom"></i> Ajouter</button>
+                            </div>
+                        </div>
+                        <p class="mb-4 text-muted">Les actes et pièces joints au dossier sont listés ci-dessous:</p> 
+                        <div class="vstack gap-2">
+                            <app-piece-deposee-card *ngFor="let pieceDeposee of depot.piecesDeposees" [pieceDeposee]="pieceDeposee"></app-piece-deposee-card>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->

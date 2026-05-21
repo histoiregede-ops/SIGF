@@ -1,0 +1,7 @@
+{
+  "email": "admin@sigef.com",
+  "password": "Admin123!",
+  "nom": "Administrateur",
+  "prenom": "SIGEF",
+  "roleId": 1
+}

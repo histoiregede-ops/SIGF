@@ -1,0 +1,36 @@
+.card {
+    border-radius: 0.75rem;
+}
+
+.form-label {
+    color: #495057;
+    margin-bottom: 0.25rem;
+}
+
+.form-control-sm, .form-select-sm {
+    border-radius: 0.4rem;
+    padding: 0.4rem 0.6rem;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+
+.badge {
+    padding: 0.5em 0.8em;
+}
+
+h6 {
+    letter-spacing: 0.05em;
+    color: #6c757d !important;
+}
+
+hr {
+    background-color: rgba(0,0,0,0.1);
+}
+
+textarea {
+    resize: none;
+}

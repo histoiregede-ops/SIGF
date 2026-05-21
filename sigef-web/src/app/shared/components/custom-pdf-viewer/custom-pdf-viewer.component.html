@@ -1,0 +1,47 @@
+<div class="card h-100 p-0">
+    <div class="card-header p-2 pt-3 pb-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="row">
+                <div class="col-auto">
+                    <button (click)="toggleFullScreen()" type="button" class="btn btn-ghost-secondary btn-icon btn-sm  material-shadow-none" [title]="fullScreen ? 'Quitter le plein écran' : 'Mode plein écran'">
+                        <i *ngIf="!fullScreen" class="ri-fullscreen-line align-bottom text-body-secondary fs-24"></i>
+                        <i *ngIf="fullScreen" class="ri-fullscreen-exit-line align-bottom text-body-secondary fs-24"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <button (click)="rotateLeft()" type="button" class="btn btn-ghost-secondary btn-icon btn-sm  material-shadow-none" title="Rotation à gauche">
+                        <i class="mdi mdi-rotate-left align-bottom text-body-secondary fs-24"></i>
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button (click)="rotateRight()" type="button" class="btn btn-ghost-secondary btn-icon btn-sm  material-shadow-none" title="Rotation à droite">
+                        <i class="mdi mdi-rotate-right align-bottom text-body-secondary fs-24"></i>
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button (click)="zoomIn()" type="button" class="btn btn-ghost-secondary btn-icon btn-sm  material-shadow-none" title="Zoom avant">
+                        <i class="ri-zoom-in-line align-bottom text-body-secondary fs-24"></i>
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button (click)="zoomOut()" type="button" class="btn btn-ghost-secondary btn-icon btn-sm  material-shadow-none" title="Zoom arrière">
+                        <i class="ri-zoom-out-line align-bottom text-body-secondary fs-24"></i>
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button (click)="reset()" type="button" class="btn btn-ghost-secondary btn-icon btn-sm  material-shadow-none" title="Zoom initial">
+                        <i class="ri-refresh-line align-bottom text-body-secondary fs-24"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body h-100 p-2 bg-dark-subtle" style="overflow-y: auto;">
+        <img *ngIf="enteteSrc" [src]="enteteSrc" alt="Entête du registre" style="width: 100%;height: fit-content;">
+        <div class="pdf-canvas-wrapper d-flex justify-content-center">
+            <canvas #pdfCanvas class="pdf-canvas shadow-lg"></canvas>
+        </div>
+    </div>
+</div>

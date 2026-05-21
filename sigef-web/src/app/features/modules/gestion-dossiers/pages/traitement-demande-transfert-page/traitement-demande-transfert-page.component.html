@@ -1,0 +1,188 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Traitement de la demande</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers">Dossiers</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers/transferts">Transferts</a></li>
+                            <li *ngIf="typeRegistre" class="breadcrumb-item"><a [routerLink]="['/dossiers/transferts', typeRegistreId]">{{ typeRegistre.libelle }}</a></li>
+                            <li class="breadcrumb-item active">Traitement</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+            <!-- <div class="col-12">
+                <div class="page-title-box">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <button type="button" class="btn btn-danger waves-effect waves-light material-shadow-none">Annuler</button>
+                        <button type="button" class="btn btn-primary waves-effect waves-light">Enregistrer</button>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <!-- end page title -->
+
+        <form [formGroup]="traitementDemandeTransfertForm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body mb-4">
+                            <div class="row gy-4">
+                                <div class="col-lg-6 col-md-6">
+                                    <div>
+                                        <label for="objet" class="form-label">Objet de la demande</label>
+                                        <input type="text" readonly class="form-control" id="objet" formControlName="objet">
+
+                                        <div *ngIf="traitementDemandeTransfertForm.get('objet')!.invalid && (traitementDemandeTransfertForm.get('objet')!.dirty || traitementDemandeTransfertForm.get('objet')!.touched)">
+                                            <app-form-message [show]="traitementDemandeTransfertForm.get('objet')!.errors?.['required']" type="danger" text="Saisir l'objet de la demande"></app-form-message>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div>
+                                        <label for="typeRegistreId" class="form-label">Type de registre</label>
+                                        <input type="text" class="form-control" id="typeRegistreId" [value]="typeRegistre ? typeRegistre.libelle : '----'" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12">
+                                    <div>
+                                        <label for="message" class="form-label ">Message</label>
+                                        <textarea readonly class="form-control" id="message" formControlName="message" rows="5"></textarea>
+
+                                        <div *ngIf="traitementDemandeTransfertForm.get('message')!.invalid && (traitementDemandeTransfertForm.get('message')!.dirty || traitementDemandeTransfertForm.get('message')!.touched)">
+                                            <app-form-message [show]="traitementDemandeTransfertForm.get('message')!.errors?.['required']" type="danger" text="Saisir le message de l demande"></app-form-message>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12">
+                                    <div>
+                                        <label for="centreConservationFonciereId" class="form-label ">Centre de conservation faisant la demande <span class="text-muted">*</span></label>
+                                        <ng-select [readonly]="true" formControlName="centreConservationFonciereId" [items]="listeCentresConservationFonciere" bindValue="id" bindLabel="nom">
+                                        </ng-select>
+
+                                        <div *ngIf="traitementDemandeTransfertForm.get('centreConservationFonciereId')!.invalid && (traitementDemandeTransfertForm.get('centreConservationFonciereId')!.dirty || traitementDemandeTransfertForm.get('centreConservationFonciereId')!.touched)">
+                                            <app-form-message [show]="traitementDemandeTransfertForm.get('centreConservationFonciereId')!.errors?.['required']" type="danger" text="Préciser le centre"></app-form-message>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body mb-4">
+                            <div class="row gy-4">
+                                <div class="col-xxl-12 col-md-12">
+                                    <h5 class="fs-14 mb-0 text-uppercase fw-bold text-primary">Enonciation des actes à transférer</h5>
+                                    
+                                    <div class="table-responsive no-min-height mt-4 mb-3" formArrayName="demandeTransfertActesRegistres">
+                                        <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                            <thead class="">
+                                                <tr class="">
+                                                    <th>#</th>
+                                                    <th>Nom de l'acte</th>
+                                                    <th>Centre source</th>
+                                                    <th>Statut</th>
+                                                    <th>Commentaire</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+    
+                                            <tbody>
+                                                <tr *ngFor="let demandeTransfertActeRegistreForm of demandeTransfertActesRegistres.controls; index as demandeTransfertActeRegistreIndex" [formGroupName]="demandeTransfertActeRegistreIndex">
+                                                    <td>{{ demandeTransfertActeRegistreIndex + 1 }}</td>
+                                                    <!-- <td>
+                                                        <ng-select [ngClass]="{'border-danger': demandeTransfertActesRegistres.controls[demandeTransfertActeRegistreIndex].get('acteRegistreId')!.errors?.['required']}"  class="border-dashed" formControlName="acteRegistreId" placeholder="Choisir l'acte" [items]="listeCentresConservationFonciere" bindValue="id" bindLabel="folio"></ng-select>
+                                                    </td> -->
+                                                    <td>
+                                                        <ng-select [ngClass]="{'border-dashed border-danger': demandeTransfertActesRegistres.controls[demandeTransfertActeRegistreIndex].get('acteRegistreId')!.errors?.['required']}" (change)="onActeRegistreChange($event, demandeTransfertActeRegistreIndex)" id="acteRegistreId" formControlName="acteRegistreId" [items]="listeActesRegistres" [hideSelected]="true" bindValue="id" appendTo="body">
+                                                            <ng-template ng-option-tmp let-item="item">
+                                                                <span *ngIf="item.dossierRegistre">{{ item.dossierRegistre.nom + ' Vol. ' + item.dossierRegistre.volume }} - </span> {{ item.folio }}
+                                                            </ng-template>
+                                                            <ng-template ng-label-tmp let-item="item">
+                                                                <span *ngIf="item.dossierRegistre">{{ item.dossierRegistre.nom + ' Vol. ' + item.dossierRegistre.volume }} - </span> {{ item.folio }}
+                                                            </ng-template>
+                                                        </ng-select>
+                                                    </td>
+                                                    <td>
+                                                        <ng-select [readonly]="true" formControlName="centreSourceId" [items]="listeCentresConservationFonciere" bindValue="id" bindLabel="nom"></ng-select>
+                                                    </td>
+                                                    <td>
+                                                        <div [ngSwitch]="demandeTransfertActesRegistres.controls[demandeTransfertActeRegistreIndex].get('statut')!.value">
+                                                            <div *ngSwitchCase="statutsDemandeTransfertActeRegistre.VALIDE"><span class="badge rounded bg-success text-uppercase fs-10">Validé</span></div>
+                                                            <div *ngSwitchCase="statutsDemandeTransfertActeRegistre.EN_ATTENTE"><span class="badge rounded bg-info text-uppercase fs-10">En attente</span></div>
+                                                            <div *ngSwitchCase="statutsDemandeTransfertActeRegistre.REJETE"><span class="badge rounded bg-danger text-uppercase fs-10">Rejeté</span></div>
+                                                            <div *ngSwitchDefault>----</div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control border-dashed" formControlName="commentaire" placeholder="(optionnel)">
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center justify-content-end gap-2">
+                                                            <button [disabled]="demandeTransfertActesRegistres.controls[demandeTransfertActeRegistreIndex].get('statut')!.value == statutsDemandeTransfertActeRegistre.VALIDE" (click)="changeDemandeTransfertActeRegistreStatut(statutsDemandeTransfertActeRegistre.VALIDE, demandeTransfertActeRegistreIndex)" type="button" class="btn btn-success waves-effect waves-light">Valider</button>
+                                                            <button [disabled]="demandeTransfertActesRegistres.controls[demandeTransfertActeRegistreIndex].get('statut')!.value == statutsDemandeTransfertActeRegistre.REJETE" (click)="changeDemandeTransfertActeRegistreStatut(statutsDemandeTransfertActeRegistre.REJETE, demandeTransfertActeRegistreIndex)" type="button" class="btn btn-danger waves-effect waves-light">Rejeter</button>
+                                                            <!-- <a role="button" (click)="removeDemandeTransfertActeRegistre(demandeTransfertActeRegistreIndex)" class="d-block"><i class="ri-delete-bin-6-line fs-4 text-danger"></i></a>    -->
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <app-no-data-banner [show]="demandeTransfertActesRegistres.controls.length == 0" text="Aucun acte joint"></app-no-data-banner>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body mb-4">
+                            <div class="row gy-4">
+                                <div class="col-lg-12 col-md-12">
+                                    <div>
+                                        <label for="reponse" class="form-label ">Réponse</label>
+                                        <textarea class="form-control" id="reponse" formControlName="reponse" rows="5"></textarea>
+
+                                        <div *ngIf="traitementDemandeTransfertForm.get('reponse')!.invalid && (traitementDemandeTransfertForm.get('reponse')!.dirty || traitementDemandeTransfertForm.get('reponse')!.touched)">
+                                            <app-form-message [show]="traitementDemandeTransfertForm.get('reponse')!.errors?.['required']" type="danger" text="Saisir une réponse pour la demande"></app-form-message>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- container-fluid -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <button (click)="annulerTraitementDemandeTransfert()" type="button" class="btn btn-danger waves-effect waves-light material-shadow-none">Annuler</button>
+                            <button (click)="validerTraitementDemandeTransfert()" type="button" class="btn btn-primary waves-effect waves-light">Valider</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Page-content -->

@@ -1,0 +1,277 @@
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <app-navbar-header></app-navbar-header>
+
+    <!-- ========== App Menu ========== -->
+    <div class="navbar-menu">
+        <ngx-simplebar class="w-100 vh-100" [options]="{ autoHide: false, scrollbarMinSize: 100 }">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a href="index.html" class="invisible logo logo-dark">
+                    <span class="logo-sm">
+                        <span class="fw-bold text-uppercase text-muted">SIGEF</span>
+                    </span>
+                    <span class="logo-lg">
+                        <span class="fw-bold text-uppercase text-muted">SIGEF</span>
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a href="index.html" class="invisible logo logo-light">
+                    <span class="logo-sm">
+                        <span class="fw-bold text-uppercase text-muted">SIGEF</span>
+                    </span>
+                    <span class="logo-lg">
+                        <span class="fw-bold text-uppercase text-muted">SIGEF</span>
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            <div class="dropdown sidebar-user m-1 rounded">
+                <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="d-flex align-items-center gap-2">
+                        <img class="rounded header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar">
+                        <span class="text-start">
+                            <span class="d-block fw-medium sidebar-user-name-text">Anna Adame</span>
+                            <span class="d-block fs-14 sidebar-user-name-sub-text"><i
+                                    class="ri ri-circle-fill fs-10 text-success align-baseline"></i> <span
+                                    class="align-middle">Online</span></span>
+                        </span>
+                    </span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <!-- item-->
+                    <h6 class="dropdown-header">Welcome Anna!</h6>
+                    <a class="dropdown-item" href="pages-profile.html"><i
+                            class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Profile</span></a>
+                    <a class="dropdown-item" href="apps-chat.html"><i
+                            class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Messages</span></a>
+                    <a class="dropdown-item" href="apps-tasks-kanban.html"><i
+                            class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Taskboard</span></a>
+                    <a class="dropdown-item" href="pages-faqs.html"><i
+                            class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Help</span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="pages-profile.html"><i
+                            class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Balance : <b>$5971.67</b></span></a>
+                    <a class="dropdown-item" href="pages-profile-settings.html"><span
+                            class="badge bg-success-subtle text-success mt-1 float-end">New</span><i
+                            class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Settings</span></a>
+                    <a class="dropdown-item" href="auth-lockscreen-basic.html"><i
+                            class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock
+                            screen</span></a>
+                    <a class="dropdown-item" href="auth-logout-basic.html"><i
+                            class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle"
+                            data-key="t-logout">Logout</span></a>
+                </div>
+            </div>
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu">
+                    </div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <app-navbar-menu-group icon="ri-settings-3-line" title="Paramètres" link="/admin" menuGroupId="parametres">
+                            <app-navbar-menu-group title="Général" menuGroupId="general">
+                                <app-navbar-menu-item title="Informations" link="/admin/general/informations"></app-navbar-menu-item>
+                                <app-navbar-menu-item title="Logo" link="/admin/general/logo"></app-navbar-menu-item>
+                            </app-navbar-menu-group>
+
+                            <app-navbar-menu-group title="Sécurité" menuGroupId="securite">
+                                <app-navbar-menu-item title="Centres de conservation" link="/admin/securite/centres"></app-navbar-menu-item>
+                                <app-navbar-menu-item title="Utilisateurs" link="/admin/securite/utilisateurs"></app-navbar-menu-item>
+                                <app-navbar-menu-item title="Profils" link="/admin/securite/profils"></app-navbar-menu-item>
+                                <app-navbar-menu-item title="Rôles" link="/admin/securite/roles"></app-navbar-menu-item>
+                            </app-navbar-menu-group>
+
+                            <app-navbar-menu-group title="Paramétrages" menuGroupId="parametrages">
+                                <!-- <app-navbar-menu-item title="Types de registre" link="/admin/parametrage/types-registre"></app-navbar-menu-item> -->
+                                <app-navbar-menu-item title="Qualités de document" link="/admin/parametrage/qualites-document"></app-navbar-menu-item>
+                                <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_ADMINISTRATEUER)" title="Situations" link="/admin/parametrage/situations"
+                                    menuGroupId="situations">
+                                    <app-navbar-menu-item title="Périodes" link="/admin/parametrage/situations/periodes"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Regions" link="/admin/parametrage/situations/regions"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Préfectures" link="/admin/parametrage/situations/prefectures"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Communes" link="/admin/parametrage/situations/communes"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Cantons" link="/admin/parametrage/situations/cantons"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Villages" link="/admin/parametrage/situations/villages"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Villes" link="/admin/parametrage/situations/villes"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Quartiers" link="/admin/parametrage/situations/quartiers"></app-navbar-menu-item>
+                                </app-navbar-menu-group>
+                                <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_ADMINISTRATEUER)" title="Parties prenantes" link="/admin/parametrage/parties-prenantes"
+                                    menuGroupId="partiesPrenantes">
+                                    <app-navbar-menu-item title="Civilités" link="/admin/parametrage/parties-prenantes/civilites"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Nationalités" link="/admin/parametrage/parties-prenantes/nationalites"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Professions" link="/admin/parametrage/parties-prenantes/professions"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Formes juridiques" link="/admin/parametrage/parties-prenantes/formes-juridiques"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Secteurs d'activité" link="/admin/parametrage/parties-prenantes/secteurs-activite"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Types de personne morale" link="/admin/parametrage/parties-prenantes/types-personne-morale"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Liens de groupe" link="/admin/parametrage/parties-prenantes/liens-groupe"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Natures de relation légale" link="/admin/parametrage/parties-prenantes/natures-relation-legale"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Pièces d'identité" link="/admin/parametrage/parties-prenantes/pieces-identite"></app-navbar-menu-item>
+                                </app-navbar-menu-group>
+                                <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_ADMINISTRATEUER)" title="Dépôts" link="/admin/parametrage/depots"
+                                    menuGroupId="depotsParam">
+                                    <app-navbar-menu-item title="Types de dépôt" link="/admin/parametrage/depots/types-depot"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Operations post-immatriculation" link="/admin/parametrage/depots/types-operaitons-post-immatriculation"></app-navbar-menu-item>
+                                </app-navbar-menu-group>
+                                <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_ADMINISTRATEUER)" title="Titres fonciers" link="/admin/parametrage/titres-fonciers"
+                                    menuGroupId="titresFonciersParam">
+                                    <app-navbar-menu-item title="Limites" link="/admin/parametrage/titres-fonciers/limites"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Modes d'acquisition" link="/admin/parametrage/titres-fonciers/modes-acquisition"></app-navbar-menu-item>
+                                    <app-navbar-menu-item title="Modes d'aliénation" link="/admin/parametrage/titres-fonciers/modes-alienation"></app-navbar-menu-item>
+                                </app-navbar-menu-group>
+                            </app-navbar-menu-group>
+                        </app-navbar-menu-group>
+
+                        <!-- <app-navbar-menu-title title="Accueil"></app-navbar-menu-title> -->
+                        <app-navbar-menu-item icon="ri-dashboard-2-line" title="Tableau de bord"
+                            link="/"></app-navbar-menu-item>
+
+                        <!-- <app-navbar-menu-title title="Demandes"></app-navbar-menu-title>
+                        <app-navbar-menu-item icon="ri-dashboard-2-line" title="Réquisitions"
+                            link="/demandes/requisitions"></app-navbar-menu-item>
+                        <app-navbar-menu-item icon="ri-dashboard-2-line" title="Paiements"
+                            link="/demandes/paiements"></app-navbar-menu-item>
+                        <app-navbar-menu-item icon="ri-dashboard-2-line" title="Etat descriptif"
+                            link="/demandes/etats"></app-navbar-menu-item> -->
+
+                        <app-navbar-menu-title *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" title="Dossiers"></app-navbar-menu-title>
+                        <app-navbar-menu-item icon="ri-file-list-3-line"  title="Paiements" [link]="'/dossiers/paiements/'"></app-navbar-menu-item>
+                        <app-navbar-menu-item icon="ri-file-list-3-line"  title="Etats descriptifs" [link]="'/dossiers/etats-descriptifs/'"></app-navbar-menu-item>
+                        <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_INJECTEUR)" icon="ri-arrow-left-right-line" title="Transferts" link="/dossiers/transferts"
+                            menuGroupId="share">
+                            <app-navbar-menu-item title="Formalités préalables" [link]="'/dossiers/transferts/' + typesRegistre.FORMALITES_PREALABLES"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Oppositions" [link]="'/dossiers/transferts/' + typesRegistre.OPPOSITIONS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Dépôts" [link]="'/dossiers/transferts/' + typesRegistre.DEPOTS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Titres fonciers" [link]="'/dossiers/transferts/' + typesRegistre.TITRES_FONCIERS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Actes" [link]="'/dossiers/transferts/' + typesRegistre.ACTES"></app-navbar-menu-item>
+                        </app-navbar-menu-group>
+                        <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_INJECTEUR)" icon="ri-folder-open-line" title="Registres" link="/dossiers/registres"
+                            menuGroupId="regs">
+                            <app-navbar-menu-item title="Formalités préalables" [link]="'/dossiers/registres/' + typesRegistre.FORMALITES_PREALABLES"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Oppositions" [link]="'/dossiers/registres/' + typesRegistre.OPPOSITIONS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Dépôts" [link]="'/dossiers/registres/' + typesRegistre.DEPOTS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Titres fonciers" [link]="'/dossiers/registres/' + typesRegistre.TITRES_FONCIERS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Actes" [link]="'/dossiers/registres/' + typesRegistre.ACTES"></app-navbar-menu-item>
+                        </app-navbar-menu-group>
+                        <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" icon="ri-rocket-line" title="Formalités préalables"
+                            link="/dossiers/formalites"></app-navbar-menu-item>
+                        <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" icon="ri-history-line" title="Oppositions"
+                            link="/dossiers/oppositions"></app-navbar-menu-item>
+                        <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" icon="ri-stack-line" title="Dépôts"
+                            link="/dossiers/depots"></app-navbar-menu-item>
+                        <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" icon="ri-file-list-2-line" title="Titres fonciers"
+                            link="/dossiers/titres-fonciers"></app-navbar-menu-item>
+                        <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" icon="ri-article-line" title="Actes"
+                            link="/dossiers/actes"></app-navbar-menu-item>
+                        <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" icon="ri-file-text-line" title="Bordereaux"
+                            link="/dossiers/bordereaux"></app-navbar-menu-item>
+
+                        <app-navbar-menu-title title="Indexation"></app-navbar-menu-title>
+                        <!-- <app-navbar-menu-item icon="ri-folder-open-line" title="Documents"
+                            link="/indexation/documents"></app-navbar-menu-item> -->
+                        <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" icon="ri-database-2-line" title="Données">
+                            <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" title="Formalités préalables"
+                                [link]="'/indexation/donnees/' + typesRegistre.FORMALITES_PREALABLES"></app-navbar-menu-item>
+                            <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" title="Oppositions"
+                                [link]="'/indexation/donnees/' + typesRegistre.OPPOSITIONS"></app-navbar-menu-item>
+                            <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" title="Dépôts"
+                                [link]="'/indexation/donnees/' + typesRegistre.DEPOTS"></app-navbar-menu-item>
+                            <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" title="Titres fonciers"
+                                [link]="'/indexation/donnees/' + typesRegistre.TITRES_FONCIERS"></app-navbar-menu-item>
+                            <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_GESTIONNAIRE_DONNEES)" title="Actes"
+                                [link]="'/indexation/donnees/' + typesRegistre.ACTES"></app-navbar-menu-item>
+                        </app-navbar-menu-group>
+
+                        <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_INJECTEUR)" icon="ri-folder-open-line" title="Documents" link="/indexation/documents"
+                            menuGroupId="doc">
+                            <app-navbar-menu-item title="Formalités préalables" [link]="'/indexation/documents/' + typesRegistre.FORMALITES_PREALABLES"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Oppositions" [link]="'/indexation/documents/' + typesRegistre.OPPOSITIONS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Dépôts" [link]="'/indexation/documents/' + typesRegistre.DEPOTS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Titres fonciers" [link]="'/indexation/documents/' + typesRegistre.TITRES_FONCIERS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Actes" [link]="'/indexation/documents/' + typesRegistre.ACTES"></app-navbar-menu-item>
+                        </app-navbar-menu-group>
+                        <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_ATTRIBUTEUR_LOTS)" icon="ri-file-list-3-line" title="Attribution de lots" link="/indexation/lots"
+                            menuGroupId="lots">
+                            <app-navbar-menu-item title="Formalités préalables" [link]="'/indexation/lots/' + typesRegistre.FORMALITES_PREALABLES"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Oppositions" [link]="'/indexation/lots/' + typesRegistre.OPPOSITIONS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Dépôts" [link]="'/indexation/lots/' + typesRegistre.DEPOTS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Titres fonciers" [link]="'/indexation/lots/' + typesRegistre.TITRES_FONCIERS"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Actes" [link]="'/indexation/lots/' + typesRegistre.ACTES"></app-navbar-menu-item>
+                        </app-navbar-menu-group>
+
+                        <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_ADMINISTRATEUER)" icon="ri-group-line" title="Indexeurs"
+                            link="/indexation/utilisateurs/indexeurs"></app-navbar-menu-item>
+
+                        <app-navbar-menu-item *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_ADMINISTRATEUER)" icon="ri-user-3-line" title="Contrôleurs"
+                            link="/indexation/utilisateurs/controleurs"></app-navbar-menu-item>
+
+                        <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_INDEXEUR)" icon="ri-file-list-3-line" title="Tâches de saisie" link="/indexation/taches/saisie/formalites"
+                            menuGroupId="saisie">
+                            <app-navbar-menu-item title="Formalités préalables" [link]="'/indexation/taches/saisie/' + typesRegistre.FORMALITES_PREALABLES" [badgeText]="undefined"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Oppositions" [link]="'/indexation/taches/saisie/' + typesRegistre.OPPOSITIONS" [badgeText]="undefined"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Dépôts" [link]="'/indexation/taches/saisie/' + typesRegistre.DEPOTS" [badgeText]="undefined"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Titres fonciers" [link]="'/indexation/taches/saisie/' + typesRegistre.TITRES_FONCIERS" [badgeText]="undefined"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Actes" [link]="'/indexation/taches/saisie/' + typesRegistre.ACTES" [badgeText]="undefined"></app-navbar-menu-item>
+                        </app-navbar-menu-group>
+
+                        <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_CONTROLEUR)" icon="ri-file-list-3-line" title="Tâches de contrôle" link="/indexation/taches/controle/formalites"
+                            menuGroupId="controle">
+                            <app-navbar-menu-item title="Formalités préalables" [link]="'/indexation/taches/' + typesTacheIndexation.CONTROLE + '/' + typesRegistre.FORMALITES_PREALABLES" [badgeText]="undefined" badgeColor="info"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Oppositions" [link]="'/indexation/taches/' + typesTacheIndexation.CONTROLE + '/' + typesRegistre.OPPOSITIONS" [badgeText]="undefined"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Dépôts" [link]="'/indexation/taches/' + typesTacheIndexation.CONTROLE + '/' + typesRegistre.DEPOTS" [badgeText]="undefined"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Titres fonciers" [link]="'/indexation/taches/' + typesTacheIndexation.CONTROLE + '/' + typesRegistre.TITRES_FONCIERS" [badgeText]="undefined"></app-navbar-menu-item>
+                            <app-navbar-menu-item title="Actes" [link]="'/indexation/taches/' + typesTacheIndexation.CONTROLE + '/' + typesRegistre.ACTES" [badgeText]="undefined"></app-navbar-menu-item>
+                        </app-navbar-menu-group>
+
+                        <!-- <app-navbar-menu-item icon="ri-pie-chart-line" title="Statistiques" link="/indexation/stats"></app-navbar-menu-item> -->
+                    </ul>
+                </div>
+                <!-- Sidebar -->
+            </div>
+
+            <!-- <div class="sidebar-background"></div> -->
+        </ngx-simplebar>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <router-outlet></router-outlet>
+        <!-- End Page-content -->
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        2025 © SIGEF
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Système Intégré de Gestion Foncière
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->

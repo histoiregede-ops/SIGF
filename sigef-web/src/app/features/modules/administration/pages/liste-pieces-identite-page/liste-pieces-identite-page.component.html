@@ -1,0 +1,227 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Pièces d'identité</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin">Administration</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin/situations">Situations</a></li>
+                            <li class="breadcrumb-item active">Pièces d'identité</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListePiecesIdentiteForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListePiecesIdentite()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher une pièce d'identité..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRecherchePieceIdentite()" *ngIf="filtresListePiecesIdentiteForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary add-btn" role="button" (click)="openNouvellePieceIdentiteModal()"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un pieceIdentite</button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end align-items-center form-check-success">
+                            <label class="form-check-label me-2" for="formCheck8">
+                                Masquer les filtres
+                            </label>
+                            <input [(ngModel)]="masquerfiltresListePiecesIdentite" class="form-check-input" type="checkbox" id="formCheck8">
+                        </div>
+
+                        <form *ngIf="!masquerfiltresListePiecesIdentite" [formGroup]="filtresListePiecesIdentiteForm">
+                            <div class="row gy-4 mt-4 mb-4">
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="categorie" class="form-label text-muted">Catégorie</label>
+                                        <ng-select formControlName="categorie">
+                                            <ng-option [value]="categoriesPieceIdentite.PERSONNE_PHYSIQUE">Personne physique</ng-option>
+                                            <ng-option [value]="categoriesPieceIdentite.PERSONNE_MORALE">Personne morale</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4 gap-2">
+                                <button (click)="effacerFiltresListePiecesIdentite()" class="btn btn-light">Effacer</button>
+                                <button (click)="filtrerListePiecesIdentite(0, listePiecesIdentite.paginationSize)" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des pièces d'identité</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-striped table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th scope="col" style="width: 50px;">#</th>
+                                        <th scope="col">Libellé</th>
+                                        <th scope="col">Catégorie</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let pieceIdentite of listePiecesIdentite.data; index as pieceIdentiteIndex">
+                                        <td>
+                                            {{ (listePiecesIdentite.paginationSize! * listePiecesIdentite.currentPage!) + pieceIdentiteIndex + 1 }}
+                                        </td>
+                                        <td>{{ pieceIdentite.libelle }}</td>
+                                        <td>
+                                            <span *ngIf="pieceIdentite.categorie == categoriesPieceIdentite.PERSONNE_PHYSIQUE" class="badge bg-success-subtle text-success text-uppercase">Pour personne physique</span>
+                                            <span *ngIf="pieceIdentite.categorie == categoriesPieceIdentite.PERSONNE_MORALE" class="badge bg-danger-subtle text-danger text-uppercase">Pour personne morale</span>
+                                            <span *ngIf="pieceIdentite.categorie == null" class="badge bg-light-subtle text-light text-uppercase">----</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="pieceIdentite.description">{{ pieceIdentite.description }}</span>
+                                            <span *ngIf="!pieceIdentite.description" class="text-muted text-end"><i>Aucune description</i></span>
+                                        </td>
+                                        <td>
+                                            {{ pieceIdentite.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-3 justify-content-center align-items-center">
+                                                <a role="button" (click)="openModificationPieceIdentiteModal(pieceIdentiteIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                                <a role="button" (click)="openSuppressionPieceIdentiteModal(pieceIdentiteIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listePiecesIdentite.currentPage" [totalItems]="listePiecesIdentite.totalItems" [totalPages]="listePiecesIdentite.totalPages" (paginationChange)="getPiecesIdentite($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listePiecesIdentite.data.length == 0" text="Aucune pièce d'identité"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+
+<!-- Modals -->
+<app-custom-modal title="Nouvelle pièce d'identité" [show]="showNouvellePieceIdentiteModal" (modalClose)="annulerCreationPieceIdentite()">
+    <div body>
+        <form [formGroup]="nouvellePieceIdentiteForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="nouvellePieceIdentiteForm.get('libelle')!.invalid && (nouvellePieceIdentiteForm.get('libelle')!.dirty || nouvellePieceIdentiteForm.get('libelle')!.touched)">
+                            <app-form-message [show]="nouvellePieceIdentiteForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="categorie" class="form-label">Catégorie</label>
+                        <ng-select formControlName="categorie">
+                            <ng-option [value]="categoriesPieceIdentite.PERSONNE_PHYSIQUE">Pour Personne physique</ng-option>
+                            <ng-option [value]="categoriesPieceIdentite.PERSONNE_MORALE">Pour Personne morale</ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationPieceIdentite()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationPieceIdentite()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier cette pièce d'identité" [show]="showModificationPieceIdentiteModal" (modalClose)="annulerModificationPieceIdentite()">
+    <div body>
+        <form [formGroup]="modificationPieceIdentiteForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="modificationPieceIdentiteForm.get('libelle')!.invalid && (modificationPieceIdentiteForm.get('libelle')!.dirty || modificationPieceIdentiteForm.get('libelle')!.touched)">
+                            <app-form-message [show]="modificationPieceIdentiteForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="categorie" class="form-label">Catégorie</label>
+                        <ng-select formControlName="categorie">
+                            <ng-option [value]="categoriesPieceIdentite.PERSONNE_PHYSIQUE">Pour Personne physique</ng-option>
+                            <ng-option [value]="categoriesPieceIdentite.PERSONNE_MORALE">Pour Personne morale</ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationPieceIdentite()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationPieceIdentite()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer cette pièce d'identité" [show]="showSuppressionPieceIdentiteModal" (modalClose)="closeSuppressionPieceIdentiteModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer cette pièce d'identité ? <span class="fw-bold">Elle sera déplacée dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionPieceIdentiteModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionPieceIdentite()" class="btn btn-danger">Confirmer</button>
+        </div>
+    </div>
+</app-custom-modal>

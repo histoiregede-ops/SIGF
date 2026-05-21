@@ -1,0 +1,92 @@
+<div class="collapsible-section" [class.expanded]="isExpanded">
+  <!-- Header -->
+  <div class="section-header" (click)="onToggleExpand()">
+    <div class="section-header-left">
+      <div class="section-toggle-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <h3 class="section-title">I - Désignation et description de l'immeuble</h3>
+    </div>
+    <div class="section-header-right">
+      <span class="status-badge" [ngClass]="getStatusClass()">
+        {{ getStatusText() }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="section-content" [class.expanded]="isExpanded">
+    <div class="section-body">
+      <form [formGroup]="form">
+        <!-- Nature et consistance -->
+        <div class="field-group">
+          <label class="form-label">
+            Nature et consistance de l'immeuble
+            <span class="required">*</span>
+          </label>
+          <textarea 
+            formControlName="nature"
+            class="form-textarea"
+            placeholder="Ex: Terre labourable, Bâtiment, Terrain nu...">
+          </textarea>
+        </div>
+
+        <!-- Contenance -->
+        <div class="field-row">
+          <div class="form-group">
+            <label class="form-label">Contenance</label>
+            <input 
+              type="text"
+              formControlName="contenance"
+              class="form-input"
+              placeholder="Ex: 2.5 hectares, 5000 m²...">
+          </div>
+        </div>
+
+        <!-- Situation -->
+        <div class="field-group">
+          <label class="form-label">Situation</label>
+          <textarea 
+            formControlName="situation"
+            class="form-textarea"
+            placeholder="Ex: Commune de Dakar, Région de Dakar, RUE DE LA PAIX...">
+          </textarea>
+        </div>
+
+        <!-- Limites -->
+        <div class="field-group">
+          <label class="form-label">Limites</label>
+          <textarea 
+            formControlName="limits"
+            class="form-textarea"
+            placeholder="Nord: Route nationale, Sud: Propriété XXX, Est: Cours d'eau YYY, Ouest: ...">
+          </textarea>
+        </div>
+
+        <!-- Ventes des 10 dernières années -->
+        <div class="field-group">
+          <label class="form-label">Rappel des ventes effectuées dans les dix dernières années</label>
+          <textarea 
+            formControlName="salesLast10Years"
+            class="form-textarea"
+            placeholder="Aucune / Vente du [date] pour [prix] à [acquéreur]...">
+          </textarea>
+        </div>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="section-footer">
+      <button class="save-button" (click)="onSave()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; margin-right: 0.5rem;">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+          <polyline points="17 21 17 13 7 13 7 21"></polyline>
+          <polyline points="7 3 7 8 15 8"></polyline>
+        </svg>
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</div>

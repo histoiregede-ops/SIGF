@@ -1,0 +1,79 @@
+<app-custom-alert [show]="emptyError" type="warning" text="Veuillez renseigner tous les champs"></app-custom-alert>
+<app-custom-alert [show]="error" type="danger" text="Une erreur est survenue lors de l'inscription"></app-custom-alert>
+
+<div class="p-lg-5 p-4">
+    <div>
+        <h5 class="text-primary">Inscription</h5>
+        <p class="text-muted">renseigner vos informations pour créer un compte</p>
+    </div>
+
+    <div class="mt-4">
+        <form class="row g-3" [formGroup]="inscriptionForm">
+            <div class="col-md-12">
+                <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="DOE" required>
+                <div *ngIf="inscriptionForm.get('nom')!.invalid && (inscriptionForm.get('nom')!.dirty || inscriptionForm.get('nom')!.touched)">
+                    <app-form-message [show]="inscriptionForm.get('nom')!.errors?.['required']" type="danger" text="Entrer votre nom"></app-form-message>
+                </div>
+            </div>
+            
+            <div class="col-md-12">
+                <label for="prenoms" class="form-label">Prénoms <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="prenoms" formControlName="prenoms" placeholder="John" required>
+                <div *ngIf="inscriptionForm.get('prenoms')!.invalid && (inscriptionForm.get('prenoms')!.dirty || inscriptionForm.get('prenoms')!.touched)">
+                    <app-form-message [show]="inscriptionForm.get('prenoms')!.errors?.['required']" type="danger" text="Entrer vos prénoms"></app-form-message>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" id="email" formControlName="email" placeholder="Enter email address" required>
+                <div *ngIf="inscriptionForm.get('email')!.invalid && (inscriptionForm.get('email')!.dirty || inscriptionForm.get('email')!.touched)">
+                    <app-form-message [show]="inscriptionForm.get('email')!.errors?.['required']" type="danger" text="Saisir votre mail"></app-form-message>
+                    <app-form-message [show]="!inscriptionForm.get('email')!.errors?.['required'] && inscriptionForm.get('email')!.errors?.['required']" type="danger" text="Entrer un mail valide"></app-form-message>
+                </div>
+            </div>
+            
+            <div class="col-md-12">
+                <label for="identifiant" class="form-label">Nom d'utilisateur <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="identifiant" formControlName="identifiant" placeholder="john" required>
+                <div *ngIf="inscriptionForm.get('identifiant')!.invalid && (inscriptionForm.get('identifiant')!.dirty || inscriptionForm.get('identifiant')!.touched)">
+                    <app-form-message [show]="inscriptionForm.get('identifiant')!.errors?.['required']" type="danger" text="Entrer un nom d'utilisateur"></app-form-message>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label" for="password">Mot de passe</label>
+                <div class="position-relative auth-pass-inputgroup">
+                    <input type="password" class="form-control pe-5 password-input" onpaste="return false" placeholder="********" id="password" formControlName="password" required>
+                    <!-- <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon material-shadow-none" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button> -->
+                    <div *ngIf="inscriptionForm.get('password')!.invalid && (inscriptionForm.get('password')!.dirty || inscriptionForm.get('password')!.touched)">
+                        <app-form-message [show]="inscriptionForm.get('password')!.errors?.['required']" type="danger" text="Entrer un mot de passe"></app-form-message>
+                        <app-form-message [show]="inscriptionForm.get('password')!.errors?.['minlength']" type="danger" text="Le mot de passe doit contenir au moins 8 caractères"></app-form-message>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label" for="confirmPassword">Confirmer le mot de passe</label>
+                <div class="position-relative auth-pass-inputgroup">
+                    <input type="password" class="form-control pe-5 password-input" onpaste="return false" placeholder="********" id="confirmPassword" formControlName="confirmPassword" required>
+                    <!-- <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon material-shadow-none" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button> -->
+                    <div *ngIf="(inscriptionForm.get('confirmPassword')!.invalid || confirmError) && (inscriptionForm.get('confirmPassword')!.dirty || inscriptionForm.get('confirmPassword')!.touched)">
+                        <app-form-message [show]="inscriptionForm.get('confirmPassword')!.errors?.['required']" type="danger" text="Confirmer le mot de passe"></app-form-message>
+                        <app-form-message [show]="inscriptionForm.get('confirmPassword')!.errors?.['minlength']" type="danger" text="Le mot de passe doit contenir au moins 8 caractères"></app-form-message>
+                        <app-form-message [show]="!inscriptionForm.get('confirmPassword')!.errors?.['required'] && confirmError" type="danger" text="Les mots de passe ne correspondent pas"></app-form-message>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button (click)="inscription()" class="btn btn-primary w-100">S'inscrire</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mt-5 text-center">
+        <p class="mb-0">Vous avez déjà un compte ? <a routerLink="../connexion" class="fw-semibold text-primary text-decoration-underline">Se connecter</a> </p>
+    </div>
+</div>

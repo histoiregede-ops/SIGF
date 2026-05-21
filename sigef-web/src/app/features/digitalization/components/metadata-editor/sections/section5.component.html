@@ -1,0 +1,115 @@
+<div class="collapsible-section" [class.expanded]="isExpanded">
+  <!-- Header -->
+  <div class="section-header" (click)="onToggleExpand()">
+    <div class="section-header-left">
+      <div class="section-toggle-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <h3 class="section-title">V - Privilèges et hypothèques</h3>
+    </div>
+    <div class="section-header-right">
+      <span class="status-badge" [ngClass]="getStatusClass()">
+        {{ getStatusText() }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="section-content" [class.expanded]="isExpanded">
+    <div class="section-body">
+      <form [formGroup]="form">
+        <!-- Constitution -->
+        <div class="subsection">
+          <h4 class="subsection-title">Constitution</h4>
+          
+          <div class="field-group">
+            <label class="form-label">Date de l'inscription</label>
+            <div class="field-row">
+              <div class="form-group">
+                <label class="form-label">Année</label>
+                <input type="number" class="form-input" placeholder="YYYY">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Quantième</label>
+                <input type="text" class="form-input" placeholder="Ex: 15 janvier">
+              </div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="form-label">Désignation du débiteur ou du créancier</label>
+            <textarea 
+              class="form-textarea"
+              placeholder="Nom, prénoms, profession, domicile...">
+            </textarea>
+          </div>
+
+          <div class="field-row">
+            <div class="form-group">
+              <label class="form-label">Montant</label>
+              <input type="number" class="form-input" placeholder="Montant en FCFA">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Intérêt (%)</label>
+              <input type="number" class="form-input" step="0.01" placeholder="0.00">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="form-label">Autres mentions</label>
+            <textarea class="form-textarea" placeholder="Informations supplémentaires..."></textarea>
+          </div>
+        </div>
+
+        <!-- Libération -->
+        <div class="subsection">
+          <h4 class="subsection-title">Libération</h4>
+          
+          <div class="field-group">
+            <label class="form-label">Date de la libération</label>
+            <div class="field-row">
+              <div class="form-group">
+                <label class="form-label">Année</label>
+                <input type="number" class="form-input" placeholder="YYYY">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Quantième</label>
+                <input type="text" class="form-input" placeholder="Ex: 15 janvier">
+              </div>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="form-group">
+              <label class="form-label">Montant</label>
+              <input type="number" class="form-input" placeholder="Montant en FCFA">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Intérêt (%)</label>
+              <input type="number" class="form-input" step="0.01" placeholder="0.00">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="form-label">Autres mentions</label>
+            <textarea class="form-textarea" placeholder="Informations supplémentaires..."></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="section-footer">
+      <button class="save-button" (click)="onSave()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; margin-right: 0.5rem;">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+          <polyline points="17 21 17 13 7 13 7 21"></polyline>
+          <polyline points="7 3 7 8 15 8"></polyline>
+        </svg>
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</div>

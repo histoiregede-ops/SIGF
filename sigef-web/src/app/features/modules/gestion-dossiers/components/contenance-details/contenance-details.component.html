@@ -1,0 +1,95 @@
+<!-- <p class="text-muted">Sont listés ci-dessous les variations subites par ce titre foncier:</p> -->
+
+<!-- <h3 class="ff-secondary fw-bold cfs-22"><i class="mdi mdi-ethereum text-primary"></i> 0 ha 1 a 20 ca</h3>
+<p class="text-muted">NFT art is a digital asset that is collectable, unique, and non-transferrable, Cortes explained Every NFT is unique duplicated.</p> -->
+
+<div class="row justify-content-between mt-3 mb-5">
+    <div class="col-lg-6 col-md-6 text-center">
+        <p class="fs-14 text-muted mb-1">Surface Initiale</p>
+
+        <div class="d-flex align-items-center justify-content-center">
+            <h4 class="fs-16 fw-semibold mb-1">{{ getValeurContenance(titreFoncier.contenanceEnHectare, titreFoncier.contenanceEnAre, titreFoncier.contenanceEnCentiare) }}</h4>
+            <h5 class="ms-1 fs-14 fw-medium mb-0">({{ superficieInitiale }} m²)</h5>
+        </div>
+    </div>
+        <!-- <table>
+            <tbody>
+                <tr>
+                    <td><h4 class="fs-16 fw-semibold mb-1 text-success">+</h4></td>
+                    <td class="pe-2"><h4 class="fs-16 fw-semibold mb-1 text-success">0 ha 1 a 20 ca</h4></td>
+                </tr>
+                <tr>
+                    <td><h5 class="fs-14 fw-medium mb-0 text-success">+</h5></td>
+                    <td class="pe-2"><h5 class="fs-14 fw-medium mb-0 text-success">120 m²</h5></td>
+                </tr>
+            </tbody>
+        </table> -->
+
+    <!-- <div class="col-lg-4 col-md-6 text-center">
+        <p class="fs-14 text-muted mb-1">Augmentée/Diminuée</p>
+        
+        
+        <div>
+            <h4 [ngClass]="{ 'text-success': superficieVariation >= 0, 'text-danger': superficieVariation < 0 }" class="fs-16 fw-semibold mb-1">{{ superficieVariation >= 0 ? '+' : '-'}} {{ superficieVariation | getContenanceFromSuperficie }}</h4>
+            <h5 [ngClass]="{ 'text-success': superficieVariation >= 0, 'text-danger': superficieVariation < 0 }" class="fs-14 fw-medium mb-0">{{ superficieVariation >= 0 ? '+' : '-'}} {{ superficieVariation }} m²</h5>
+        </div>
+    </div> -->
+
+    <div class="col-lg-6 col-md-6 text-center">
+        <p class="fs-14 text-muted mb-1">Surface Actuelle</p>
+
+        <div class="d-flex align-items-center justify-content-center">
+            <h4 class="fs-16 fw-semibold mb-1">{{ superficieActuelle | getContenanceFromSuperficie }}</h4>
+            <h5 class="ms-1 fs-14 fw-medium mb-0">({{ superficieActuelle }} m²)</h5>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-between mt-3 mb-4">
+    <div class="col-lg-6 col-md-6 text-center">
+        <p class="fs-14 text-muted mb-1">Augmentations</p>
+        <h5 class="fs-16 fw-semibold mb-1 text-success">{{ listeAugmentations.length }}</h5>
+    </div>
+
+    <div class="col-lg-6 col-md-6 text-center">
+        <p class="fs-14 text-muted mb-1">Diminutions</p>
+        <h5 class="fs-16 fw-semibold mb-1 text-danger">{{ listeDiminutions.length }}</h5>
+    </div>
+</div>
+
+<div class="table-responsive no-min-height">
+    <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+        <thead class="">
+            <tr class="text-uppercase">
+                <th scope="col">#</th>
+                <th scope="col">Contenance</th>
+                <th scope="col">Date d'inscription</th>
+                <th scope="col" class="text-end">Titre dérivé</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let variation of listeVariations">
+                <td>
+                    <div class="avatar-xs">
+                        <div [ngClass]="{ 'bg-success-subtle text-success': variation.type == typesVariation.AUGMENTATION, 'bg-danger-subtle text-danger': variation.type == typesVariation.DIMINUTION }" class="avatar-title rounded-circle fs-16">
+                            <i [ngClass]="{ 'ri-arrow-right-up-fill' : variation.type == typesVariation.AUGMENTATION, 'ri-arrow-left-down-fill': variation.type == typesVariation.DIMINUTION }" class=""></i>
+                        </div>
+                    </div>
+                </td>
+                <td *ngIf="variation.type == typesVariation.AUGMENTATION">
+                    {{ variation.data.contenanceImmeubleAcquisEnHectare ?? 0 }} ha {{ variation.data.contenanceImmeubleAcquisEnAre ?? 0 }} a {{ variation.data.contenanceImmeubleAcquisEnCentiare ?? 0 }} ca
+                    <small class="text-muted me-2">({{ [variation.data.contenanceImmeubleAcquisEnHectare, variation.data.contenanceImmeubleAcquisEnAre, variation.data.contenanceImmeubleAcquisEnCentiare] | getSuperficieContenance }} m²)</small></td> 
+                <td *ngIf="variation.type == typesVariation.DIMINUTION">
+                    {{ variation.data.contenanceParcelleAlieneeEnHectare ?? 0 }} ha {{ variation.data.contenanceParcelleAlieneeEnAre ?? 0 }} a {{ variation.data.contenanceParcelleAlieneeEnCentiare ?? 0 }} ca
+                    <small class="text-muted me-2">({{ [variation.data.contenanceParcelleAlieneeEnHectare, variation.data.contenanceParcelleAlieneeEnAre, variation.data.contenanceParcelleAlieneeEnCentiare] | getSuperficieContenance }} m²)</small></td> 
+                <td>{{ variation.data.dateInscription | date: 'dd MMMM YYYY' | titlecase }}</td>
+                <td class="text-end">
+                    <app-card-numero-titre-foncier-details *ngIf="variation.type == typesVariation.AUGMENTATION" [numeroTitreFoncier]="variation.data.numeroTitreAcquis"></app-card-numero-titre-foncier-details>
+                    <app-card-numero-titre-foncier-details *ngIf="variation.type == typesVariation.DIMINUTION" [numeroTitreFoncier]="variation.data.numeroTitreAliene"></app-card-numero-titre-foncier-details>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <app-no-data-banner [show]="listeVariations.length == 0" text="Aucune variation"></app-no-data-banner>
+</div>

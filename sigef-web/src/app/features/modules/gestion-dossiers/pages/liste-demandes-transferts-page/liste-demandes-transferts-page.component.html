@@ -1,0 +1,317 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Transferts <span *ngIf="typeRegistre"> - {{ typeRegistre.libelle }}</span></h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers">Dossiers</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers/transferts">Transferts</a></li>
+                            <li *ngIf="typeRegistre" class="breadcrumb-item active">{{ typeRegistre.libelle }}</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeDemandesTransfertsForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeDemandesTransferts()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher une demande de transfert..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheDemandeTransfert()" *ngIf="filtresListeDemandesTransfertsForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary" role="link" routerLink="./nouveau"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un region</button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- <div class="d-flex justify-content-between align-items-center"> -->
+                            <!-- <h4 class="card-title mb-0 flex-grow-1">Filtres</h4> -->
+                            <div class="d-flex justify-content-end align-items-center form-check-success">
+                                <label class="form-check-label me-2" for="formCheck8">
+                                    Masquer les filtres
+                                </label>
+                                <input [(ngModel)]="masquerfiltresListeDemandesTransferts" class="form-check-input" type="checkbox" id="formCheck8">
+                            </div>
+                        <!-- </div> -->
+                        
+                        <form *ngIf="!masquerfiltresListeDemandesTransferts" [formGroup]="filtresListeDemandesTransfertsForm">
+                            <div class="row gy-4 mt-4 mb-4">   
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="creatDebut" class="form-label text-muted">Date de demande (Début)</label>
+                                        <input (change)="onDateDemandeDebut()" type="datetime-local" class="form-control" id="creatDebut" formControlName="creatDebut">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="creatFin" class="form-label text-muted">Date de demande (Fin)</label>
+                                        <input type="datetime-local" class="form-control" id="creatFin" formControlName="creatFin">
+
+                                        <div *ngIf="filtresListeDemandesTransfertsForm.get('creatFin')!.invalid && (filtresListeDemandesTransfertsForm.get('creatFin')!.dirty || filtresListeDemandesTransfertsForm.get('creatFin')!.touched)">
+                                            <app-form-message [show]="filtresListeDemandesTransfertsForm.get('creatFin')!.errors?.['required']" type="danger" text="Saisir la date de fin"></app-form-message>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="statut" class="form-label text-muted">Statut</label>
+                                        <ng-select id="statut" formControlName="statut" [items]="statuts" bindValue="id" bindLabel="libelle" placeholder="Tous les statuts"></ng-select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="demandeur" class="form-label text-muted">Faite par</label>
+                                        <ng-select formControlName="demandeur" (open)="getUtilisateurs()" [searchFn]="customUtilisateurSearchFn">
+                                            <!-- <ng-option [value]="'null'">Non assigné</ng-option> -->
+                                            <ng-option *ngFor="let utilisateur of listeUtilisateurs" [value]="utilisateur.id">
+                                                {{ utilisateur.nom }} {{ utilisateur.prenoms }} 
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="validateur" class="form-label text-muted">Traitée par</label>
+                                        <ng-select formControlName="validateur" (open)="getUtilisateurs()" [searchFn]="customUtilisateurSearchFn">
+                                            <!-- <ng-option [value]="'null'">Non assigné</ng-option> -->
+                                            <ng-option *ngFor="let utilisateur of listeUtilisateurs" [value]="utilisateur.id">
+                                                {{ utilisateur.nom }} {{ utilisateur.prenoms }} 
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="dateTraitement" class="form-label text-muted">Date de traitement</label>
+                                        <input type="date" class="form-control" id="dateTraitement" formControlName="dateTraitement">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="centre" class="form-label text-muted">Centre de conservation</label>
+                                        <ng-select (open)="getCentresConservationFonciere()" id="centre" formControlName="centre" [items]="centresConservationFonciere" bindValue="id" bindLabel="nom"></ng-select>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4 gap-2">
+                                <button (click)="effacerFiltresListeDemandesTransferts()" class="btn btn-light">Effacer</button>
+                                <button (click)="filtrerListeDemandesTransferts(0, listeDemandesTransferts.paginationSize)" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <!-- <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des dossiers</h4>
+                    </div> -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="text-mute">
+                                        <!-- <th scope="col" style="width: 50px;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedAllDemandesTransferts" (change)="onSelectedAllDemandesTransfertsChange()">
+                                            </div>
+                                        </th> -->
+                                        <th scope="col">#</th>
+                                        <th scope="col">Statut</th>
+                                        <!-- <th scope="col">Message</th> -->
+                                        <th scope="col">Nombre d'actes</th>
+                                        <th scope="col">Faite par</th>
+                                        <th scope="col">Date de demande</th>
+                                        <th scope="col">Traitée par</th>
+                                        <th scope="col">Date de traitement</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let demandeTransfert of listeDemandesTransferts.data; index as demandeTransfertIndex">
+                                        <td>
+                                            {{ (listeDemandesTransferts.paginationSize! * listeDemandesTransferts.currentPage!) + demandeTransfertIndex + 1 }}
+                                        </td> 
+                                        <td>
+                                            <div [ngSwitch]="demandeTransfert.statut">
+                                                <div *ngSwitchCase="statutsDemandeTransfert.A_TRAITER"><span class="badge bg-danger-subtle text-danger text-uppercase">A traiter</span></div>
+                                                <div *ngSwitchCase="statutsDemandeTransfert.EN_COURS"><span class="badge bg-info-subtle text-info text-uppercase">En cours</span></div>
+                                                <div *ngSwitchCase="statutsDemandeTransfert.TRAITEE"><span class="badge bg-success-subtle text-success text-uppercase">Traitée</span></div>
+                                                <div *ngSwitchCase="statutsDemandeTransfert.ANNULEE"><span class="badge bg-danger-subtle text-danger text-uppercase">Annulée</span></div>
+                                                <div *ngSwitchCase="statutsDemandeTransfert.REJETEE"><span class="badge bg-danger-subtle text-danger text-uppercase">Rejetée</span></div>
+                                                <div *ngSwitchDefault>----</div>
+                                            </div>
+                                        </td>
+                                        <!-- <td>
+                                            <span *ngIf="demandeTransfert.message">{{ demandeTransfert.message }}</span>
+                                            <span *ngIf="!demandeTransfert.message" class="text-muted text-end"><i>Aucun message</i></span>
+                                        </td> -->
+                                        <td>{{ demandeTransfert.demandeTransfertActesRegistres?.length ?? 0 }}</td>
+                                        <td>
+                                            <span *ngIf="!demandeTransfert.utilisateurDemande" class="badge bg-primary-subtle text-primary text-uppercase">-----</span>
+                                            <div *ngIf="demandeTransfert.utilisateurDemande">
+                                                <app-user-avatar [photoDeProfil]="demandeTransfert.utilisateurDemande.photoDeProfil" [type]="2"></app-user-avatar>
+                                                <span>{{ demandeTransfert.utilisateurDemande.nom }} {{ demandeTransfert.utilisateurDemande.prenoms }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="!demandeTransfert.dateDemande" class="text-muted text-end"><i>----</i></span>
+                                            <span *ngIf="demandeTransfert.dateDemande">{{ demandeTransfert.dateDemande | date: 'dd MMM YYYY HH:mm' | titlecase }}</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="!demandeTransfert.utilisateurTraitement" class="text-muted text-end"><i>En attente</i></span>
+                                            <div *ngIf="demandeTransfert.utilisateurTraitement">
+                                                <app-user-avatar [photoDeProfil]="demandeTransfert.utilisateurTraitement.photoDeProfil" [type]="2"></app-user-avatar>
+                                                <span>{{ demandeTransfert.utilisateurTraitement.nom }} {{ demandeTransfert.utilisateurTraitement.prenoms }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="!demandeTransfert.dateTraitement" class="text-muted text-end"><i>En attente</i></span>
+                                            <span *ngIf="demandeTransfert.dateTraitement">{{ demandeTransfert.dateTraitement | date: 'dd MMM YYYY HH:mm' | titlecase }}</span>
+                                        </td>
+                                        <td>
+                                            {{ demandeTransfert.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td align="center">
+                                            <div class="d-flex align-items-center justify-content-end gap-3">
+                                                <a role="button" (click)="openDetailsDemandeTransfertModal(demandeTransfert)"><i class="ri-edit-box-line fs-4"></i></a>
+                                                <a role="button" (click)="annulerDemandeTransfert(demandeTransfert)"><i class="ri-chat-delete-line text-danger fs-4"></i></a>
+                                                <div class="dropdown">
+                                                    <a role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="ri-more-2-fill fs-4"></i></a>
+                                                    <!-- <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button> -->
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" role="button" (click)="traiterDemandeTransfert(demandeTransfert)">Traiter la demande</a></li>
+                                                        <li class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a class="dropdown-item text-danger" role="button" (click)="rejeterDemandeTransfert(demandeTransfert)">Rejeter la demande</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeDemandesTransferts.currentPage" [totalItems]="listeDemandesTransferts.totalItems" [totalPages]="listeDemandesTransferts.totalPages" (paginationChange)="onPaginationChange($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeDemandesTransferts.data.length == 0" text="Aucune demande de transfert"></app-no-data-banner>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+<!-- Modals -->
+<app-custom-modal title="Détails de la demande" size="xl" [show]="showDetailsDemandeTransfertModal" (modalClose)="closeDetailsDemandeTransfertModal()">
+    <div body>
+        <form>
+            <div class="row gap-4" *ngIf="selectedDemandeTransfert">
+                <!-- <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="typeRegistreId" class="form-label">Type de registre</label>
+                        <input type="text" class="form-control" [value]="selectedDemandeTransfert.typeRegistre ? selectedDemandeTransfert.typeRegistre.libelle : '----'" disabled>
+                    </div>
+                </div> -->
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="message" class="form-label ">Message</label>
+                        <textarea readonly class="form-control" id="message" rows="5" [value]="selectedDemandeTransfert.message"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="centreConservationFonciereId" class="form-label ">Centre de conservation faisant la demande <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" [value]="selectedDemandeTransfert.centreConservationFonciere ? selectedDemandeTransfert.centreConservationFonciere.nom : '----'" disabled>
+                    </div>
+                </div>
+
+                <hr class="mb-0">
+                <div class="col-xxl-12 col-md-12">
+                    <h5 class="fs-14 mb-0 text-uppercase fw-bold text-primary">Enonciation des actes à transférer</h5>
+                    
+                    <div class="table-responsive no-min-height mt-4 mb-3">
+                        <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                            <thead class="">
+                                <tr class="">
+                                    <th>#</th>
+                                    <th>Nom de l'acte</th>
+                                    <th>Centre source</th>
+                                    <th>Statut</th>
+                                    <th>Commentaire</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let demandeTransfertActeRegistre of selectedDemandeTransfert.demandeTransfertActesRegistres; index as demandeTransfertActeRegistreIndex">
+                                    <td>{{ demandeTransfertActeRegistreIndex + 1 }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center" *ngIf="demandeTransfertActeRegistre.acteRegistre">
+                                            <span *ngIf="demandeTransfertActeRegistre.acteRegistre.dossierRegistre">{{ demandeTransfertActeRegistre.acteRegistre.dossierRegistre.nom + ' Vol. ' + demandeTransfertActeRegistre.acteRegistre.dossierRegistre.volume }} - </span> {{ demandeTransfertActeRegistre.acteRegistre.folio }}
+                                            <app-card-acte-registre-details [acteRegistre]="demandeTransfertActeRegistre.acteRegistre"></app-card-acte-registre-details>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div *ngIf="demandeTransfertActeRegistre.centreSource">{{ demandeTransfertActeRegistre.centreSource.nom }}</div>
+                                    </td>
+                                    <td>
+                                        <div [ngSwitch]="demandeTransfertActeRegistre.statut">
+                                            <div *ngSwitchCase="statutsDemandeTransfertActeRegistre.VALIDE"><span class="badge rounded bg-success text-uppercase fs-10">Validé</span></div>
+                                            <div *ngSwitchCase="statutsDemandeTransfertActeRegistre.EN_ATTENTE"><span class="badge rounded bg-info text-uppercase fs-10">En attente</span></div>
+                                            <div *ngSwitchCase="statutsDemandeTransfertActeRegistre.REJETE"><span class="badge rounded bg-danger text-uppercase fs-10">Rejeté</span></div>
+                                            <div *ngSwitchDefault>----</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{demandeTransfertActeRegistre.commentaire ?? '----'}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <app-no-data-banner [show]="selectedDemandeTransfert.demandeTransfertActesRegistres?.length == 0" text="Aucun acte joint" [hideImage]="true"></app-no-data-banner>
+                    </div>
+                </div>
+                
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="reponse" class="form-label ">Réponse</label>
+                        <textarea readonly class="form-control" id="reponse" rows="5" [value]="selectedDemandeTransfert.reponse"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeDetailsDemandeTransfertModal()" class="btn btn-light">Fermer</button>
+        </div>
+    </div>
+</app-custom-modal>

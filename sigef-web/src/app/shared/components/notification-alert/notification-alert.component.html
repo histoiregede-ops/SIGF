@@ -1,0 +1,23 @@
+<div class="d-flex flex-column">
+    <!-- <div [ngClass]="'alert-' + notification.type" class="alert alert-border-left alert-dismissible alert-additional fade show material-shadow" role="alert"> -->
+    <div [ngClass]="['bg-' + notification.type, 'border-' + notification.type]" class="alert alert-dismissible alert-additional text-white fade show material-shadow" role="alert">
+        <div class="alert-body">
+            <button (click)="removeNotification(notification.id!)" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                    <i class="ri-alert-line fs-16 align-middle"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h6 class="alert-heading">{{ notification.title }}</h6>
+                    <div class="mb-0">{{ notification.description }}</div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="alert-content">
+            <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+        </div> -->
+        <div *ngIf="!duration && duration > 0" class="progress bg-dark bg-opacity-25" style="height: 4px;">
+            <div class="progress-bar bg-dark bg-opacity-50" role="progressbar" [style.width]="(duration * 100 / notification.duration!) + '%'" [attr.aria-valuenow]="(duration * 100 / notification.duration!)" [attr.aria-valuemin]="0" [attr.aria-valuemax]="100"></div>
+        </div>
+    </div>
+</div>

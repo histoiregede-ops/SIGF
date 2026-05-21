@@ -1,0 +1,145 @@
+<div class="page-content mt-0 bg-light vh-100 overflow-hidden d-flex flex-column">
+    <div class="card mt-0 mb-0 shadow-sm border-0 rounded-0">
+        <div class="">
+            <div class="card-body pb-0 px-4">
+                <div *ngIf="tacheIndexation && tacheIndexation.fichier" class="row mb-3">
+                    <div class="col-md">
+                        <div class="row align-items-center g-3">
+                            <div class="col-md-auto">
+                                <div class="avatar-md">
+                                    <div class="avatar-title bg-transparent rounded-circle">
+                                        <div *ngIf="!tacheIndexation.fichier.extension" class="flex-shrink-0 default-icon-lg filelist-icon"><i class="ri-file-3-line align-bottom text-primary"></i></div>
+                                        <div *ngIf="tacheIndexation.fichier.extension" [ngClass]="getFichierRessourceIcone(tacheIndexation.fichier.extension)" class="file-icon file-icon-lg flex-shrink-0"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div>
+                                    <h5 class="fw-bold">{{ tacheIndexation.fichier.nom }}</h5>
+                                    <div class="hstack gap-3 flex-wrap">
+                                        <div><i class="ri-building-line align-bottom me-1"></i> {{ tacheIndexation.fichier.typeRegistre?.libelle }}</div>
+                                        <div class="vr"></div>
+                                        <div>Date d'attribution : <span class="fw-medium">{{ tacheIndexation.createdAt | date: 'dd MMM YYYY HH:mm' | titlecase }}</span></div>
+                                        <div class="vr"></div>
+                                        <!-- <div>Due Date : <span class="fw-medium">29 Dec, 2021</span></div> -->
+                                        <div class="vr"></div>
+                                        
+                                        <div *ngIf="typeTacheIndexation == typesTacheIndexation.SAISIE">
+                                            <span *ngIf="tacheIndexation.etatSaisie == etatsSaisieIndexation.A_INDEXER" class="badge bg-danger-subtle text-danger text-uppercase">A indexer</span>
+                                            <span *ngIf="tacheIndexation.etatSaisie == etatsSaisieIndexation.EN_COURS" class="badge bg-secondary-subtle text-secondary text-uppercase">En cours</span>
+                                            <span *ngIf="tacheIndexation.etatSaisie == etatsSaisieIndexation.INDEXE" class="badge bg-success-subtle text-success text-uppercase">Indexé</span>
+                                        </div>
+
+                                        <div *ngIf="typeTacheIndexation == typesTacheIndexation.CONTROLE">
+                                            <span *ngIf="tacheIndexation.etatControle == etatsControleIndexation.A_CONTROLER" class="badge bg-danger-subtle text-danger text-uppercase">A contrôler</span>
+                                            <span *ngIf="tacheIndexation.etatControle == etatsControleIndexation.EN_COURS" class="badge bg-secondary-subtle text-secondary text-uppercase">En cours</span>
+                                            <span *ngIf="tacheIndexation.etatControle == etatsControleIndexation.CONTROLE" class="badge bg-success-subtle text-success text-uppercase">Contrôlé</span>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="hstack gap-3 flex-wrap">
+                                        <div><i class="ri-building-line align-bottom me-1"></i> {{ tacheIndexation.fichier.typeRegistre?.libelle }}</div>
+                                        <div class="vr"></div>
+                                        <div>Date d'attribution : <span class="fw-medium">{{ tacheIndexation.createdAt | date: 'dd MMM YYYY HH:mm' | titlecase }}</span></div>
+                                        <div class="vr"></div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-auto">
+                        <div class="d-flex gap-3 align-items-center justify-content-end h-100">
+                            <button *ngIf="page == undefined" [ngClass]="{'disabled': pageIndexation == 1}" (click)="goFirstPageIndexation()" type="button" class="btn btn-ghost-secondary btn-icon border-0 btn-sm material-shadow-none" title="Dernière page">
+                                <i class="mdi mdi-chevron-double-left text-body-secondary fs-24"></i>
+                            </button>
+                            <button *ngIf="page == undefined" [ngClass]="{'disabled': pageIndexation == 1}" (click)="prevPageIndexation()" type="button" class="btn btn-ghost-secondary btn-icon btn-sm border-0 material-shadow-none" title="Page précédente">
+                                <i class="mdi mdi-chevron-left text-body-secondary fs-24"></i>
+                            </button>
+                            <div class="">
+                                <h5 class="m-0">{{ pageIndexation }} / {{ tacheIndexation.fichier.nombrePages ?? '--' }}</h5>
+                            </div>
+                            <button *ngIf="page == undefined" [ngClass]="{'disabled': pageIndexation == lastPageIndexation}" (click)="nextPageIndexation()" type="button" class="btn btn-ghost-secondary btn-icon border-0 btn-sm material-shadow-none" title="Page suivante">
+                                <i class="mdi mdi-chevron-right text-body-secondary fs-24"></i>
+                            </button>
+                            <button *ngIf="page == undefined" [ngClass]="{'disabled': pageIndexation == lastPageIndexation}" (click)="nextPageIndexation()" type="button" class="btn btn-soft-primary btn-sm material-shadow-none">
+                                Page suivante
+                            </button>
+                            <button *ngIf="page == undefined" [ngClass]="{'disabled': pageIndexation == lastPageIndexation}" (click)="goLastPageIndexation()" type="button" class="btn btn-ghost-secondary btn-icon border-0 btn-sm material-shadow-none" title="Dernière page">
+                                <i class="mdi mdi-chevron-double-right text-body-secondary fs-24"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end card body -->
+        </div>
+    </div>
+    <!-- <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+        <div *ngIf="documentLot" class="">
+            <h4  class="mb-sm-0">{{ documentLot.nom }}</h4>
+        </div>
+
+        <div *ngIf="documentLot" class="page-title-right">
+            <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                <li class="breadcrumb-item"><a routerLink="../">Formalités préalables</a></li>
+                <li class="breadcrumb-item active">Nouveau dossier</li>
+            </ol>
+        </div>
+    </div> -->
+    
+    <!-- <div class="container-fluid mw-100 h-100">
+        <div id="espace" class="w-100 h-100 position-relative">
+            <a class="handle" [ngClass]="{'horizontal-handle': !dispositionVerticale, 'vertical-handle': dispositionVerticale}" href="#"></a>
+            <div class="content h-100" [ngClass]="{'horizontal-content pb-3': !dispositionVerticale, 'vertical-content': dispositionVerticale}">
+                <div>
+                    <div class="w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-primary text-white">
+                        Contenu 1
+                    </div>
+                </div>
+                <div>
+                    <div class="w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-secondary text-white">
+                        Contenu 2
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="container-fluid mw-100 flex-grow-1 p-0 overflow-hidden">
+        <div id="espace" class="w-100 h-100 position-relative d-flex">
+            <a class="handle" [ngClass]="{'horizontal-handle': !dispositionVerticale, 'vertical-handle': dispositionVerticale}" href="#"></a>
+            <div class="content h-100 w-100" [ngClass]="{'horizontal-content': !dispositionVerticale, 'vertical-content': dispositionVerticale, 'titre-foncier-layout': typeRegistre == typesRegistre.TITRES_FONCIERS}">
+                <div *ngIf="tacheIndexation && pageIndexation" class="pdf-container bg-dark-subtle" [ngClass]="{'pb-2': !dispositionVerticale, 'me-2': dispositionVerticale}">
+                    <div class="w-100 h-100 shadow-lg">
+                        <div *ngIf="chargementPdf" class="d-flex align-items-center justify-content-center h-100">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary mb-2" role="status"></div>
+                                <p class="text-muted mb-0">Chargement du PDF...</p>
+                            </div>
+                        </div>
+                        <div *ngIf="erreurChargementPdf" class="d-flex align-items-center justify-content-center h-100">
+                            <div class="text-center">
+                                <i class="ri-file-excel-2-line fs-1 text-danger"></i>
+                                <p class="text-danger mt-2 mb-0">{{ erreurMessagePdf || 'Erreur de chargement du PDF' }}</p>
+                            </div>
+                        </div>
+                        <app-custom-pdf-viewer *ngIf="contenuFichierTacheIndexation && !chargementPdf" [src]="contenuFichierTacheIndexation" [page]="pageIndexation" [enteteSrc]="enteteSrc" [(fullScreen)]="fullScreen" [(dispositionVerticale)]="dispositionVerticale" (dispositionVerticaleChange)="onDispositionVerticaleChange()" (fullScreenChange)="onFullScreenChange($event, content)"></app-custom-pdf-viewer>
+                    </div>
+                </div>
+                <div *ngIf="tacheIndexation && pageIndexation" class="form-container bg-white overflow-y-auto custom-scrollbar">
+                    <div class="p-4">
+                        <app-indexation-formalite-prealable-section *ngIf="typeRegistre == typesRegistre.FORMALITES_PREALABLES" class="w-100" [formulaireEtatActif]="formulaireEtatActif" [tacheIndexation]="tacheIndexation" [(pageIndexation)]="pageIndexation" (pageIndexationChange)="onPageIndexationChange()"  [progressionTacheIndexation]="currentProgressionTacheIndexation" [qualitesDocument]="qualitesDocument" [typeRegistre]="tacheIndexation.fichier?.typeRegistre" [typeTacheIndexation]="typeTacheIndexation"></app-indexation-formalite-prealable-section>
+                        <app-indexation-depot-section *ngIf="typeRegistre == typesRegistre.DEPOTS" class="w-100" [formulaireEtatActif]="formulaireEtatActif" [tacheIndexation]="tacheIndexation" [(pageIndexation)]="pageIndexation" (pageIndexationChange)="onPageIndexationChange()"  [progressionTacheIndexation]="currentProgressionTacheIndexation" [qualitesDocument]="qualitesDocument" [typeRegistre]="tacheIndexation.fichier?.typeRegistre" [typeTacheIndexation]="typeTacheIndexation"></app-indexation-depot-section>
+                        <app-indexation-opposition-section *ngIf="typeRegistre == typesRegistre.OPPOSITIONS" class="w-100" [formulaireEtatActif]="formulaireEtatActif" [tacheIndexation]="tacheIndexation" [(pageIndexation)]="pageIndexation" (pageIndexationChange)="onPageIndexationChange()"  [progressionTacheIndexation]="currentProgressionTacheIndexation" [qualitesDocument]="qualitesDocument" [typeRegistre]="tacheIndexation.fichier?.typeRegistre" [typeTacheIndexation]="typeTacheIndexation"></app-indexation-opposition-section>
+                        <app-indexation-titre-foncier-section *ngIf="typeRegistre == typesRegistre.TITRES_FONCIERS" [formulaireEtatActif]="formulaireEtatActif" [tacheIndexation]="tacheIndexation" [(pageIndexation)]="pageIndexation" (pageIndexationChange)="onPageIndexationChange()" [progressionTacheIndexation]="currentProgressionTacheIndexation" [qualitesDocument]="qualitesDocument" [typeRegistre]="tacheIndexation.fichier?.typeRegistre" [typeTacheIndexation]="typeTacheIndexation"></app-indexation-titre-foncier-section>
+                        <app-indexation-acte-registre-section *ngIf="typeRegistre == typesRegistre.ACTES" class="w-100" [formulaireEtatActif]="formulaireEtatActif" [tacheIndexation]="tacheIndexation" [(pageIndexation)]="pageIndexation" (pageIndexationChange)="onPageIndexationChange()" [progressionTacheIndexation]="currentProgressionTacheIndexation" [qualitesDocument]="qualitesDocument" [typeRegistre]="tacheIndexation.fichier?.typeRegistre" [typeTacheIndexation]="typeTacheIndexation"></app-indexation-acte-registre-section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<ng-template #content let-modal>
+    <app-custom-pdf-viewer *ngIf="tacheIndexation && contenuFichierTacheIndexation" class="h-100" [src]="contenuFichierTacheIndexation" [page]="pageIndexation" [enteteSrc]="enteteSrc" [(fullScreen)]="fullScreen" [(dispositionVerticale)]="dispositionVerticale" (dispositionVerticaleChange)="onDispositionVerticaleChange()" (fullScreenChange)="onFullScreenChange($event, content)"></app-custom-pdf-viewer>
+</ng-template>

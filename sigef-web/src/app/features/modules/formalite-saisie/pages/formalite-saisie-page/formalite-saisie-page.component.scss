@@ -1,0 +1,93 @@
+.pag-layout {
+    height: calc(100vh - 160px);
+    overflow: hidden;
+  }
+  
+  .pag-pdf-column, .pag-form-column {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .pag-pdf-card, .pag-form-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+  }
+  
+  .pag-pdf-body {
+    background-color: #525659;
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+    border-radius: 0 0 4px 4px;
+  }
+  
+  .pag-form-column {
+    overflow-y: auto;
+    padding-right: 5px;
+  
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 10px;
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background: #999;
+    }
+  }
+  
+  .pag-section-card {
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.1);
+  
+    .pag-section-header {
+      background-color: #f8f9fa;
+      padding: 10px 15px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+  
+      h5 {
+        font-size: 14px;
+        color: #405189;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+  
+  @media (max-width: 991.98px) {
+    .pag-layout {
+      height: auto;
+      overflow: visible;
+    }
+    
+    .pag-pdf-column {
+      height: 500px;
+      margin-bottom: 20px;
+    }
+  }
+  
+  input.form-control, select.form-select, textarea.form-control {
+    border-color: #ced4da;
+    &:focus {
+      border-color: #405189;
+      box-shadow: 0 0 0 0.1rem rgba(64, 81, 137, 0.25);
+    }
+  }
+  
+  label.form-label {
+    font-weight: 500;
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #333;
+  }

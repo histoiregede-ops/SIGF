@@ -1,0 +1,45 @@
+<div class="list-alerts">
+    <!-- <div class="invisible" style="min-height: 70px !important;">skjqbc</div> -->
+
+    <!-- <div [ngClass]="'alert-' + 'danger'" class="alert alert-border-left alert-dismissible fade show material-shadow" role="alert">
+        <i class="ri-airplay-line me-3 align-middle"></i>Veuillez renseigner tous les champs
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div> -->
+
+    <app-notification-alert *ngFor="let notification of notifications" [notification]="notification"></app-notification-alert>
+</div>
+
+<router-outlet></router-outlet>
+
+<!-- Loader -->
+<div *ngIf="isLoading" class="position-relative">
+    <div class="position-fixed top-0 start-0 end-0 bottom-0 bg-dark" style="z-index: 100000;opacity: .80;">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center mb-3">
+                    <!-- <div class="spinner-grow spinner-grow-sm me-2 text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow spinner-grow-sm me-2 text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow spinner-grow-sm me-2 text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div> -->
+                    <div class="spinner-grow me-2 text-danger" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <!-- <div class="spinner-grow spinner-grow-sm me-2 text-warning" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow spinner-grow-sm text-info" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div> -->
+                </div>
+                <div class="col-12">
+                    <div class="text-muted text-center">Chargement....</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

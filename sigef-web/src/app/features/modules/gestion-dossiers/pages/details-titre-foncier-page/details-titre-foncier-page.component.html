@@ -1,0 +1,374 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <div class="mb-sm-0">
+                        <a routerLink="../" class="text-muted fw-meium"><i class="ri-arrow-go-back-line me-1"></i> Retour</a>
+                    </div>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers">Dossiers</a></li>
+                            <li class="breadcrumb-item"><a routerLink="../">Titres fonciers</a></li>
+                            <li class="breadcrumb-item active">Détails</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+    </div>
+
+    <div *ngIf="titreFoncier" class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card mt-n4 mx-n4">
+                    <div [ngClass]="{'bg-success-subtle': titreFoncier.statut == statutsTitreFoncier.VALIDE, 'bg-danger-subtle': titreFoncier.statut == statutsTitreFoncier.ANNULE}">
+                        <div class="card-body pb-0 px-4">
+                            <div class="row mb-3">
+                                <div class="col-md">
+                                    <div class="row align-items-center g-4">
+                                        <div class="col-md-auto">
+                                            <div class="avatar-md">
+                                                <div class="avatar-title bg-white rounded-circle">
+                                                    <!-- <img src="assets/images/brands/slack.png" alt="" class="avatar-xs"> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <div>
+                                                <div (click)="openDetailsContenanceModal()" class="fs-5 fw-bold text-uppercase mb-1">Titre foncier N° {{ titreFoncier.numero | getNumeroTitreFoncier: titreFoncier.numeroPrefixe: titreFoncier.numeroSuffixe }}</div>
+                                                <div class="hstack gap-3 flex-wrap">
+                                                    <!-- <div><i class="ri-building-line align-bottom me-1"></i> Themesbrand</div>
+                                                    <div class="vr"></div> -->
+                                                    <div>Date de création : <span class="fw-medium">{{ titreFoncier.createdAt | date: 'dd MMMM YYYY' | titlecase }}</span></div>
+                                                    <div class="vr"></div>
+                                                    <div>Dernière modification : <span class="fw-medium">{{ titreFoncier.updatedAt | date: 'dd MMMM YYYY' | titlecase }} à {{ titreFoncier.updatedAt | date: 'HH:mm' }}</span></div>
+                                                    <div class="vr"></div>
+                                                    <div [ngSwitch]="titreFoncier.statut"> Statut : 
+                                                        <span *ngSwitchCase="statutsTitreFoncier.VALIDE" class="badge rounded bg-success text-uppercase fs-10">Valide</span>
+                                                        <span *ngSwitchCase="statutsTitreFoncier.ANNULE" class="badge rounded bg-danger text-uppercase fs-10">Annulé</span>
+                                                        <!-- <div *ngSwitchDefault>output2</div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-auto">
+                                    <div class="d-flex align-items-center justify-content-end flex-wrap">
+                                        <div class="dropdown card-header-dropdown">
+                                            <button type="button" class="btn dropdown-btn py-0 fs-16 material-shadow-none" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <i class="header-icon ri-printer-line"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 40px, 0px);">
+                                                <a class="dropdown-item" href="#">Générer une copie en PDF</a>
+                                                <a class="dropdown-item" href="#">Générer une copie en DOC</a>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn py-0 fs-16 material-shadow-none">
+                                            <i class="header-icon ri-share-line"></i>
+                                        </button>
+                                        <button *ngIf="titreFoncier.donneeIndexation" (click)="openDetailsIndexationModal()" type="button" class="btn py-0 fs-16 material-shadow-none">
+                                            <i class="header-icon ri-information-line"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ul class="nav nav-tabs-custom flex-nowrap overflow-x-auto text-body-secondary border-bottom-0 text-uppercase" style=" flex-wrap: nowrap;" role="tablist">
+                                <li class="nav-item">
+                                    <a class="active nav-link text-nowrap fs-13 fw-medium" data-bs-toggle="tab" href="#section1" role="tab">
+                                        Section 1<span class="d-none"> - Désignation et description de l'immeuble</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-nowrap fs-13 fw-medium" data-bs-toggle="tab" href="#section2" role="tab">
+                                        Section 2<span class="d-none"> - Modifications dans la consistance de l'immeuble</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-nowrap fs-13 fw-medium" data-bs-toggle="tab" href="#section3" role="tab">
+                                        Section 3<span class="d-none"> - Modifications dans l'exercice du droit de propriété</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-nowrap fs-13 fw-medium" data-bs-toggle="tab" href="#section4" role="tab">
+                                        Section 4<span class="d-none"> - Mutations</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-nowrap fs-13 fw-medium" data-bs-toggle="tab" href="#section5" role="tab">
+                                        Section 5<span class="d-none"> - Privilèges et hypothèques</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="section1" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-muted">
+                                            <div class="">
+                                                <!-- <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Général</h6> -->
+                                                
+                                                <div class="row pt-2 gx-3 gy-5 text-center text-muted">
+                                                    <div class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Processus de création:</p>
+                
+                                                            <div class="fs-15">
+                                                                <span *ngIf="titreFoncier.processusCreation && titreFoncier.processusCreation == ProcessusCreationTitreFoncier.IMMATRICULATION"><span class="badge bg-success-subtle text-success text-uppercase">Immatriculation</span></span>
+                                                                <span *ngIf="titreFoncier.processusCreation && titreFoncier.processusCreation == ProcessusCreationTitreFoncier.MORCELLEMENT"><span class="badge bg-info-subtle text-info text-uppercase">Morcellement</span></span>
+                                                                <span *ngIf="titreFoncier.processusCreation && titreFoncier.processusCreation == ProcessusCreationTitreFoncier.COPROPRIETE"><span class="badge bg-danger-subtle text-danger text-uppercase">Copropriété</span></span>
+                                                                <span *ngIf="!titreFoncier.processusCreation"><span class="badge bg-danger-subtle text-danger text-uppercase">Non spécifié</span></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="titreFoncier.processusCreation && titreFoncier.processusCreation == ProcessusCreationTitreFoncier.IMMATRICULATION" class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Numéro de réquisition:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">
+                                                                <app-card-numero-requisition-details [numeroRequisition]="titreFoncier.numeroRequisition"></app-card-numero-requisition-details>
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="titreFoncier.processusCreation && titreFoncier.processusCreation == ProcessusCreationTitreFoncier.MORCELLEMENT" class="col-lg-6 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Titre foncier morcelé:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">
+                                                                <app-card-numero-titre-foncier-details [numeroTitreFoncier]="titreFoncier.numeroTitreFoncierMorcelle"></app-card-numero-titre-foncier-details>
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                
+                                            <div class="pt-3 border-top border-top-dashed mt-4">
+                                                <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Nature et consistance de l'immeuble</h6>
+                                                
+                                                <p class="fs-14 text-body" *ngIf="titreFoncier.natureConsistanceImmeuble">{{ titreFoncier.natureConsistanceImmeuble }}</p>
+                                                <p class="fs-14 text-body" *ngIf="!titreFoncier.natureConsistanceImmeuble"><i>Non renseigné</i></p>
+                                            </div>
+
+                                            <div class="pt-3 border-top border-top-dashed mt-4">
+                                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                                    <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Contenance</h6>
+                                                    <a role="button" (click)="openDetailsContenanceModal()"><i class="ri-edit-box-line fs-4"></i></a>
+                                                </div>
+                                                <div class="row gx-3 gy-4 text-center text-muted">
+                                                    <div class="col-md-3 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Hectare (Ha):</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.contenanceEnHectare ?? '--' }} ha</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Are (a):</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.contenanceEnAre ?? '--' }} a</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Centiare (ca):</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.contenanceEnCentiare ?? '--' }} ca</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Superficie en m²:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ getSuperficieContenance(titreFoncier.contenanceEnHectare, titreFoncier.contenanceEnAre, titreFoncier.contenanceEnCentiare) | number: '1.0-0' }} m²</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="pt-3 pb-3 border-top border-top-dashed mt-4">
+                                                <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Situation</h6>
+                                               
+                                                <div class="row gx-3 gy-4 text-center text-muted">
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Région:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.situationPropriete?.region?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Préfecture:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.situationPropriete?.prefecture?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Commune:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.situationPropriete?.commune?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Canton:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.situationPropriete?.canton?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Village:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.situationPropriete?.village?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Ville:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.situationPropriete?.ville?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Quartier:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.situationPropriete?.quartier?.libelle ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Lieudit:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.situationPropriete?.lieudit ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">Rue:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ titreFoncier.situationPropriete?.rue ?? '----' }}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="pt-3 pb-3 border-top border-top-dashed mt-4">
+                                                <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Limites</h6>
+                                                <p *ngIf="titreFoncier.limitesTitreFoncier?.length == 0"><i>Aucune limite</i></p>
+                                               
+                                                <div *ngIf="titreFoncier.limitesTitreFoncier && titreFoncier.limitesTitreFoncier.length > 0" class="row gx-3 gy-4 text-center text-muted">
+                                                    <div *ngFor="let limite of titreFoncier.limitesTitreFoncier" class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div>
+                                                            <p class="mb-2">{{ limite.directionLimite?.libelle }}:</p>
+                                                            <h5 class="fs-15 mb-0 fw-medium">{{ limite.limitrophe }}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                            <div class="col-xl-3 col-lg-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Actions</h6>
+                                        <div class="d-grid gap-2">
+                                            <button *ngIf="titreFoncier.statut != statutsTitreFoncier.VALIDE" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Valider le titre</button>
+                                            <button *ngIf="titreFoncier.statut != statutsTitreFoncier.ANNULE" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Annuler le titre</button>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="section2" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <app-section-augmentations-titre-foncier [titreFoncier]="titreFoncier"></app-section-augmentations-titre-foncier>
+                            </div>
+
+                            <div class="col-12">
+                                <app-section-diminutions-titre-foncier [titreFoncier]="titreFoncier"></app-section-diminutions-titre-foncier>
+                            </div>
+
+                            <div class="col-12">
+                                <app-section-divisions-en-volumes-titre-foncier [titreFoncier]="titreFoncier"></app-section-divisions-en-volumes-titre-foncier>
+                            </div>
+
+                            <div class="col-12">
+                                <app-section-divisions-en-lots-titre-foncier [titreFoncier]="titreFoncier"></app-section-divisions-en-lots-titre-foncier>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="section3" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <app-section-droits-reels-constitues-par-denombrement-titre-foncier [titreFoncier]="titreFoncier"></app-section-droits-reels-constitues-par-denombrement-titre-foncier>
+                            </div>
+                            
+                            <div class="col-12">
+                                <app-section-causes-indisponibilite-titre-foncier [titreFoncier]="titreFoncier"></app-section-causes-indisponibilite-titre-foncier>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="section4" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <app-section-mutations-titre-foncier [titreFoncier]="titreFoncier"></app-section-mutations-titre-foncier>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="section5" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <app-section-privileges-hypotheques-titre-foncier [titreFoncier]="titreFoncier"></app-section-privileges-hypotheques-titre-foncier>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+<!-- Modals -->
+<app-custom-modal title="Variations de la contenance" [show]="showDetailsContenanceModal" (modalClose)="closeDetailsContenanceModal()">
+    <div body>
+        <div class="row">
+            <div *ngIf="titreFoncier && showDetailsContenanceModal" class="col-12">
+                <app-contenance-details [titreFoncier]="titreFoncier"></app-contenance-details>
+            </div>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Détais d'indexation" [show]="showDetailsIndexationModal" (modalClose)="closeDetailsIndexationModal()">
+    <div body>
+        <div class="row">
+            <div *ngIf="titreFoncier && titreFoncier.donneeIndexation && showDetailsIndexationModal" class="col-12">
+                <app-indexation-details [donneeIndexationId]="titreFoncier.donneeIndexation.id"></app-indexation-details>
+            </div>
+        </div>
+    </div>
+</app-custom-modal>

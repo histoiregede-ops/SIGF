@@ -1,0 +1,396 @@
+<div class="card">
+    <div class="card-header">
+        <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14"><span class="me-2">D</span> DIVISIONS EN LOTS</h6>
+    </div>
+    <div class="card-header">
+        <form>
+            <div class="row g-3 justify-content-between">
+                <div class="col-lg-10 col-md-8">
+                    <form [formGroup]="filtresListeDivisionsEnLotsForm" class="row g-3">
+                        <div class="col-lg-5 col-md-12 col-sm-12">
+                            <div class="search-box">
+                                <input type="text" class="form-control" formControlName="search" placeholder="Rechercher...">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
+                        </div>
+                        <!--end col-->
+
+                        <div class="col-lg-3 col-md-4">
+                            <ng-select (open)="getModesAlienation()" bindValue="id" bindLabel="libelle" [items]="modesAlienation" formControlName="mode" placeholder="Toutes les modes"></ng-select>
+                        </div>
+                        <!--end col-->
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <div class="d-flex gap-2 align-items-center justify-content-end">
+                        <button (click)="filtrerListeDivisionsEnLots()" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                        <button (click)="openNouvelleDivisionEnLotModal()" class="btn btn-primary"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                    </div>
+                </div>
+                <!--end col-->
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive no-min-height mt-2 mb-3">
+            <table class="table table-borderless table-striped table-hover align-middle mb-0">
+                <thead class="">
+                    <tr class="border-bottom boder-light">
+                        <th rowspan="2">#</th>
+                        <th scope="col" rowspan="2">N° du lot ou du volume</th>
+                        <th scope="col" colspan="2" class="text-center">Situation</th>
+                        <th scope="col" rowspan="2">Nature de description</th>
+                        <th scope="col" rowspan="2">Affectation</th>
+                        <th scope="col" rowspan="2">Contenance (m²)</th>
+                        <th scope="col" rowspan="2">Quote-part des parties communes(en 10000ème)</th>
+                        <th scope="col" rowspan="2">Valeur du lot</th>
+                        <th scope="col" colspan="2" class="text-center">Mutations</th>
+                        <th scope="col" rowspan="2">Extinction du lot</th>
+                        <th rowspan="2" class="text-end">Action</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Bâtiment</th>
+                        <th scope="col">Niveau</th>
+                        <th scope="col">Mode d'alienation</th>
+                        <th scope="col">Titre foncier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let divisionEnLot of listeDivisionsEnLots.data; index as divisionEnLotIndex">
+                        <td>
+                            {{ (listeDivisionsEnLots.paginationSize! * listeDivisionsEnLots.currentPage!) + divisionEnLotIndex + 1 }}
+                        </td>
+                        <td>{{ divisionEnLot.numeroLotOuVolume }}</td>
+                        <td>{{ divisionEnLot.situationBatiment }}</td>
+                        <td>{{ divisionEnLot.situationNiveau }}</td>
+                        <td>{{ divisionEnLot.natureDescription }}</td>
+                        <td>{{ divisionEnLot.affectation }}</td>
+                        <td>{{ divisionEnLot.contenance ?? 0 }} m²</td>
+                        <td>{{ divisionEnLot.quotePartPartiesCommunes }}</td>
+                        <td>
+                            <span *ngIf="!divisionEnLot.valeurLot">-----</span>
+                            <span *ngIf="divisionEnLot.valeurLot">{{ divisionEnLot.valeurLot | number: '1.0-0' }}</span>
+                        </td>
+                        <td>{{ divisionEnLot.modeAlienation ? divisionEnLot.modeAlienation.libelle : '----' }}</td>
+                        <td>{{ divisionEnLot.mutationTitreFoncier }}</td>
+                        <td>{{ divisionEnLot.extinctionLot }}</td>
+                        <td class="text-end">
+                            <div class="d-flex gap-3 justify-content-end align-items-center">
+                                <a role="button" (click)="openModificationDivisionEnLotModal(divisionEnLotIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                <a role="button" (click)="openSuppressionDivisionEnLotModal(divisionEnLotIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <app-custom-pagination-controls [currentPage]="listeDivisionsEnLots.currentPage" [totalItems]="listeDivisionsEnLots.totalItems" [totalPages]="listeDivisionsEnLots.totalPages" (paginationChange)="getDivisionsEnLots($event)"></app-custom-pagination-controls>
+            </div>
+
+            <app-no-data-banner [show]="listeDivisionsEnLots.data.length == 0" text="Aucune division en lot"></app-no-data-banner>
+        </div>
+    </div>
+    <!-- end card body -->
+</div>
+<!-- end card -->
+
+<!-- Modals -->
+<app-custom-modal title="Nouvelle division en lot" [show]="showNouvelleDivisionEnLotModal" (modalClose)="annulerCreationDivisionEnLot()">
+    <div body>
+        <form [formGroup]="nouvelleDivisionEnLotForm">
+            <div class="row gy-4 mb-3">
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroLotOuVolume" class="form-label">Numéro du lot ou du volume <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroLotOuVolume" formControlName="numeroLotOuVolume">
+
+                        <div *ngIf="nouvelleDivisionEnLotForm.get('numeroLotOuVolume')!.invalid && (nouvelleDivisionEnLotForm.get('numeroLotOuVolume')!.dirty || nouvelleDivisionEnLotForm.get('numeroLotOuVolume')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnLotForm.get('numeroLotOuVolume')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0 text-muted">Situation</h5>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="situationBatiment" class="form-label ">Bâtiment <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="situationBatiment" formControlName="situationBatiment">
+
+                                <div *ngIf="nouvelleDivisionEnLotForm.get('situationBatiment')!.invalid && (nouvelleDivisionEnLotForm.get('situationBatiment')!.dirty || nouvelleDivisionEnLotForm.get('situationBatiment')!.touched)">
+                                    <app-form-message [show]="nouvelleDivisionEnLotForm.get('situationBatiment')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="situationNiveau" class="form-label ">Niveau <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="situationNiveau" formControlName="situationNiveau">
+
+                                <div *ngIf="nouvelleDivisionEnLotForm.get('situationNiveau')!.invalid && (nouvelleDivisionEnLotForm.get('situationNiveau')!.dirty || nouvelleDivisionEnLotForm.get('situationNiveau')!.touched)">
+                                    <app-form-message [show]="nouvelleDivisionEnLotForm.get('situationNiveau')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="natureDescription" class="form-label ">Nature et description <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="natureDescription" formControlName="natureDescription" rows="3"></textarea>
+                
+                        <div *ngIf="nouvelleDivisionEnLotForm.get('natureDescription')!.invalid && (nouvelleDivisionEnLotForm.get('natureDescription')!.dirty || nouvelleDivisionEnLotForm.get('natureDescription')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnLotForm.get('natureDescription')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="affectation" class="form-label ">Affectation <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="affectation" formControlName="affectation" rows="3"></textarea>
+                
+                        <div *ngIf="nouvelleDivisionEnLotForm.get('affectation')!.invalid && (nouvelleDivisionEnLotForm.get('affectation')!.dirty || nouvelleDivisionEnLotForm.get('affectation')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnLotForm.get('affectation')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="contenance" class="form-label">Contenance (m²) <span class="text-muted">*</span></label>
+                        <input type="number" class="form-control" id="contenance" formControlName="contenance">
+
+                        <div *ngIf="nouvelleDivisionEnLotForm.get('contenance')!.invalid && (nouvelleDivisionEnLotForm.get('contenance')!.dirty || nouvelleDivisionEnLotForm.get('contenance')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnLotForm.get('contenance')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="quotePartPartiesCommunes" class="form-label">Quote-part des parties communes(en 10000ème) <span class="text-muted">*</span></label>
+                        <input type="number" class="form-control" id="quotePartPartiesCommunes" formControlName="quotePartPartiesCommunes">
+
+                        <div *ngIf="nouvelleDivisionEnLotForm.get('quotePartPartiesCommunes')!.invalid && (nouvelleDivisionEnLotForm.get('quotePartPartiesCommunes')!.dirty || nouvelleDivisionEnLotForm.get('quotePartPartiesCommunes')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnLotForm.get('quotePartPartiesCommunes')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="valeurLot" class="form-label">Valeur du lot <span class="text-muted">*</span></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="valeurLot" formControlName="valeurLot">
+                            <span class="input-group-text">F CFA</span>
+                        </div>
+
+                        <div *ngIf="nouvelleDivisionEnLotForm.get('valeurLot')!.invalid && (nouvelleDivisionEnLotForm.get('valeurLot')!.dirty || nouvelleDivisionEnLotForm.get('valeurLot')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnLotForm.get('valeurLot')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0 text-muted">Mutation</h5>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="modeAlienationId" class="form-label ">Mode d'aliénation <span class="text-muted">*</span></label>
+                                <ng-select id="modeAlienationId" formControlName="modeAlienationId" (open)="getModesAlienation()" [items]="modesAlienation" bindValue="id" bindLabel="libelle"></ng-select>
+        
+                                <div *ngIf="nouvelleDivisionEnLotForm.get('modeAlienationId')!.invalid && (nouvelleDivisionEnLotForm.get('modeAlienationId')!.dirty || nouvelleDivisionEnLotForm.get('modeAlienationId')!.touched)">
+                                    <app-form-message [show]="nouvelleDivisionEnLotForm.get('modeAlienationId')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="mutationTitreFoncier" class="form-label ">Titre foncier <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="mutationTitreFoncier" formControlName="mutationTitreFoncier">
+
+                                <div *ngIf="nouvelleDivisionEnLotForm.get('mutationTitreFoncier')!.invalid && (nouvelleDivisionEnLotForm.get('mutationTitreFoncier')!.dirty || nouvelleDivisionEnLotForm.get('mutationTitreFoncier')!.touched)">
+                                    <app-form-message [show]="nouvelleDivisionEnLotForm.get('mutationTitreFoncier')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="extinctionLot" class="form-label">Extinction du lot <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="extinctionLot" formControlName="extinctionLot">
+
+                        <div *ngIf="nouvelleDivisionEnLotForm.get('extinctionLot')!.invalid && (nouvelleDivisionEnLotForm.get('extinctionLot')!.dirty || nouvelleDivisionEnLotForm.get('extinctionLot')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnLotForm.get('extinctionLot')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationDivisionEnLot()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationDivisionEnLot()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier cette division en lot" [show]="showModificationDivisionEnLotModal" (modalClose)="annulerModificationDivisionEnLot()">
+    <div body>
+        <form [formGroup]="modificationDivisionEnLotForm">
+            <div class="row gy-4 mb-3">
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroLotOuVolume" class="form-label">Numéro du lot ou du lot <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroLotOuVolume" formControlName="numeroLotOuVolume">
+
+                        <div *ngIf="modificationDivisionEnLotForm.get('numeroLotOuVolume')!.invalid && (modificationDivisionEnLotForm.get('numeroLotOuVolume')!.dirty || modificationDivisionEnLotForm.get('numeroLotOuVolume')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnLotForm.get('numeroLotOuVolume')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0 text-muted">Situation</h5>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="situationBatiment" class="form-label ">Bâtiment <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="situationBatiment" formControlName="situationBatiment">
+
+                                <div *ngIf="modificationDivisionEnLotForm.get('situationBatiment')!.invalid && (modificationDivisionEnLotForm.get('situationBatiment')!.dirty || modificationDivisionEnLotForm.get('situationBatiment')!.touched)">
+                                    <app-form-message [show]="modificationDivisionEnLotForm.get('situationBatiment')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="situationNiveau" class="form-label ">Niveau <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="situationNiveau" formControlName="situationNiveau">
+
+                                <div *ngIf="modificationDivisionEnLotForm.get('situationNiveau')!.invalid && (modificationDivisionEnLotForm.get('situationNiveau')!.dirty || modificationDivisionEnLotForm.get('situationNiveau')!.touched)">
+                                    <app-form-message [show]="modificationDivisionEnLotForm.get('situationNiveau')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="natureDescription" class="form-label ">Nature et description <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="natureDescription" formControlName="natureDescription" rows="3"></textarea>
+                
+                        <div *ngIf="modificationDivisionEnLotForm.get('natureDescription')!.invalid && (modificationDivisionEnLotForm.get('natureDescription')!.dirty || modificationDivisionEnLotForm.get('natureDescription')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnLotForm.get('natureDescription')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="affectation" class="form-label ">Affectation <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="affectation" formControlName="affectation" rows="3"></textarea>
+                
+                        <div *ngIf="modificationDivisionEnLotForm.get('affectation')!.invalid && (modificationDivisionEnLotForm.get('affectation')!.dirty || modificationDivisionEnLotForm.get('affectation')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnLotForm.get('affectation')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="contenance" class="form-label">Contenance (m²) <span class="text-muted">*</span></label>
+                        <input type="number" class="form-control" id="contenance" formControlName="contenance">
+
+                        <div *ngIf="modificationDivisionEnLotForm.get('contenance')!.invalid && (modificationDivisionEnLotForm.get('contenance')!.dirty || modificationDivisionEnLotForm.get('contenance')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnLotForm.get('contenance')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="quotePartPartiesCommunes" class="form-label">Quote-part des parties communes(en 10000ème) <span class="text-muted">*</span></label>
+                        <input type="number" class="form-control" id="quotePartPartiesCommunes" formControlName="quotePartPartiesCommunes">
+
+                        <div *ngIf="modificationDivisionEnLotForm.get('quotePartPartiesCommunes')!.invalid && (modificationDivisionEnLotForm.get('quotePartPartiesCommunes')!.dirty || modificationDivisionEnLotForm.get('quotePartPartiesCommunes')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnLotForm.get('quotePartPartiesCommunes')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="valeurLot" class="form-label">Valeur du lot <span class="text-muted">*</span></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="valeurLot" formControlName="valeurLot">
+                            <span class="input-group-text">F CFA</span>
+                        </div>
+
+                        <div *ngIf="modificationDivisionEnLotForm.get('valeurLot')!.invalid && (modificationDivisionEnLotForm.get('valeurLot')!.dirty || modificationDivisionEnLotForm.get('valeurLot')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnLotForm.get('valeurLot')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0 text-muted">Mutation</h5>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="modeAlienationId" class="form-label ">Mode d'aliénation <span class="text-muted">*</span></label>
+                                <ng-select id="modeAlienationId" formControlName="modeAlienationId" (open)="getModesAlienation()" [items]="modesAlienation" bindValue="id" bindLabel="libelle"></ng-select>
+        
+                                <div *ngIf="modificationDivisionEnLotForm.get('modeAlienationId')!.invalid && (modificationDivisionEnLotForm.get('modeAlienationId')!.dirty || modificationDivisionEnLotForm.get('modeAlienationId')!.touched)">
+                                    <app-form-message [show]="modificationDivisionEnLotForm.get('modeAlienationId')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="mutationTitreFoncier" class="form-label ">Titre foncier <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="mutationTitreFoncier" formControlName="mutationTitreFoncier">
+
+                                <div *ngIf="modificationDivisionEnLotForm.get('mutationTitreFoncier')!.invalid && (modificationDivisionEnLotForm.get('mutationTitreFoncier')!.dirty || modificationDivisionEnLotForm.get('mutationTitreFoncier')!.touched)">
+                                    <app-form-message [show]="modificationDivisionEnLotForm.get('mutationTitreFoncier')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="extinctionLot" class="form-label">Extinction du lot <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="extinctionLot" formControlName="extinctionLot">
+
+                        <div *ngIf="modificationDivisionEnLotForm.get('extinctionLot')!.invalid && (modificationDivisionEnLotForm.get('extinctionLot')!.dirty || modificationDivisionEnLotForm.get('extinctionLot')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnLotForm.get('extinctionLot')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationDivisionEnLot()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationDivisionEnLot()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer cette division en lot" [show]="showSuppressionDivisionEnLotModal" (modalClose)="closeSuppressionDivisionEnLotModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer cette division en lot ? <span class="fw-bold">Elle sera déplacée dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionDivisionEnLotModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionDivisionEnLot()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

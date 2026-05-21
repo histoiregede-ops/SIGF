@@ -1,0 +1,290 @@
+<ng-container *ngIf="partiePrenante">
+    <!-- Personne physique -->
+    <div *ngIf="partiePrenante.categorie == categoriesPartiePrenante.PERSONNE_PHYSIQUE && partiePrenante.personnePhysique" class="d-flex">
+        <div class="flex-shrink-0">
+            <div class="avatar-xs">
+                <div class="avatar-title rounded-circle bg-success-subtle text-success material-shadow">
+                    <i class="ri-user-fill fs4"></i>
+                </div>
+            </div>
+        </div>
+        <div class="flex-grow-1 ms-3">
+            <h6 class="mb-1 fs-14 lh-base"><span *ngIf="partiePrenante.personnePhysique.vivant == false" class="fst-italic">feu</span> {{ partiePrenante.personnePhysique.civilite?.libelle }} {{ partiePrenante.personnePhysique.nom }} {{ partiePrenante.personnePhysique.prenoms }} <i *ngIf="partiePrenante.personnePhysique.profession" class="ms-1 text-muted fs-13">{{ partiePrenante.personnePhysique.profession.libelle }}</i></h6>
+            <p class="text-muted fs-13 mb-2">
+                De nationalité <span class="fwmedium text-body">{{ partiePrenante.personnePhysique.nationalite ? partiePrenante.personnePhysique.nationalite.libelle : '---' }}</span>, domicilié à <span class="fwmedium text-body">{{ partiePrenante.personnePhysique.adresseDomicile ? partiePrenante.personnePhysique.adresseDomicile : '---' }}</span> et résident à <span class="fwmedium text-body">{{ partiePrenante.personnePhysique.adresseResidence ? partiePrenante.personnePhysique.adresseResidence : '---' }}</span><br>
+                Représenté par <span class="fwmedium text-body">Monsieur </span> <span class="fwmedium text-body">DOE John</span>
+            </p>
+            
+            <table class="text-body-secondary mb-0 ">
+                <tbody>
+                    <tr *ngIf="partiePrenante.personnePhysique.telephone">
+                        <td class="pe-4 fst-italic">Contact: </td>
+                        <td>{{ partiePrenante.personnePhysique.telephone }}</td>
+                    </tr>
+                    <tr *ngIf="partiePrenante.personnePhysique.nif">
+                        <td class="pe-4 fst-italic">NIF: </td>
+                        <td>{{ partiePrenante.personnePhysique.nif }}</td>
+                    </tr>
+                    <tr *ngIf="partiePrenante.personnePhysique.dateNaissance">
+                        <td class="pe-4 fst-italic">Né le: </td>
+                        <td>{{ partiePrenante.personnePhysique.dateNaissance | date: 'dd MMM YYYY' }} <span *ngIf="partiePrenante.personnePhysique.lieuNaissance"> à {{ partiePrenante.personnePhysique.lieuNaissance }}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Personne morale -->
+    <div *ngIf="partiePrenante.categorie == categoriesPartiePrenante.PERSONNE_MORALE && partiePrenante.personneMorale" class="d-flex">
+        <div class="flex-shrink-0">
+            <div class="avatar-xs">
+                <div class="avatar-title rounded-circle bg-danger-subtle text-danger material-shadow">
+                    <i class="ri-building-fill fs4"></i>
+                </div>
+            </div>
+        </div>
+        <div class="flex-grow-1 ms-3">
+            <h6 class="mb-1 fs-14 lh-base">Banque Togolaise des Billets (BTB) <i class="ms-1 text-muted text-uppercase fs-13">SARL</i></h6>
+            <p class="text-muted fs-13 mb-2">
+                Représentée par <span class="fwmedium text-body">Monsieur </span> <span class="fwmedium text-body">DOE John</span>
+            </p>
+
+            <table class="text-body-secondary mb-0 ">
+                <tbody>
+                    <tr>
+                        <td class="pe-4 fst-italic">Type: </td>
+                        <td>Entreprise</td>
+                    </tr>
+                    <tr>
+                        <td class="pe-4 fst-italic">Secteur: </td>
+                        <td>Informatique</td>
+                    </tr>
+                    <tr>
+                        <td class="pe-4 fst-italic">Adresse: </td>
+                        <td>Lomé Togo</td>
+                    </tr>
+                    <tr>
+                        <td class="pe-4 fst-italic">Contact: </td>
+                        <td>96 62 50 20</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Relation légale -->
+    <div *ngIf="partiePrenante.categorie == categoriesPartiePrenante.PERSONNE_RELATION_LEGALE && partiePrenante.personneRelationLegale" class="d-flex">
+        <div class="flex-shrink-0">
+            <div class="avatar-xs">
+                <div class="avatar-title rounded-circle bg-info-subtle text-info material-shadow">
+                    <i class="ri-user-shared-2-fill fs4"></i>
+                </div>
+            </div>
+        </div>
+        <div class="flex-grow-1 ms-3">
+            <h6 class="mb-1 fs-14 lh-base"><span>Successeurs de </span> <span *ngIf="false" class="fst-italic">feu</span> Monsieur KAYI Kodjo Armand <i class="ms-1 text-muted fs-13">Technicien Informatique de Gestion Comptable</i></h6>
+            <p class="text-muted fs-13 mb-2">
+                De nationalité <span class="fwmedium text-body">Togolaise</span>, domicilié à <span class="fwmedium text-body">Lomé</span> et résident à <span class="fwmedium text-body">Paris</span><br>
+            </p>
+            
+            <table class="text-body-secondary mb-0 ">
+                <tbody>
+                    <tr>
+                        <td class="pe-4 fst-italic">Contact: </td>
+                        <td>96 62 50 20</td>
+                    </tr> 
+                    <tr>
+                        <td class="pe-4 fst-italic">NIF: </td>
+                        <td>396162050</td>
+                    </tr>
+                    <tr>
+                        <td class="pe-4 fst-italic">Né le: </td>
+                        <td>25 Nov 2021 à Lomé</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Indivisaires -->
+    <div *ngIf="partiePrenante.categorie == categoriesPartiePrenante.GROUPE_PERSONNE_PHYSIQUE && partiePrenante.groupePersonnePhysique" class="d-flex">
+        <div class="flex-shrink-0">
+            <div class="avatar-xs">
+                <div class="avatar-title rounded-circle bg-dark-subtle text-dark material-shadow">
+                    <i class="ri-team-fill fs4"></i>
+                </div>
+            </div>
+        </div>
+        <div class="flex-grow-1 ms-3">
+            <h6 class="mb-1 fs-14 lh-base">Un groupe de <span>4</span> Indivisaires - <i class="ms-1 text-muted fs-13">Amis</i></h6>
+            <p class="text-muted fs-13 mb-2">
+                Dont les membres sont listés ci-dessous:
+            </p>
+            
+            <ul class="ps-2">
+                <div class="acitivity-timeline acitivity-main">
+                    <div *ngFor="let e of [1, 1, 1, 1]; index as i" class="acitivity-item py-3 d-flex">
+                        <div class="flex-shrink-0">
+                            <div class="avatar-xs">
+                                <div class="avatar-title rounded-circle bg-dark-subtle text-dark material-shadow">
+                                    <span class="fw-semibold fs4">{{ i + 1 }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-1 fs-14 lh-base"><span *ngIf="false" class="fst-italic">feu</span> Monsieur KAYI Kodjo Armand <i class="ms-1 text-muted fs-13">Revendeur</i></h6>
+                            <p class="text-muted fs-13 mb-2">
+                                De nationalité <span class="fwmedium text-body">Togolaise</span>, domicilié à <span class="fwmedium text-body">Lomé</span> et résident à <span class="fwmedium text-body">Paris</span><br>
+                                Représenté par <span class="fwmedium text-body">Monsieur </span> <span class="fwmedium text-body">DOE John</span>
+                            </p>
+                            
+                            <table class="text-body-secondary mb-0 ">
+                                <tbody>
+                                    <tr>
+                                        <td class="pe-4 fst-italic">Contact: </td>
+                                        <td>96 62 50 20</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pe-4 fst-italic">NIF: </td>
+                                        <td>396162050</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pe-4 fst-italic">Né le: </td>
+                                        <td>25 Nov 2021 à Lomé</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Conjoints -->
+    <div *ngIf="partiePrenante.categorie == categoriesPartiePrenante.GROUPE_CONJOINTS && partiePrenante.groupeConjoints" class="d-flex">
+        <div class="flex-shrink-0">
+            <div class="avatar-xs">
+                <div class="avatar-title rounded-circle bg-danger-subtle text-danger material-shadow">
+                    <i class="ri-group-fill fs4"></i>
+                </div>
+            </div>
+        </div>
+        <div class="flex-grow-1 ms-3">
+            <h6 class="mb-1 fs-14 lh-base">Un groupe de <span>2</span> Conjoints</h6>
+            <p class="text-muted fs-13 mb-2">
+                Dont les membres sont listé s ci-dessous:
+            </p>
+            
+            <ul class="ps-2">
+                <div class="acitivity-timeline acitivity-main">
+                    <div *ngFor="let e of [1, 1]; index as i" class="acitivity-item py-3 d-flex">
+                        <div class="flex-shrink-0">
+                            <div class="avatar-xs">
+                                <div class="avatar-title rounded-circle bg-danger-subtle text-danger material-shadow">
+                                    <span class="fw-semibold fs4">{{ i + 1 }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-1 fs-14 lh-base"><span *ngIf="false" class="fst-italic">feu</span> Monsieur KAYI Kodjo Armand <i class="ms-1 text-muted fs-13">Revendeur</i></h6>
+                            <p class="text-muted fs-13 mb-2">
+                                De nationalité <span class="fwmedium text-body">Togolaise</span>, domicilié à <span class="fwmedium text-body">Lomé</span> et résident à <span class="fwmedium text-body">Paris</span><br>
+                                Représenté par <span class="fwmedium text-body">Monsieur </span> <span class="fwmedium text-body">DOE John</span>
+                            </p>
+                            
+                            <table class="text-body-secondary mb-0 ">
+                                <tbody>
+                                    <tr>
+                                        <td class="pe-4 fst-italic">Contact: </td>
+                                        <td>96 62 50 20</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pe-4 fst-italic">NIF: </td>
+                                        <td>396162050</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pe-4 fst-italic">Né le: </td>
+                                        <td>25 Nov 2021 à Lomé</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Héritiers -->
+    <div *ngIf="partiePrenante.categorie == categoriesPartiePrenante.GROUPE_HERITIERS && partiePrenante.groupeHeritiers" class="d-flex">
+        <div class="flex-shrink-0">
+            <div class="avatar-xs">
+                <div class="avatar-title rounded-circle bg-danger-subtle text-danger material-shadow">
+                    <i class="ri-parent-fill fs4"></i>
+                </div>
+            </div>
+        </div>
+        <div class="flex-grow-1 ms-3">
+            <h6 class="mb-1 fs-14 lh-base"><span>Héritiers de </span> <span *ngIf="false" class="fst-italic">feu</span> Monsieur KAYI Kodjo Armand <i class="ms-1 text-muted fs-13">Technicien Informatique de Gestion Comptable</i></h6>
+            <p class="text-muted fs-13 mb-2">
+                De nationalité <span class="fwmedium text-body">Togolaise</span>, domicilié à <span class="fwmedium text-body">Lomé</span> et résident à <span class="fwmedium text-body">Paris</span><br>
+            </p>
+            
+            <table class="text-body-secondary mb-0 ">
+                <tbody>
+                    <tr>
+                        <td class="pe-4 fst-italic">Contact: </td>
+                        <td>96 62 50 20</td>
+                    </tr> 
+                    <tr>
+                        <td class="pe-4 fst-italic">NIF: </td>
+                        <td>396162050</td>
+                    </tr>
+                    <tr>
+                        <td class="pe-4 fst-italic">Né le: </td>
+                        <td>25 Nov 2021 à Lomé</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <ul class="ps-2">
+                <div class="acitivity-timeline acitivity-main">
+                    <div *ngFor="let e of [1, 1]; index as i" class="acitivity-item py-3 d-flex">
+                        <div class="flex-shrink-0">
+                            <div class="avatar-xs">
+                                <div class="avatar-title rounded-circle bg-danger-subtle text-danger material-shadow">
+                                    <span class="fw-semibold fs4">{{ i + 1 }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-1 fs-14 lh-base"><span *ngIf="false" class="fst-italic">feu</span> Monsieur KAYI Kodjo Armand <i class="ms-1 text-muted fs-13">Revendeur</i></h6>
+                            <p class="text-muted fs-13 mb-2">
+                                De nationalité <span class="fwmedium text-body">Togolaise</span>, domicilié à <span class="fwmedium text-body">Lomé</span> et résident à <span class="fwmedium text-body">Paris</span><br>
+                                Représenté par <span class="fwmedium text-body">Monsieur </span> <span class="fwmedium text-body">DOE John</span>
+                            </p>
+                            
+                            <table class="text-body-secondary mb-0 ">
+                                <tbody>
+                                    <tr>
+                                        <td class="pe-4 fst-italic">Contact: </td>
+                                        <td>96 62 50 20</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pe-4 fst-italic">NIF: </td>
+                                        <td>396162050</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pe-4 fst-italic">Né le: </td>
+                                        <td>25 Nov 2021 à Lomé</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </div>
+</ng-container>

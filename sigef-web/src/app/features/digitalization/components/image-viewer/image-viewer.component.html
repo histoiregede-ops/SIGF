@@ -1,0 +1,104 @@
+<!-- Image Viewer Container -->
+<div class="image-viewer-container" [class.fullscreen]="isFullscreen">
+  <!-- Toolbar Top -->
+  <div class="viewer-toolbar top">
+    <div class="toolbar-group">
+      <button class="toolbar-btn" (click)="decreaseZoom()" title="Dézoomer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+          <line x1="8" y1="11" x2="14" y2="11"></line>
+        </svg>
+      </button>
+      <span class="zoom-display">{{ zoom }}%</span>
+      <button class="toolbar-btn" (click)="increaseZoom()" title="Zoomer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+          <line x1="11" y1="8" x2="11" y2="14"></line>
+          <line x1="8" y1="11" x2="14" y2="11"></line>
+        </svg>
+      </button>
+      <button class="toolbar-btn" (click)="resetZoom()" title="Réinitialiser le zoom">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 4v6h6M23 20v-6h-6"></path>
+          <path d="M20.49 9A9 9 0 0 0 5.64 5.64M3.51 15A9 9 0 0 0 18.36 18.36"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="toolbar-group">
+      <button class="toolbar-btn" (click)="rotateImage()" title="Pivoter">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <path d="M20.49 15a9 9 0 1 1-2-8.83"></path>
+        </svg>
+      </button>
+      <button class="toolbar-btn" (click)="resetRotation()" title="Réinitialiser la rotation">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+          <path d="M21 3v5h-5"></path>
+          <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+          <path d="M3 21v-5h5"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="toolbar-group">
+      <button 
+        class="toolbar-btn" 
+        (click)="toggleFullscreen()" 
+        title="Plein écran"
+        [class.active]="isFullscreen">
+        <svg *ngIf="!isFullscreen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+        <svg *ngIf="isFullscreen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3v6a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-6a2 2 0 0 1 2-2h3M3 16h6a2 2 0 0 1 2 2v6"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Image Container -->
+  <div class="image-container">
+    <div class="image-wrapper">
+      <img 
+        [src]="getImageUrl()" 
+        alt="Page {{ currentPage }}"
+        class="document-image"
+        [style.transform]="getImageTransform()">
+    </div>
+  </div>
+
+  <!-- Toolbar Bottom -->
+  <div class="viewer-toolbar bottom">
+    <div class="toolbar-group">
+      <button 
+        class="toolbar-btn nav-btn"
+        (click)="goToPreviousPage()"
+        [disabled]="!canGoPrevious()"
+        title="Page précédente">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <div class="page-info">
+      <span class="page-number">Page {{ currentPage }}/{{ totalPages }}</span>
+    </div>
+
+    <div class="toolbar-group">
+      <button 
+        class="toolbar-btn nav-btn"
+        (click)="goToNextPage()"
+        [disabled]="!canGoNext()"
+        title="Page suivante">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>

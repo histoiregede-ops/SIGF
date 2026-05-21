@@ -1,0 +1,188 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Oppositions</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers">Dossiers</a></li>
+                            <li class="breadcrumb-item active">Oppositions</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-end align-items-center flex-wrap gap-2">
+                            <!-- <div class="flex-grow-1"> -->
+                                <button class="btn btn-primary" role="link" routerLink="./nouveau"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                            <!-- </div> -->
+                            <!-- <div class="flex-shrink-0">
+                                <div class="search-box ms-2">
+                                    <input type="text" class="form-control" id="searchProductList" placeholder="Rechercher...">
+                                    <i class="ri-search-line search-icon"></i>
+                                </div>
+                                <div class="hstack text-nowrap gap-2">
+                                    <button class="btn btn-soft-danger material-shadow-none" id="remove-actions" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                                    <button class="btn btn-danger material-shadow-none"><i class="ri-filter-2-line me-1 align-bottom"></i> Filters</button>
+                                    <button class="btn btn-soft-success material-shadow-none">Import</button>
+                                    <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false" class="btn btn-soft-info material-shadow-none"><i class="ri-more-2-fill"></i></button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                        <li><a class="dropdown-item" href="#">All</a></li>
+                                        <li><a class="dropdown-item" href="#">Last Week</a></li>
+                                        <li><a class="dropdown-item" href="#">Last Month</a></li>
+                                        <li><a class="dropdown-item" href="#">Last Year</a></li>
+                                    </ul>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- <div class="d-flex justify-content-between align-items-center"> -->
+                            <!-- <h4 class="card-title mb-0 flex-grow-1">Filtres</h4> -->
+                            <div class="d-flex justify-content-end align-items-center form-check-success">
+                                <label class="form-check-label me-2" for="formCheck8">
+                                    Masquer les filtres
+                                </label>
+                                <input [(ngModel)]="masquerfiltresListeOppositions" class="form-check-input" type="checkbox" id="formCheck8">
+                            </div>
+                        <!-- </div> -->
+                        
+                        <form *ngIf="!masquerfiltresListeOppositions" [formGroup]="filtresListeOppositionsForm">
+                            <div class="row gy-4 mt-4 mb-4">                      
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="requisition" class="form-label text-muted">Numéro de réquisition</label>
+                                        <input type="text" class="form-control" id="requisition" formControlName="requisition">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="creatDebut" class="form-label text-muted">Dates de création (début)</label>
+                                        <input type="date" class="form-control" id="creatDebut" formControlName="creatDebut">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="creatFin" class="form-label text-muted">Dates de création (fin)</label>
+                                        <input type="date" class="form-control" id="creatFin" formControlName="creatFin">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="requerant" class="form-label text-muted">Réquérant</label>
+                                        <input type="text" class="form-control" id="requerant" formControlName="requerant">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="intervenant" class="form-label text-muted">Intervenant</label>
+                                        <input type="text" class="form-control" id="intervenant" formControlName="intervenant">
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4">
+                                <button (click)="filtrerListeOppositions()" class="btn btn-success add-btn"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des dossiers</h4>
+                        <!-- <div class="flex-shrink-0">
+                            <div class="dropdown card-header-dropdown">
+                                <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="text-muted">02 Nov 2021 to 31 Dec 2021<i class="mdi mdi-chevron-down ms-1"></i></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Today</a>
+                                    <a class="dropdown-item" href="#">Last Week</a>
+                                    <a class="dropdown-item" href="#">Last Month</a>
+                                    <a class="dropdown-item" href="#">Current Year</a>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th>#</th>
+                                        <th scope="col">N° d'ordre</th>
+                                        <th scope="col">Statut</th>
+                                        <th scope="col">Réquérant(s)</th>
+                                        <th scope="col">Intervenant(s)</th>
+                                        <th scope="col">N° de réquisition</th>
+                                        <th scope="col">Date de l'opposition</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" align="center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let opposition of listeOppositions.data; index as oppositionIndex">
+                                        <td>
+                                            {{ (listeOppositions.paginationSize! * listeOppositions.currentPage!) + oppositionIndex + 1 }}
+                                        </td>
+                                        <td>{{ opposition.acteRegistre?.numeroOrdre?.padStart(5, '0') ?? '-----' }}</td>
+                                        <td>
+                                            <div [ngSwitch]="opposition.statut">
+                                                <div *ngSwitchCase="statutsOpposition.A_VALIDER"><span class="badge bg-warning-subtle text-warning text-uppercase">A Valider</span></div>
+                                                <div *ngSwitchCase="statutsOpposition.RECEVABLE"><span class="badge bg-success-subtle text-success text-uppercase">Recevable</span></div>
+                                                <div *ngSwitchCase="statutsOpposition.REJETEE"><span class="badge bg-danger-subtle text-danger text-uppercase">Rejetée</span></div>
+                                                <div *ngSwitchCase="statutsOpposition.LEVEE"><span class="badge bg-info-subtle text-info text-uppercase">Levée</span></div>
+                                                <div *ngSwitchDefault>----</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <app-parties-prenantes-table [partiesPrenantes]="opposition.partiesPrenantes ?? []" [typePartiePrenante]="typesPartiePrenante.REQUERANT" noPartiePrenanteText="Aucun réquérant"></app-parties-prenantes-table>
+                                        </td>
+                                        <td>
+                                            <app-parties-prenantes-table [partiesPrenantes]="opposition.partiesPrenantes ?? []" [typePartiePrenante]="typesPartiePrenante.INTERVENANT" noPartiePrenanteText="Aucun intervenant"></app-parties-prenantes-table>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="!opposition.oppositionsRequisitions || opposition.oppositionsRequisitions.length == 0" class="text-muted"><i>Aucune réquisition</i></span>
+                                            <app-card-numero-requisition-details *ngFor="let oppositionRequisition of opposition.oppositionsRequisitions" [numeroRequisition]="oppositionRequisition.numeroRequisition"></app-card-numero-requisition-details>
+                                        </td>
+                                        <td>{{ opposition.dateOpposition | date: 'dd MMM YYYY' | titlecase }}</td>
+                                        <td>{{ opposition.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}</td>
+                                        <td align="center">
+                                            <a [routerLink]="'./' + opposition.id!"><i class="ri-edit-box-line fs-5"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeOppositions.currentPage" [totalItems]="listeOppositions.totalItems" [totalPages]="listeOppositions.totalPages" (paginationChange)="getOppositions($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeOppositions.data.length == 0" text="Aucune opposition"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->

@@ -1,0 +1,256 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Civilités</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin">Administration</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin/situations">Situations</a></li>
+                            <li class="breadcrumb-item active">Civilités</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeCivilitesForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeCivilites()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher une civilité..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheCivilite()" *ngIf="filtresListeCivilitesForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary add-btn" role="button" (click)="openNouvelleCiviliteModal()"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un civilite</button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end align-items-center form-check-success">
+                            <label class="form-check-label me-2" for="formCheck8">
+                                Masquer les filtres
+                            </label>
+                            <input [(ngModel)]="masquerfiltresListeCivilites" class="form-check-input" type="checkbox" id="formCheck8">
+                        </div>
+                        
+                        <form *ngIf="!masquerfiltresListeCivilites" [formGroup]="filtresListeCivilitesForm">
+                            <div class="row gy-4 mt-4 mb-4">                    
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="sexe" class="form-label">Sexe</label>
+                                        <ng-select id="sexe" formControlName="sexe">
+                                            <ng-option [value]="sexesPersonnePhysique.FEMININ">Féminin</ng-option>
+                                            <ng-option [value]="sexesPersonnePhysique.MASCULIN">Masculin</ng-option>
+                                            <ng-option [value]="sexesPersonnePhysique.NON_PRECISE">Non précisé</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>                    
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4 gap-2">
+                                <button (click)="effacerFiltresListeCivilites()" class="btn btn-light">Effacer</button>
+                                <button (click)="filtrerListeCivilites(0, listeCivilites.paginationSize)" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des civilités</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-striped table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th scope="col" style="width: 50px;">#</th>
+                                        <th scope="col">Libellé</th>
+                                        <th scope="col">Abbréviation</th>
+                                        <th scope="col">Sexe</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let civilite of listeCivilites.data; index as civiliteIndex">
+                                        <td>
+                                            {{ (listeCivilites.paginationSize! * listeCivilites.currentPage!) + civiliteIndex + 1 }}
+                                        </td>
+                                        <td>{{ civilite.libelle }}</td>
+                                        <td>{{ civilite.abbreviation ?? '----' }}</td>
+                                        <td [ngSwitch]="civilite.sexe">
+                                            <div *ngSwitchCase="sexesPersonnePhysique.FEMININ">Féminin</div>
+                                            <div *ngSwitchCase="sexesPersonnePhysique.MASCULIN">Masculin</div>
+                                            <div *ngSwitchDefault>Non précisé</div>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="civilite.description">{{ civilite.description }}</span>
+                                            <span *ngIf="!civilite.description" class="text-muted text-end"><i>Aucune description</i></span>
+                                        </td>
+                                        <td>
+                                            {{ civilite.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-3 justify-content-center align-items-center">
+                                                <a role="button" (click)="openModificationCiviliteModal(civiliteIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                                <a role="button" (click)="openSuppressionCiviliteModal(civiliteIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeCivilites.currentPage" [totalItems]="listeCivilites.totalItems" [totalPages]="listeCivilites.totalPages" (paginationChange)="getCivilites($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeCivilites.data.length == 0" text="Aucune civilité"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+
+<!-- Modals -->
+<app-custom-modal title="Nouvelle civilité" [show]="showNouvelleCiviliteModal" (modalClose)="annulerCreationCivilite()">
+    <div body>
+        <form [formGroup]="nouvelleCiviliteForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="nouvelleCiviliteForm.get('libelle')!.invalid && (nouvelleCiviliteForm.get('libelle')!.dirty || nouvelleCiviliteForm.get('libelle')!.touched)">
+                            <app-form-message [show]="nouvelleCiviliteForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div>
+                        <label for="abbreviation" class="form-label">Abbréviation</label>
+                        <input type="text" class="form-control" id="abbreviation" formControlName="abbreviation">
+                        <div *ngIf="nouvelleCiviliteForm.get('abbreviation')!.invalid && (nouvelleCiviliteForm.get('abbreviation')!.dirty || nouvelleCiviliteForm.get('abbreviation')!.touched)">
+                            <app-form-message [show]="nouvelleCiviliteForm.get('abbreviation')!.errors?.['required']" type="danger" text="Entrer l'abbréviation"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div>
+                        <label for="sexe" class="form-label">Sexe</label>
+                        <ng-select id="sexe" formControlName="sexe">
+                            <ng-option [value]="sexesPersonnePhysique.FEMININ">Féminin</ng-option>
+                            <ng-option [value]="sexesPersonnePhysique.MASCULIN">Masculin</ng-option>
+                            <ng-option [value]="sexesPersonnePhysique.NON_PRECISE">Non précisé</ng-option>
+                        </ng-select>
+                        <div *ngIf="nouvelleCiviliteForm.get('sexe')!.invalid && (nouvelleCiviliteForm.get('sexe')!.dirty || nouvelleCiviliteForm.get('sexe')!.touched)">
+                            <app-form-message [show]="nouvelleCiviliteForm.get('sexe')!.errors?.['required']" type="danger" text="Choisir un sexe"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationCivilite()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationCivilite()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier cette civilité" [show]="showModificationCiviliteModal" (modalClose)="annulerModificationCivilite()">
+    <div body>
+        <form [formGroup]="modificationCiviliteForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="modificationCiviliteForm.get('libelle')!.invalid && (modificationCiviliteForm.get('libelle')!.dirty || modificationCiviliteForm.get('libelle')!.touched)">
+                            <app-form-message [show]="modificationCiviliteForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div>
+                        <label for="abbreviation" class="form-label">Abbréviation</label>
+                        <input type="text" class="form-control" id="abbreviation" formControlName="abbreviation">
+                        <div *ngIf="modificationCiviliteForm.get('abbreviation')!.invalid && (modificationCiviliteForm.get('abbreviation')!.dirty || modificationCiviliteForm.get('abbreviation')!.touched)">
+                            <app-form-message [show]="modificationCiviliteForm.get('abbreviation')!.errors?.['required']" type="danger" text="Entrer l'abbréviation"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div>
+                        <label for="sexe" class="form-label">Sexe</label>
+                        <ng-select id="sexe" formControlName="sexe">
+                            <ng-option [value]="sexesPersonnePhysique.FEMININ">Féminin</ng-option>
+                            <ng-option [value]="sexesPersonnePhysique.MASCULIN">Masculin</ng-option>
+                            <ng-option [value]="sexesPersonnePhysique.NON_PRECISE">Non précisé</ng-option>
+                        </ng-select>
+                        <div *ngIf="modificationCiviliteForm.get('sexe')!.invalid && (modificationCiviliteForm.get('sexe')!.dirty || modificationCiviliteForm.get('sexe')!.touched)">
+                            <app-form-message [show]="modificationCiviliteForm.get('sexe')!.errors?.['required']" type="danger" text="Choisir un sexe"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationCivilite()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationCivilite()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer cette civilité" [show]="showSuppressionCiviliteModal" (modalClose)="closeSuppressionCiviliteModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer cette civilité ? <span class="fw-bold">Elle sera déplacée dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionCiviliteModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionCivilite()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

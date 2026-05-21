@@ -1,0 +1,298 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Contrôleurs</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item active">Contrôleurs</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="rechercherControleur()" type="text" [(ngModel)]="rechercheControleur" class="form-control bg-light border-light" placeholder="Rechercher un contrôleur..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheControleur()" *ngIf="rechercheControleur != undefined" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </div>
+
+                            <!-- <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary add-btn" role="button" (click)="openNouvelControleurModal()"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un fichier</button>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des controleurs</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-striped table-hover table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <!-- <th scope="col" style="width: 50px;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                            </div>
+                                        </th> -->
+                                        <th scope="col" style="width: 50px;">#</th>
+                                        <th scope="col" style="width: 50px;"></th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Prénoms</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Contact</th>
+                                        <th scope="col">Etat du compte</th>
+                                        <th scope="col">Profil</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let controleur of listeControleurs.data; index as controleurIndex">
+                                        <td>
+                                            {{ (listeControleurs.paginationSize! * listeControleurs.currentPage!) + controleurIndex + 1 }}
+                                        </td>
+                                        <td>
+                                            <!-- {{ controleur.id }} -->
+                                            <app-user-avatar [photoDeProfil]="controleur.photoDeProfil" [type]="2"></app-user-avatar>
+                                        </td>
+                                        <td>{{ controleur.nom }}</td>
+                                        <td>{{ controleur.prenoms }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="ri-mail-line fs-16 text-muted me-2"></i>
+                                                <span>{{ controleur.email }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="ri-phone-line fs-16 text-muted me-2"></i>
+                                                <span>{{ controleur.contact ?? '-- -- -- --' }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="controleur.actif" class="badge bg-success-subtle text-success text-uppercase">Actif</span>
+                                            <span *ngIf="!controleur.actif" class="badge bg-danger-subtle text-danger text-uppercase">Inactif</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="controleur.profil">{{ controleur.profil.titre }}</span>
+                                            <span *ngIf="!controleur.profil" class="text-muted text-end"><i>Aucun profil</i></span>
+                                        </td>
+                                        <td>
+                                            {{ controleur.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td>
+                                            <!-- <div class="d-flex gap-3 justify-content-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item view-item-btn" role="button" (click)="openChangementMotDePasseControleurModal(controleurIndex)"><i class="ri-shield-keyhole-line align-bottom me-2 text-muted"></i>Changer le mot de passe</a></li>
+                                                        <li><a class="dropdown-item edit-item-btn text-info" role="button" (click)="openModificationControleurModal(controleurIndex)"><i class="ri-pencil-fill align-bottom me-2 text-info"></i>Modifier</a></li>
+                                                        <li><a class="dropdown-item remove-item-btn text-danger" role="button" (click)="openModificationActifControleurModal(controleurIndex)"><i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i> Supprimer</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div> -->
+                                            <div class="d-flex gap-3 justify-content-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item"role="button" (click)="openChangementMotDePasseControleurModal(controleurIndex)">Changer le mot de passe</a></li>
+                                                        <li><a class="dropdown-item" role="button" (click)="openModificationControleurModal(controleurIndex)">Modifier</a></li>
+                                                        <li class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a class="dropdown-item" [ngClass]="{'text-danger': controleur.actif, 'text-success': !controleur.actif}" role="button" (click)="openModificationActifControleurModal(controleurIndex)">
+                                                                {{ controleur.actif ? 'Désactiver le compte' : 'Réactiver le compte' }}
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeControleurs.currentPage" [totalItems]="listeControleurs.totalItems" [totalPages]="listeControleurs.totalPages" (paginationChange)="getControleurs($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeControleurs.data.length == 0" text="Aucun contrôleur"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+
+<!-- Modals -->
+<app-custom-modal title="Modifier le contrôleur" [show]="showModificationControleurModal" (modalClose)="annulerModificationControleur()">
+    <div body>
+        <form [formGroup]="modificationControleurForm">
+            <div class="row g-3">
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="identifiant" class="form-label">Nom d'utilisateur</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">&#64;</span>
+                            <input type="text" class="form-control text-muted" id="identifiant" formControlName="identifiant" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="modificationControleurForm.get('nom')!.invalid && (modificationControleurForm.get('nom')!.dirty || modificationControleurForm.get('nom')!.touched)">
+                            <app-form-message [show]="modificationControleurForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="prenoms" class="form-label">Prénoms</label>
+                        <input type="text" class="form-control" id="prenoms" formControlName="prenoms">
+                        <div *ngIf="modificationControleurForm.get('prenoms')!.invalid && (modificationControleurForm.get('prenoms')!.dirty || modificationControleurForm.get('prenoms')!.touched)">
+                            <app-form-message [show]="modificationControleurForm.get('prenoms')!.errors?.['required']" type="danger" text="Entrer les prénoms"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control text-muted" id="email" formControlName="email">
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="contact" class="form-label">Contact</label>
+                        <input type="tel" class="form-control" id="contact" formControlName="contact">
+                        <div *ngIf="modificationControleurForm.get('contact')!.invalid && (modificationControleurForm.get('contact')!.dirty || modificationControleurForm.get('contact')!.touched)">
+                            <app-form-message [show]="modificationControleurForm.get('contact')!.errors?.['required']" type="danger" text="Entrer un contact"></app-form-message>
+                            <app-form-message [show]="modificationControleurForm.get('contact')!.errors?.['minlength']" type="danger" text="Le numéro doit comporter au moins 8 chiffres"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" [disabled]="disableButton" (click)="annulerModificationControleur()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationControleur()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Changer le mot de passe du contrôleur" [show]="showChangementMotDePasseControleurModal" (modalClose)="annulerChangementMotDePasseControleur()">
+    <div body>
+        <form [formGroup]="changementMotDePasseControleurForm">
+            <div class="row g-3">
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="identifiant" class="form-label">Nom d'utilisateur</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">&#64;</span>
+                            <input type="text" class="form-control text-muted" id="identifiant" formControlName="identifiant" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control text-muted" id="email" formControlName="email">
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="changementMotDePasseControleurForm.get('nom')!.invalid && (changementMotDePasseControleurForm.get('nom')!.dirty || changementMotDePasseControleurForm.get('nom')!.touched)">
+                            <app-form-message [show]="changementMotDePasseControleurForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="prenoms" class="form-label">Prénoms</label>
+                        <input type="text" class="form-control" id="prenoms" formControlName="prenoms">
+                        <div *ngIf="changementMotDePasseControleurForm.get('prenoms')!.invalid && (changementMotDePasseControleurForm.get('prenoms')!.dirty || changementMotDePasseControleurForm.get('prenoms')!.touched)">
+                            <app-form-message [show]="changementMotDePasseControleurForm.get('prenoms')!.errors?.['required']" type="danger" text="Entrer les prénoms"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="password" class="form-label">Nouveau mot de passe</label>
+                        <input type="password" class="form-control pe-5 password-input" onpaste="return false" placeholder="********" id="password" formControlName="password" required>
+                        <div *ngIf="changementMotDePasseControleurForm.get('password')!.invalid && (changementMotDePasseControleurForm.get('password')!.dirty || changementMotDePasseControleurForm.get('password')!.touched)">
+                            <app-form-message [show]="changementMotDePasseControleurForm.get('password')!.errors?.['required']" type="danger" text="Entrer un mot de passe"></app-form-message>
+                            <app-form-message [show]="changementMotDePasseControleurForm.get('password')!.errors?.['minlength']" type="danger" text="Le mot de passe doit contenir au moins 8 caractères"></app-form-message>
+                            <app-form-message [show]="passwordError" type="danger" text="Le mot de passe doit contenir au moins 8 caractères"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="confirmPassword" class="form-label">Confirmer le mot de passe</label>
+                        <input type="password" class="form-control pe-5 password-input" onpaste="return false" placeholder="********" id="confirmPassword" formControlName="confirmPassword" required>
+                        <div *ngIf="(changementMotDePasseControleurForm.get('confirmPassword')!.invalid || confirmError) && (changementMotDePasseControleurForm.get('confirmPassword')!.dirty || changementMotDePasseControleurForm.get('confirmPassword')!.touched)">
+                            <app-form-message [show]="changementMotDePasseControleurForm.get('confirmPassword')!.errors?.['required']" type="danger" text="Confirmer le mot de passe"></app-form-message>
+                            <app-form-message [show]="changementMotDePasseControleurForm.get('confirmPassword')!.errors?.['minlength']" type="danger" text="Le mot de passe doit contenir au moins 8 caractères"></app-form-message>
+                            <app-form-message [show]="!changementMotDePasseControleurForm.get('confirmPassword')!.errors?.['required'] && confirmError" type="danger" text="Les mots de passe ne correspondent pas"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" [disabled]="disableButton" (click)="annulerChangementMotDePasseControleur()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerChangementMotDePasseControleur()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="{{ modificationActifControleurForm.get('actif')?.value ? 'Désactiver' : 'Réactiver' }} le compte du contrôleur" [show]="showModificationActifControleurModal" (modalClose)="annulerModificationActifControleur()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de {{ modificationActifControleurForm.get('actif')?.value ? 'désactiver le compte du contrôleur' : 'réactiver le compte du contrôleur' }} {{modificationActifControleurForm.get('nom')?.value}} {{modificationActifControleurForm.get('prenoms')?.value}} ?</p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" [disabled]="disableButton" (click)="annulerModificationActifControleur()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationActifControleur()" class="btn" [ngClass]="{'btn-danger': modificationActifControleurForm.get('actif')?.value , 'btn-primary': !modificationActifControleurForm.get('actif')?.value }">Confirmer</button>
+        </div>
+    </div>
+</app-custom-modal>

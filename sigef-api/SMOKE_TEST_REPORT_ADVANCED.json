@@ -1,0 +1,3044 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": "PASS",
+    "code": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/centresConservationFonciere/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/centresConservationFonciere/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/auth/centresConservationFonciere/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/centresConservationFonciere/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/auth/centresConservationFonciere/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/centresConservationFonciere/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/confirm",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/controleurs/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/controleurs/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/auth/controleurs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/controleurs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/auth/controleurs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/auth/controleurs/:id/actif",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/auth/controleurs/:id/password",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/controleurs/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/indexeurs/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/indexeurs/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/auth/indexeurs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/indexeurs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/auth/indexeurs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/auth/indexeurs/:id/actif",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/auth/indexeurs/:id/password",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/indexeurs/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/logged-user",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/logged-user/roles",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/profils/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/profils/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/auth/profils/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/profils/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/auth/profils/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/profils/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/register",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/register/usager",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/auth/reset",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/roles/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/roles/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/roles/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/send-email-confirm-link",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/send-password-reset-link",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/update-profile",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/utilisateurs/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/auth/utilisateurs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/utilisateurs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/auth/utilisateurs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/auth/utilisateurs/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/titres-fonciers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/titres-fonciers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/titres-fonciers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/donneesIndexation/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/indexation/donneesIndexation/:id",
+    "status": "SKIP",
+    "note": "No resolvable id"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/donneesIndexation/:id",
+    "status": "SKIP",
+    "note": "No resolvable id"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/donneesIndexation/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/dossiers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/indexation/dossiers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/indexation/dossiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/dossiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/indexation/dossiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/dossiers/:typeRegistreId",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/dossiers/depots",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/dossiers/formalites",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/dossiers/oppositions",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/dossiers/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/dossiers/titres-fonciers",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/fichiers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/indexation/fichiers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/indexation/fichiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/fichiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/indexation/fichiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/fichiers/:id/contenu",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/indexation/fichiers/:id/contenu",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/fichiers/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/progressionsTachesIndexation/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/indexation/progressionsTachesIndexation/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/indexation/progressionsTachesIndexation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/progressionsTachesIndexation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/indexation/progressionsTachesIndexation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/indexation/progressionsTachesIndexation/:id/rejet",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/progressionsTachesIndexation/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/statistiques/controle",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/statistiques/globales",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/statistiques/indexation",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/statistiques/quotas/controle",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/statistiques/quotas/indexation",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/statistiques/suiviJournalier",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/tachesIndexation/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/indexation/tachesIndexation/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/indexation/tachesIndexation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/tachesIndexation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/indexation/tachesIndexation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/indexation/tachesIndexation/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/cantons/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/cantons/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/cantons/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/cantons/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/cantons/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/cantons/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/civilites/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/civilites/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/civilites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/civilites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/civilites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/civilites/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/communes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/communes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/communes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/communes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/communes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/communes/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/formesJuridiques/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/formesJuridiques/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/formesJuridiques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/formesJuridiques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/formesJuridiques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/formesJuridiques/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/nationalites/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/nationalites/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/nationalites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/nationalites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/nationalites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/nationalites/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/periodes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/periodes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/periodes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/periodes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/periodes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/periodes/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/piecesIdentite/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/piecesIdentite/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/piecesIdentite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/piecesIdentite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/piecesIdentite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/piecesIdentite/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/prefectures/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/prefectures/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/prefectures/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/prefectures/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/prefectures/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/prefectures/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/professions/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/professions/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/professions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/professions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/professions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/professions/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/qualitesDocument/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/qualitesDocument/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/qualitesDocument/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/qualitesDocument/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/qualitesDocument/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/qualitesDocument/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/quartiers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/quartiers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/quartiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/quartiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/quartiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/quartiers/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/regions/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/regions/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/regions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/regions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/regions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/regions/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/secteursActivite/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/secteursActivite/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/secteursActivite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/secteursActivite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/secteursActivite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/secteursActivite/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesLienGroupe/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/typesLienGroupe/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/typesLienGroupe/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesLienGroupe/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/typesLienGroupe/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesLienGroupe/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesPersonneMorale/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/typesPersonneMorale/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/typesPersonneMorale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesPersonneMorale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/typesPersonneMorale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesPersonneMorale/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesRegistre/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesRegistre/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesRegistre/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesRelationLegale/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/typesRelationLegale/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/typesRelationLegale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesRelationLegale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/typesRelationLegale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/typesRelationLegale/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/villages/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/villages/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/villages/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/villages/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/villages/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/villages/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/villes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/commun/villes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/commun/villes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/villes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/commun/villes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/commun/villes/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/actesRegistres/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/actesRegistres/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/actesRegistres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/actesRegistres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/actesRegistres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/actesRegistres/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/augmentations/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/augmentations/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/augmentations/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/augmentations/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/augmentations/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/augmentations/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/bornages/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/bornages/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/bornages/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/bornages/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/bornages/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/bornages/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/causesIndisponibilite/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/causesIndisponibilite/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/causesIndisponibilite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/causesIndisponibilite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/causesIndisponibilite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/causesIndisponibilite/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/conjointsPersonneDisposant/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/conjointsPersonneDisposant/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/conjointsPersonneDisposant/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/conjointsPersonneDisposant/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/conjointsPersonneDisposant/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/conjointsPersonneDisposant/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/demandesEtatsDescriptifs/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/demandesEtatsDescriptifs/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/demandesEtatsDescriptifs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/demandesEtatsDescriptifs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/demandesEtatsDescriptifs/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/demandesEtatsDescriptifs/:id/traitement",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/demandesEtatsDescriptifs/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/demandesTransferts/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/demandesTransferts/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/demandesTransferts/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/demandesTransferts/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/demandesTransferts/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/demandesTransferts/:id/traitement",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/demandesTransferts/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/depots/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/depots/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/depots/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/depots/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/depots/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/depots/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/depotsTitresFonciers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/depotsTitresFonciers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/depotsTitresFonciers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/depotsTitresFonciers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/depotsTitresFonciers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/depotsTitresFonciers/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/diminutions/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/diminutions/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/diminutions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/diminutions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/diminutions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/diminutions/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/directionsLimite/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/directionsLimite/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/directionsLimite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/directionsLimite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/directionsLimite/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/directionsLimite/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/divisionsEnLots/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/divisionsEnLots/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/divisionsEnLots/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/divisionsEnLots/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/divisionsEnLots/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/divisionsEnLots/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/divisionsEnVolumes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/divisionsEnVolumes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/divisionsEnVolumes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/divisionsEnVolumes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/divisionsEnVolumes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/divisionsEnVolumes/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/dossiersRegistres/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/dossiersRegistres/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/dossiersRegistres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/dossiersRegistres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/dossiersRegistres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/dossiersRegistres/prochainFolio/:dossierRegistreId",
+    "status": "SKIP",
+    "note": "No resolvable id"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/dossiersRegistres/prochainNumeroOrdre/:dossierRegistreId",
+    "status": "SKIP",
+    "note": "No resolvable id"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/dossiersRegistres/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/droitsReelsConstituesParDenombrement/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/droitsReelsConstituesParDenombrement/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/droitsReelsConstituesParDenombrement/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/droitsReelsConstituesParDenombrement/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/droitsReelsConstituesParDenombrement/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/droitsReelsConstituesParDenombrement/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/formalites/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/formalites/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/formalites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/formalites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/formalites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/formalites/filter",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/formalites/filter",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/formalites/requisition/:requisition",
+    "status": "SKIP",
+    "note": "No resolvable id"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/formalites/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/groupesConjoints/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/groupesConjoints/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/groupesConjoints/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/groupesConjoints/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/groupesConjoints/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/groupesConjoints/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/groupesHeritiers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/groupesHeritiers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/groupesHeritiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/groupesHeritiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/groupesHeritiers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/groupesHeritiers/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/groupesPersonnesPhysiques/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/groupesPersonnesPhysiques/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/groupesPersonnesPhysiques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/groupesPersonnesPhysiques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/groupesPersonnesPhysiques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/groupesPersonnesPhysiques/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/informationsPropriete/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/informationsPropriete/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/informationsPropriete/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/informationsPropriete/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/informationsPropriete/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/informationsPropriete/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/limites/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/limites/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/limites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/limites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/limites/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/limites/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/modesAcquisition/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/modesAcquisition/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/modesAcquisition/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/modesAcquisition/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/modesAcquisition/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/modesAcquisition/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/modesAlienation/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/modesAlienation/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/modesAlienation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/modesAlienation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/modesAlienation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/modesAlienation/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/mutations/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/mutations/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/mutations/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/mutations/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/mutations/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/mutations/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/naturesEtatImmeuble/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/naturesEtatImmeuble/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/naturesEtatImmeuble/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/naturesEtatImmeuble/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/naturesEtatImmeuble/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/naturesEtatImmeuble/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/naturesTypeImmeuble/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/naturesTypeImmeuble/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/naturesTypeImmeuble/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/naturesTypeImmeuble/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/naturesTypeImmeuble/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/naturesTypeImmeuble/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/oppositions/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/oppositions/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/oppositions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/oppositions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/oppositions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/oppositions/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/oppositionsCasInscriptionDifferee/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/oppositionsCasInscriptionDifferee/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/oppositionsCasInscriptionDifferee/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/oppositionsCasInscriptionDifferee/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/oppositionsCasInscriptionDifferee/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/oppositionsCasInscriptionDifferee/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/oppositionsRequisitions/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/oppositionsRequisitions/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/oppositionsRequisitions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/oppositionsRequisitions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/oppositionsRequisitions/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/oppositionsRequisitions/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/partiesPrenantes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/partiesPrenantes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/partiesPrenantes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/partiesPrenantes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/partiesPrenantes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/partiesPrenantes/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesCibles/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/personnesCibles/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/personnesCibles/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesCibles/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/personnesCibles/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesCibles/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesConjointes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/personnesConjointes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/personnesConjointes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesConjointes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/personnesConjointes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesConjointes/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesDisposants/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/personnesDisposants/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/personnesDisposants/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesDisposants/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/personnesDisposants/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesDisposants/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesHeritieres/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/personnesHeritieres/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/personnesHeritieres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesHeritieres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/personnesHeritieres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesHeritieres/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesMembres/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/personnesMembres/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/personnesMembres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesMembres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/personnesMembres/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesMembres/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesMorales/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/personnesMorales/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/personnesMorales/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesMorales/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/personnesMorales/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesMorales/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesPhysiques/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/personnesPhysiques/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/personnesPhysiques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesPhysiques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/personnesPhysiques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesPhysiques/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesRelationLegale/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/personnesRelationLegale/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/personnesRelationLegale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesRelationLegale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/personnesRelationLegale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/personnesRelationLegale/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/piecesDeposees/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/piecesDeposees/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/piecesDeposees/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/piecesDeposees/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/piecesDeposees/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/piecesDeposees/:id/contenu",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/piecesDeposees/:id/contenu",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/piecesDeposees/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/privilegesHypotheques/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/privilegesHypotheques/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/privilegesHypotheques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/privilegesHypotheques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/privilegesHypotheques/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/privilegesHypotheques/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/proceduresJudiciaires/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/proceduresJudiciaires/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/proceduresJudiciaires/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/proceduresJudiciaires/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/proceduresJudiciaires/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/proceduresJudiciaires/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/publicationsDemandes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/publicationsDemandes/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/publicationsDemandes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/publicationsDemandes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/publicationsDemandes/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/publicationsDemandes/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/representantsPersonneMorale/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/representantsPersonneMorale/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/representantsPersonneMorale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/representantsPersonneMorale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/representantsPersonneMorale/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/representantsPersonneMorale/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/representantsPersonnePhysique/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/representantsPersonnePhysique/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/representantsPersonnePhysique/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/representantsPersonnePhysique/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/representantsPersonnePhysique/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/representantsPersonnePhysique/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/situationsFiscales/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/situationsFiscales/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/situationsFiscales/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/situationsFiscales/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/situationsFiscales/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/situationsFiscales/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/situationsPropriete/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/situationsPropriete/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/situationsPropriete/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/situationsPropriete/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/situationsPropriete/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/situationsPropriete/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/titresFonciers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/titresFonciers/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/titresFonciers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/titresFonciers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/titresFonciers/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/titresFonciers/numeroTitreFoncier/:numeroTitreFoncier",
+    "status": "SKIP",
+    "note": "No resolvable id"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/titresFonciers/prochainNumeroTitreFoncier/:regionId",
+    "status": "SKIP",
+    "note": "No resolvable id"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/titresFonciers/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/typesDepot/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/typesDepot/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/typesDepot/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/typesDepot/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/typesDepot/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/typesDepot/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/typesOperationPostImmatriculation/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/dossiers/typesOperationPostImmatriculation/",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/dossiers/typesOperationPostImmatriculation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/typesOperationPostImmatriculation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/dossiers/typesOperationPostImmatriculation/:id",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/dossiers/typesOperationPostImmatriculation/statistics/count",
+    "status": "FAIL",
+    "note": "TypeError: fetch failed"
+  }
+]

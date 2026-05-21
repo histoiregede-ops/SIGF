@@ -1,0 +1,81 @@
+<div class="page-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+          <h4 class="mb-sm-0">Détails de l'Acte</h4>
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+              <li class="breadcrumb-item"><a routerLink="/dossiers/actes">Actes</a></li>
+              <li class="breadcrumb-item active">Détails</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="acte" class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header border-0 align-items-center d-flex">
+            <h4 class="card-title mb-0 flex-grow-1">Acte N° {{ acte.numeroOrdre }}</h4>
+            <div class="flex-shrink-0">
+              <button (click)="retour()" class="btn btn-light"><i class="ri-arrow-left-line align-bottom me-1"></i> Retour</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <p class="text-muted mb-1">N° d'ordre</p>
+                <h5 class="fs-14">{{ acte.numeroOrdre }}</h5>
+              </div>
+              <div class="col-md-4">
+                <p class="text-muted mb-1">Folio</p>
+                <h5 class="fs-14">{{ acte.folio }}</h5>
+              </div>
+              <div class="col-md-4">
+                <p class="text-muted mb-1">Région</p>
+                <h5 class="fs-14">{{ acte.region?.libelle ?? '---' }}</h5>
+              </div>
+              <div class="col-md-4">
+                <p class="text-muted mb-1">Registre</p>
+                <h5 class="fs-14">{{ acte.dossierRegistre?.nom ?? '---' }}</h5>
+              </div>
+              <div class="col-md-4">
+                <p class="text-muted mb-1">Date de création</p>
+                <h5 class="fs-14">{{ acte.createdAt | date: 'dd MMMM yyyy HH:mm' }}</h5>
+              </div>
+              <div class="col-12">
+                <p class="text-muted mb-1">Description</p>
+                <p>{{ acte.description ?? 'Aucune description' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Section pour les objets liés (Titre, Dépôt, etc.) -->
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header border-0">
+            <h4 class="card-title mb-0">Objet lié</h4>
+          </div>
+          <div class="card-body">
+            <div *ngIf="acte.titreFoncier">
+              <p>Cet acte est lié au Titre Foncier N° <strong>{{ acte.titreFoncier.numero }}</strong></p>
+              <button [routerLink]="['/dossiers/titres-fonciers', acte.titreFoncier.id]" class="btn btn-info btn-sm">Voir le titre</button>
+            </div>
+            <div *ngIf="acte.depot">
+              <p>Cet acte est lié au Dépôt N° <strong>{{ acte.depot.id }}</strong></p>
+              <button [routerLink]="['/dossiers/depots', acte.depot.id]" class="btn btn-info btn-sm">Voir le dépôt</button>
+            </div>
+            <div *ngIf="!acte.titreFoncier && !acte.depot && !acte.formalitePrealable && !acte.opposition">
+              <p class="text-muted">Aucun objet lié directement à cet acte pour le moment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

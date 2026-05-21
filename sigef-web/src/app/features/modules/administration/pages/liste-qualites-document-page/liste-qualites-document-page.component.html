@@ -1,0 +1,266 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Qualités de document</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin">Administration</a></li>
+                            <li class="breadcrumb-item active">Qualités de document</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeQualitesDocumentForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeQualitesDocument()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher une qualité de document..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheQualiteDocument()" *ngIf="filtresListeQualitesDocumentForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary add-btn" role="button" (click)="openNouvelleQualiteDocumentModal()"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un region</button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end align-items-center form-check-success">
+                            <label class="form-check-label me-2" for="formCheck8">
+                                Masquer les filtres
+                            </label>
+                            <input [(ngModel)]="masquerfiltresListeQualitesDocument" class="form-check-input" type="checkbox" id="formCheck8">
+                        </div>
+                        
+                        <form *ngIf="!masquerfiltresListeQualitesDocument" [formGroup]="filtresListeQualitesDocumentForm">
+                            <div class="row gy-4 mt-4 mb-4">                      
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="aSignaler" class="form-label text-muted">A signaler</label>
+                                        <ng-select formControlName="aSignaler">
+                                            <ng-option [value]="null">Afficher toutes les qualités de document</ng-option>
+                                            <ng-option [value]="true">Afficher uniquement les qualités de document à signaler</ng-option>
+                                            <ng-option [value]="false">Ne pas afficher les qualités de document  à signaler</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4 gap-2">
+                                <button (click)="effacerFiltresListeQualitesDocument()" class="btn btn-light">Effacer</button>
+                                <button (click)="filtrerListeQualitesDocument(0, listeQualitesDocument.paginationSize)" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des qualités de document</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-striped table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th scope="col" style="width: 50px;">#</th>
+                                        <th scope="col">Libellé</th>
+                                        <th scope="col">Statut</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let qualiteDocument of listeQualitesDocument.data; index as qualiteDocumentIndex">
+                                        <td>
+                                            {{ (listeQualitesDocument.paginationSize! * listeQualitesDocument.currentPage!) + qualiteDocumentIndex + 1 }}
+                                        </td>
+                                        <td>{{ qualiteDocument.libelle }}</td>
+                                        <td>
+                                            <span *ngIf="qualiteDocument.aSignaler == true" class="badge bg-danger-subtle text-danger text-uppercase">A signaler</span>
+                                            <span *ngIf="qualiteDocument.aSignaler == false" class="badge bg-success-subtle text-success text-uppercase">Valide</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="qualiteDocument.description">{{ qualiteDocument.description }}</span>
+                                            <span *ngIf="!qualiteDocument.description" class="text-muted text-end"><i>Aucune description</i></span>
+                                        </td>
+                                        <td>
+                                            {{ qualiteDocument.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-3 justify-content-center align-items-center">
+                                                <a role="button" (click)="openModificationQualiteDocumentModal(qualiteDocumentIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                                <a role="button" (click)="openSuppressionQualiteDocumentModal(qualiteDocumentIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                                            </div>
+                                            <!-- <div class="d-flex gap-3 justify-content-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" role="button" (click)="openModificationQualiteDocumentModal(qualiteDocumentIndex)">Modifier</a></li>
+                                                        <li class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a class="dropdown-item text-danger" role="button" (click)="openSuppressionQualiteDocumentModal(qualiteDocumentIndex)">Supprimer</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div> -->
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeQualitesDocument.currentPage" [totalItems]="listeQualitesDocument.totalItems" [totalPages]="listeQualitesDocument.totalPages" (paginationChange)="getQualitesDocument($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeQualitesDocument.data.length == 0" text="Aucune qualité de document"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+
+<!-- Modals -->
+<app-custom-modal title="Nouvelle qualité de document" [show]="showNouvelleQualiteDocumentModal" (modalClose)="annulerCreationQualiteDocument()">
+    <div body>
+        <form [formGroup]="nouvelleQualiteDocumentForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="nouvelleQualiteDocumentForm.get('libelle')!.invalid && (nouvelleQualiteDocumentForm.get('libelle')!.dirty || nouvelleQualiteDocumentForm.get('libelle')!.touched)">
+                            <app-form-message [show]="nouvelleQualiteDocumentForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="aSignaler" class="form-label">Est-ce une qualité de document à signaler ?</label>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="me-4">
+                                <input class="form-check-input" type="radio" [id]="'Oui'" formControlName="aSignaler" [value]="true">
+                                <label class="form-check-label ps-2" [for]="'Oui'">
+                                    Oui
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input" type="radio" [id]="'Non'" formControlName="aSignaler" [value]="false">
+                                <label class="form-check-label ps-2" [for]="'Non'">
+                                    Non
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="nouvelleQualiteDocumentForm.get('aSignaler')!.invalid && (nouvelleQualiteDocumentForm.get('aSignaler')!.dirty || nouvelleQualiteDocumentForm.get('aSignaler')!.touched)">
+                            <app-form-message [show]="nouvelleQualiteDocumentForm.get('aSignaler')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationQualiteDocument()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationQualiteDocument()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier cette qualité de document" [show]="showModificationQualiteDocumentModal" (modalClose)="annulerModificationQualiteDocument()">
+    <div body>
+        <form [formGroup]="modificationQualiteDocumentForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="modificationQualiteDocumentForm.get('libelle')!.invalid && (modificationQualiteDocumentForm.get('libelle')!.dirty || modificationQualiteDocumentForm.get('libelle')!.touched)">
+                            <app-form-message [show]="modificationQualiteDocumentForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="aSignaler" class="form-label">Est-ce une qualité de document à signaler ?</label>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="me-4">
+                                <input class="form-check-input" type="radio" [id]="'Oui'" formControlName="aSignaler" [value]="true">
+                                <label class="form-check-label ps-2" [for]="'Oui'">
+                                    Oui
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input" type="radio" [id]="'Non'" formControlName="aSignaler" [value]="false">
+                                <label class="form-check-label ps-2" [for]="'Non'">
+                                    Non
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="modificationQualiteDocumentForm.get('aSignaler')!.invalid && (modificationQualiteDocumentForm.get('aSignaler')!.dirty || modificationQualiteDocumentForm.get('aSignaler')!.touched)">
+                            <app-form-message [show]="modificationQualiteDocumentForm.get('aSignaler')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationQualiteDocument()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationQualiteDocument()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer cette qualité de document" [show]="showSuppressionQualiteDocumentModal" (modalClose)="closeSuppressionQualiteDocumentModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer cette qualité de document ? <span class="fw-bold">Elle sera déplacée dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionQualiteDocumentModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionQualiteDocument()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

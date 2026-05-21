@@ -1,0 +1,493 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Utilisateurs</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin">Administration</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin/securite">Sécurité</a></li>
+                            <li class="breadcrumb-item active">Utilisateurs</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeUtilisateursForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeUtilisateurs()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher une région..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheUtilisateur()" *ngIf="filtresListeUtilisateursForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary add-btn" role="button" (click)="openNouvelUtilisateurModal()"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un fichier</button> -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end align-items-center form-check-success">
+                            <label class="form-check-label me-2" for="formCheck8">
+                                Masquer les filtres
+                            </label>
+                            <input [(ngModel)]="masquerfiltresListeUtilisateurs" class="form-check-input" type="checkbox" id="formCheck8">
+                        </div>
+                        
+                        <form *ngIf="!masquerfiltresListeUtilisateurs" [formGroup]="filtresListeUtilisateursForm">
+                            <div class="row gy-4 mt-4 mb-4">                      
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="actif" class="form-label text-muted">Etat du compte</label>
+                                        <ng-select formControlName="actif">
+                                            <ng-option [value]="null">Afficher tous les comptes</ng-option>
+                                            <ng-option [value]="true">Afficher uniquement les comptes actifs</ng-option>
+                                            <ng-option [value]="false">Ne pas afficher les comptes actifs</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="profil" class="form-label text-muted">Profil</label>
+                                        <ng-select formControlName="profil"  [items]="profils" bindValue="id" bindLabel="libelle" (open)="getProfils()" placeholder="Tous les profils"></ng-select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="centre" class="form-label text-muted">Centre de conservation</label>
+                                        <ng-select formControlName="centre"  [items]="listeCentresConservationFonciere" bindValue="id" bindLabel="libelle" (open)="getCentresConservationFonciere()" placeholder="Tous les centres"></ng-select>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4 gap-2">
+                                <button (click)="effacerFiltresListeUtilisateurs()" class="btn btn-light">Effacer</button>
+                                <button (click)="filtrerListeUtilisateurs(0, listeUtilisateurs.paginationSize)" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des utilisateurs</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-striped table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <!-- <th scope="col" style="width: 50px;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                            </div>
+                                        </th> -->
+                                        <th scope="col" style="width: 50px;">#</th>
+                                        <th scope="col">Matricule</th>
+                                        <th scope="col" style="width: 50px;"></th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Prénoms</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Contact</th>
+                                        <th scope="col">Etat du compte</th>
+                                        <th scope="col">Profil</th>
+                                        <th scope="col">Centre de conservation</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let utilisateur of listeUtilisateurs.data; index as utilisateurIndex">
+                                        <td>
+                                            {{ (listeUtilisateurs.paginationSize! * listeUtilisateurs.currentPage!) + utilisateurIndex + 1 }}
+                                        </td>
+                                        <td>{{ utilisateur.matricule ?? '----' }}</td>
+                                        <td>
+                                            <!-- {{ utilisateur.id }} -->
+                                            <app-user-avatar [photoDeProfil]="utilisateur.photoDeProfil" [type]="2"></app-user-avatar>
+                                        </td>
+                                        <td>{{ utilisateur.nom }}</td>
+                                        <td>{{ utilisateur.prenoms }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="ri-mail-line fs-16 text-muted me-2"></i>
+                                                <span>{{ utilisateur.email }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="ri-phone-line fs-16 text-muted me-2"></i>
+                                                <span>{{ utilisateur.contact ?? '-- -- -- --' }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="utilisateur.actif" class="badge bg-success-subtle text-success text-uppercase">Actif</span>
+                                            <span *ngIf="!utilisateur.actif" class="badge bg-danger-subtle text-danger text-uppercase">Inactif</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="utilisateur.profil">{{ utilisateur.profil.titre }}</span>
+                                            <span *ngIf="!utilisateur.profil" class="text-muted text-end"><i>Aucun profil</i></span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="utilisateur.centreConservationFonciere">{{ utilisateur.centreConservationFonciere.nom }}</span>
+                                            <span *ngIf="!utilisateur.centreConservationFonciere" class="text-muted text-end"><i>Aucun centre de conservation</i></span>
+                                        </td>
+                                        <td>
+                                            {{ utilisateur.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td>
+                                            <!-- <div class="d-flex gap-3 justify-content-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item view-item-btn" role="button" (click)="openChangementMotDePasseUtilisateurModal(utilisateurIndex)"><i class="ri-shield-keyhole-line align-bottom me-2 text-muted"></i>Changer le mot de passe</a></li>
+                                                        <li><a class="dropdown-item edit-item-btn text-info" role="button" (click)="openModificationUtilisateurModal(utilisateurIndex)"><i class="ri-pencil-fill align-bottom me-2 text-info"></i>Modifier</a></li>
+                                                        <li><a class="dropdown-item remove-item-btn text-danger" role="button" (click)="openModificationActifUtilisateurModal(utilisateurIndex)"><i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i> Supprimer</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div> -->
+                                            <div class="d-flex gap-3 justify-content-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item"role="button" (click)="openChangementMotDePasseUtilisateurModal(utilisateurIndex)">Changer le mot de passe</a></li>
+                                                        <li><a class="dropdown-item" role="button" (click)="openModificationUtilisateurModal(utilisateurIndex)">Modifier</a></li>
+                                                        <li class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a class="dropdown-item" [ngClass]="{'text-danger': utilisateur.actif, 'text-success': !utilisateur.actif}" role="button" (click)="openModificationActifUtilisateurModal(utilisateurIndex)">
+                                                                {{ utilisateur.actif ? 'Désactiver le compte' : 'Réactiver le compte' }}
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeUtilisateurs.currentPage" [totalItems]="listeUtilisateurs.totalItems" [totalPages]="listeUtilisateurs.totalPages" (paginationChange)="getUtilisateurs($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeUtilisateurs.data.length == 0" text="Aucun utilisateur"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+
+<!-- Modals -->
+<app-custom-modal title="Nouvel utilisateur" [show]="showNouvelUtilisateurModal" (modalClose)="annulerCreationUtilisateur()">
+    <div body>
+        <form [formGroup]="nouvelUtilisateurForm" autocomplete="off">
+            <div class="row g-3">
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="identifiant" class="form-label">Nom d'utilisateur</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">&#64;</span>
+                            <input type="text" class="form-control" id="identifiant" formControlName="identifiant" autocomplete="off">
+                        </div>
+                        <div *ngIf="nouvelUtilisateurForm.get('identifiant')!.invalid && (nouvelUtilisateurForm.get('identifiant')!.dirty || nouvelUtilisateurForm.get('identifiant')!.touched)">
+                            <app-form-message [show]="nouvelUtilisateurForm.get('identifiant')!.errors?.['required']" type="danger" text="Entrer un identifiant"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="matricule" class="form-label">N° Matricule</label>
+                        <input type="text" class="form-control" id="matricule" formControlName="matricule" autocomplete="off">
+                        <div *ngIf="nouvelUtilisateurForm.get('matricule')!.invalid && (nouvelUtilisateurForm.get('matricule')!.dirty || nouvelUtilisateurForm.get('matricule')!.touched)">
+                            <app-form-message [show]="nouvelUtilisateurForm.get('matricule')!.errors?.['required']" type="danger" text="Entrer le matricule"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="nouvelUtilisateurForm.get('nom')!.invalid && (nouvelUtilisateurForm.get('nom')!.dirty || nouvelUtilisateurForm.get('nom')!.touched)">
+                            <app-form-message [show]="nouvelUtilisateurForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="prenoms" class="form-label">Prénoms</label>
+                        <input type="text" class="form-control" id="prenoms" formControlName="prenoms">
+                        <div *ngIf="nouvelUtilisateurForm.get('prenoms')!.invalid && (nouvelUtilisateurForm.get('prenoms')!.dirty || nouvelUtilisateurForm.get('prenoms')!.touched)">
+                            <app-form-message [show]="nouvelUtilisateurForm.get('prenoms')!.errors?.['required']" type="danger" text="Entrer les prénoms"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" formControlName="email">
+                        <div *ngIf="nouvelUtilisateurForm.get('email')!.invalid && (nouvelUtilisateurForm.get('email')!.dirty || nouvelUtilisateurForm.get('email')!.touched)">
+                            <app-form-message [show]="nouvelUtilisateurForm.get('email')!.errors?.['required']" type="danger" text="Entrer un email"></app-form-message>
+                            <app-form-message [show]="nouvelUtilisateurForm.get('email')!.errors?.['email']" type="danger" text="Email invalide"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="contact" class="form-label">Contact</label>
+                        <input type="text" appFormatContact class="form-control" id="contact" formControlName="contact">
+                        <div *ngIf="nouvelUtilisateurForm.get('contact')!.invalid && (nouvelUtilisateurForm.get('contact')!.dirty || nouvelUtilisateurForm.get('contact')!.touched)">
+                            <app-form-message [show]="nouvelUtilisateurForm.get('contact')!.errors?.['required']" type="danger" text="Entrer un contact"></app-form-message>
+                            <app-form-message [show]="nouvelUtilisateurForm.get('contact')!.errors?.['minlength']" type="danger" text="Le numéro doit comporter au moins 8 chiffres"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="profilId" class="form-label">Profil</label>
+                        <ng-select formControlName="profilId" (open)="getProfils()">
+                            <ng-option *ngFor="let profil of profils" [value]="profil.id">{{ profil.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="nouvelUtilisateurForm.get('profilId')!.invalid && (nouvelUtilisateurForm.get('profilId')!.dirty || nouvelUtilisateurForm.get('profilId')!.touched)">
+                            <app-form-message [show]="nouvelUtilisateurForm.get('profilId')!.errors?.['required']" type="danger" text="Choisir un profil"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="centreConservationFonciereId" class="form-label">Centre de conservation</label>
+                        <ng-select formControlName="centreConservationFonciereId" [items]="listeCentresConservationFonciere" bindValue="id" bindLabel="libelle" (open)="getCentresConservationFonciere()"></ng-select>
+                        <div *ngIf="nouvelUtilisateurForm.get('centreConservationFonciereId')!.invalid && (nouvelUtilisateurForm.get('centreConservationFonciereId')!.dirty || nouvelUtilisateurForm.get('centreConservationFonciereId')!.touched)">
+                            <app-form-message [show]="nouvelUtilisateurForm.get('centreConservationFonciereId')!.errors?.['required']" type="danger" text="Choisir un centre"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="password" class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control pe-5 password-input" onpaste="return false" autocomplete="new-password" placeholder="********" id="password" formControlName="password" required>
+                        <div *ngIf="nouvelUtilisateurForm.get('password')!.invalid && (nouvelUtilisateurForm.get('password')!.dirty || nouvelUtilisateurForm.get('password')!.touched)">
+                            <app-form-message [show]="nouvelUtilisateurForm.get('password')!.errors?.['required']" type="danger" text="Entrer un mot de passe"></app-form-message>
+                            <app-form-message [show]="nouvelUtilisateurForm.get('password')!.errors?.['minlength']" type="danger" text="Le mot de passe doit contenir au moins 8 caractères"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="confirmPassword" class="form-label">Confirmer le mot de passe</label>
+                        <input type="password" class="form-control pe-5 password-input" onpaste="return false" autocomplete="new-password" placeholder="********" id="confirmPassword" formControlName="confirmPassword" required>
+                        <div *ngIf="nouvelUtilisateurForm.get('confirmPassword')!.invalid && (nouvelUtilisateurForm.get('confirmPassword')!.dirty || nouvelUtilisateurForm.get('confirmPassword')!.touched)">
+                            <app-form-message [show]="nouvelUtilisateurForm.get('confirmPassword')!.errors?.['required']" type="danger" text="Confirmer le mot de passe"></app-form-message>
+                            <app-form-message [show]="nouvelUtilisateurForm.get('confirmPassword')!.errors?.['minlength']" type="danger" text="Le mot de passe doit contenir au moins 8 caractères"></app-form-message>
+                            <app-form-message [show]="!nouvelUtilisateurForm.get('confirmPassword')!.errors?.['required'] && confirmError" type="danger" text="Les mots de passe ne correspondent pas"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" [disabled]="disableButton" (click)="annulerCreationUtilisateur()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationUtilisateur()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier l'utilisateur" [show]="showModificationUtilisateurModal" (modalClose)="annulerModificationUtilisateur()">
+    <div body>
+        <form [formGroup]="modificationUtilisateurForm">
+            <div class="row g-3">
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="identifiant" class="form-label">Nom d'utilisateur</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">&#64;</span>
+                            <input type="text" class="form-control text-muted" id="identifiant" formControlName="identifiant" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="matricule" class="form-label">N° Matricule</label>
+                        <input type="text" class="form-control" id="matricule" formControlName="matricule" autocomplete="off">
+                        <div *ngIf="modificationUtilisateurForm.get('matricule')!.invalid && (modificationUtilisateurForm.get('matricule')!.dirty || modificationUtilisateurForm.get('matricule')!.touched)">
+                            <app-form-message [show]="modificationUtilisateurForm.get('matricule')!.errors?.['required']" type="danger" text="Entrer le matricule"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="modificationUtilisateurForm.get('nom')!.invalid && (modificationUtilisateurForm.get('nom')!.dirty || modificationUtilisateurForm.get('nom')!.touched)">
+                            <app-form-message [show]="modificationUtilisateurForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="prenoms" class="form-label">Prénoms</label>
+                        <input type="text" class="form-control" id="prenoms" formControlName="prenoms">
+                        <div *ngIf="modificationUtilisateurForm.get('prenoms')!.invalid && (modificationUtilisateurForm.get('prenoms')!.dirty || modificationUtilisateurForm.get('prenoms')!.touched)">
+                            <app-form-message [show]="modificationUtilisateurForm.get('prenoms')!.errors?.['required']" type="danger" text="Entrer les prénoms"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control text-muted" id="email" formControlName="email">
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="contact" class="form-label">Contact</label>
+                        <input type="tel" class="form-control" id="contact" formControlName="contact">
+                        <div *ngIf="modificationUtilisateurForm.get('contact')!.invalid && (modificationUtilisateurForm.get('contact')!.dirty || modificationUtilisateurForm.get('contact')!.touched)">
+                            <app-form-message [show]="modificationUtilisateurForm.get('contact')!.errors?.['required']" type="danger" text="Entrer un contact"></app-form-message>
+                            <app-form-message [show]="modificationUtilisateurForm.get('contact')!.errors?.['minlength']" type="danger" text="Le numéro doit comporter au moins 8 chiffres"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="profilId" class="form-label">Profil</label>
+                        <ng-select formControlName="profilId" (open)="getProfils()">
+                            <ng-option *ngFor="let profil of profils" [value]="profil.id">{{ profil.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="modificationUtilisateurForm.get('profilId')!.invalid && (modificationUtilisateurForm.get('profilId')!.dirty || modificationUtilisateurForm.get('profilId')!.touched)">
+                            <app-form-message [show]="modificationUtilisateurForm.get('profilId')!.errors?.['required']" type="danger" text="Choisir un profil"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="centreConservationFonciereId" class="form-label">Centre de conservation</label>
+                        <ng-select formControlName="centreConservationFonciereId" [items]="listeCentresConservationFonciere" bindValue="id" bindLabel="libelle" (open)="getCentresConservationFonciere()"></ng-select>
+                        <div *ngIf="modificationUtilisateurForm.get('centreConservationFonciereId')!.invalid && (modificationUtilisateurForm.get('centreConservationFonciereId')!.dirty || modificationUtilisateurForm.get('centreConservationFonciereId')!.touched)">
+                            <app-form-message [show]="modificationUtilisateurForm.get('centreConservationFonciereId')!.errors?.['required']" type="danger" text="Choisir un centre"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" [disabled]="disableButton" (click)="annulerModificationUtilisateur()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationUtilisateur()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Changer le mot de passe de l'utilisateur" [show]="showChangementMotDePasseUtilisateurModal" (modalClose)="annulerChangementMotDePasseUtilisateur()">
+    <div body>
+        <form [formGroup]="changementMotDePasseUtilisateurForm">
+            <div class="row g-3">
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="identifiant" class="form-label">Nom d'utilisateur</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">&#64;</span>
+                            <input type="text" class="form-control text-muted" id="identifiant" formControlName="identifiant" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control text-muted" id="email" formControlName="email">
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="changementMotDePasseUtilisateurForm.get('nom')!.invalid && (changementMotDePasseUtilisateurForm.get('nom')!.dirty || changementMotDePasseUtilisateurForm.get('nom')!.touched)">
+                            <app-form-message [show]="changementMotDePasseUtilisateurForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="prenoms" class="form-label">Prénoms</label>
+                        <input type="text" class="form-control" id="prenoms" formControlName="prenoms">
+                        <div *ngIf="changementMotDePasseUtilisateurForm.get('prenoms')!.invalid && (changementMotDePasseUtilisateurForm.get('prenoms')!.dirty || changementMotDePasseUtilisateurForm.get('prenoms')!.touched)">
+                            <app-form-message [show]="changementMotDePasseUtilisateurForm.get('prenoms')!.errors?.['required']" type="danger" text="Entrer les prénoms"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="password" class="form-label">Nouveau mot de passe</label>
+                        <input type="password" class="form-control pe-5 password-input" onpaste="return false" placeholder="********" id="password" formControlName="password" required>
+                        <div *ngIf="changementMotDePasseUtilisateurForm.get('password')!.invalid && (changementMotDePasseUtilisateurForm.get('password')!.dirty || changementMotDePasseUtilisateurForm.get('password')!.touched)">
+                            <app-form-message [show]="changementMotDePasseUtilisateurForm.get('password')!.errors?.['required']" type="danger" text="Entrer un mot de passe"></app-form-message>
+                            <app-form-message [show]="changementMotDePasseUtilisateurForm.get('password')!.errors?.['minlength']" type="danger" text="Le mot de passe doit contenir au moins 8 caractères"></app-form-message>
+                            <app-form-message [show]="passwordError" type="danger" text="Le mot de passe doit contenir au moins 8 caractères"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="confirmPassword" class="form-label">Confirmer le mot de passe</label>
+                        <input type="password" class="form-control pe-5 password-input" onpaste="return false" placeholder="********" id="confirmPassword" formControlName="confirmPassword" required>
+                        <div *ngIf="(changementMotDePasseUtilisateurForm.get('confirmPassword')!.invalid || confirmError) && (changementMotDePasseUtilisateurForm.get('confirmPassword')!.dirty || changementMotDePasseUtilisateurForm.get('confirmPassword')!.touched)">
+                            <app-form-message [show]="changementMotDePasseUtilisateurForm.get('confirmPassword')!.errors?.['required']" type="danger" text="Confirmer le mot de passe"></app-form-message>
+                            <app-form-message [show]="changementMotDePasseUtilisateurForm.get('confirmPassword')!.errors?.['minlength']" type="danger" text="Le mot de passe doit contenir au moins 8 caractères"></app-form-message>
+                            <app-form-message [show]="!changementMotDePasseUtilisateurForm.get('confirmPassword')!.errors?.['required'] && confirmError" type="danger" text="Les mots de passe ne correspondent pas"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" [disabled]="disableButton" (click)="annulerChangementMotDePasseUtilisateur()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerChangementMotDePasseUtilisateur()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="{{ modificationActifUtilisateurForm.get('actif')?.value ? 'Désactiver' : 'Réactiver' }} le compte de l'utilisateur" [show]="showModificationActifUtilisateurModal" (modalClose)="annulerModificationActifUtilisateur()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de {{ modificationActifUtilisateurForm.get('actif')?.value ? 'désactiver le compte de l\'utilisateur' : 'réactiver le compte de l\'utilisateur' }} {{modificationActifUtilisateurForm.get('nom')?.value}} {{modificationActifUtilisateurForm.get('prenoms')?.value}} ?</p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" [disabled]="disableButton" (click)="annulerModificationActifUtilisateur()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationActifUtilisateur()" class="btn" [ngClass]="{'btn-danger': modificationActifUtilisateurForm.get('actif')?.value , 'btn-primary': !modificationActifUtilisateurForm.get('actif')?.value }">Confirmer</button>
+        </div>
+    </div>
+</app-custom-modal>

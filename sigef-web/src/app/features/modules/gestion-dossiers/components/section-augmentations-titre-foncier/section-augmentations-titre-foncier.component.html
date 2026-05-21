@@ -1,0 +1,336 @@
+<div class="card">
+    <div class="card-header">
+        <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14"><span class="me-2">A</span> AUGMENTATIONS (Acquisitions d'Immeubles ou de parcelles contigus)</h6>
+    </div>
+    <div class="card-header">
+        <form>
+            <div class="row g-3 justify-content-between">
+                <div class="col-lg-10 col-md-8">
+                    <form [formGroup]="filtresListeAugmentationsForm" class="row g-3">
+                        <div class="col-lg-5 col-md-12 col-sm-12">
+                            <div class="search-box">
+                                <input type="text" class="form-control" formControlName="search" placeholder="Rechercher...">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
+                        </div>
+                        <!--end col-->
+
+                        <div class="col-lg-3 col-md-4">
+                            <input type="date" class="form-control" formControlName="dateInscription" placeholder="Date d'inscription...">
+                        </div>
+
+                        <div class="col-lg-3 col-md-4">
+                            <ng-select (open)="getModesAcquisition()" bindValue="id" bindLabel="libelle" [items]="modesAcquisition" formControlName="mode" placeholder="Toutes les modes"></ng-select>
+                        </div>
+                        <!--end col-->
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <div class="d-flex gap-2 align-items-center justify-content-end">
+                        <button (click)="filtrerListeAugmentations()" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                        <button (click)="openNouvelleAugmentationModal()" class="btn btn-primary"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                    </div>
+                </div>
+                <!--end col-->
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive no-min-height mt-2 mb-3">
+            <table class="table table-borderless table-striped table-hover align-middle mb-0">
+                <thead class="">
+                    <tr class="">
+                        <th>#</th>
+                        <th scope="col">N° BA</th>
+                        <th scope="col">Date d'inscription</th>
+                        <th scope="col">N° du titre foncier acquis</th>
+                        <th scope="col">Désignation</th>
+                        <th scope="col">Mode d'acquisition</th>
+                        <th scope="col">Contenance</th>
+                        <th scope="col">Prix d'acquisition</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let augmentation of listeAugmentations.data; index as augmentationIndex">
+                        <td>
+                            {{ (listeAugmentations.paginationSize! * listeAugmentations.currentPage!) + augmentationIndex + 1 }}
+                        </td>
+                        <td>{{ augmentation.numeroBordereauAnalytique }}</td>
+                        <td>{{ augmentation.dateInscription | date: 'dd MMM YYYY' | titlecase }}</td>
+                        <td>{{ augmentation.numeroTitreAcquis }}</td>
+                        <td>{{ augmentation.designationImmeuble }}</td>
+                        <td>{{ augmentation.modeAcquisition ? augmentation.modeAcquisition.libelle : '----' }}</td>
+                        <td>{{ augmentation.contenanceImmeubleAcquisEnHectare ?? 0 }} ha {{ augmentation.contenanceImmeubleAcquisEnAre ?? 0 }} a {{ augmentation.contenanceImmeubleAcquisEnCentiare ?? 0 }} ca</td>
+                        <td>
+                            <span *ngIf="!augmentation.prixAcquisition">-----</span>
+                            <span *ngIf="augmentation.prixAcquisition">{{ augmentation.prixAcquisition | number: '1.0-0' }}</span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-flex gap-3 justify-content-end align-items-center">
+                                <a role="button" (click)="openModificationAugmentationModal(augmentationIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                <a role="button" (click)="openSuppressionAugmentationModal(augmentationIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <app-custom-pagination-controls [currentPage]="listeAugmentations.currentPage" [totalItems]="listeAugmentations.totalItems" [totalPages]="listeAugmentations.totalPages" (paginationChange)="getAugmentations($event)"></app-custom-pagination-controls>
+            </div>
+
+            <app-no-data-banner [show]="listeAugmentations.data.length == 0" text="Aucune augmentation"></app-no-data-banner>
+        </div>
+    </div>
+    <!-- end card body -->
+</div>
+<!-- end card -->
+
+<!-- Modals -->
+<app-custom-modal title="Nouvelle augmentation" [show]="showNouvelleAugmentationModal" (modalClose)="annulerCreationAugmentation()">
+    <div body>
+        <form [formGroup]="nouvelleAugmentationForm">
+            <div class="row gy-4 mb-3">
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroBordereauAnalytique" class="form-label">Numéro de bordereau analytique <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroBordereauAnalytique" formControlName="numeroBordereauAnalytique">
+
+                        <div *ngIf="nouvelleAugmentationForm.get('numeroBordereauAnalytique')!.invalid && (nouvelleAugmentationForm.get('numeroBordereauAnalytique')!.dirty || nouvelleAugmentationForm.get('numeroBordereauAnalytique')!.touched)">
+                            <app-form-message [show]="nouvelleAugmentationForm.get('numeroBordereauAnalytique')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="dateInscription" class="form-label">Date d'inscription <span class="text-muted">*</span></label>
+                        <input type="date" class="form-control" id="dateInscription" formControlName="dateInscription">
+
+                        <div *ngIf="nouvelleAugmentationForm.get('dateInscription')!.invalid && (nouvelleAugmentationForm.get('dateInscription')!.dirty || nouvelleAugmentationForm.get('dateInscription')!.touched)">
+                            <app-form-message [show]="nouvelleAugmentationForm.get('dateInscription')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroTitreAcquis" class="form-label">Numéro du titre foncier où figurait l'immeuble acquis <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroTitreAcquis" formControlName="numeroTitreAcquis" placeholder="RM-00050-RT">
+
+                        <div *ngIf="nouvelleAugmentationForm.get('numeroTitreAcquis')!.invalid && (nouvelleAugmentationForm.get('numeroTitreAcquis')!.dirty || nouvelleAugmentationForm.get('numeroTitreAcquis')!.touched)">
+                            <app-form-message [show]="nouvelleAugmentationForm.get('numeroTitreAcquis')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="designationImmeuble" class="form-label">Désignation de l'immmeuble <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="designationImmeuble" formControlName="designationImmeuble" rows="3"></textarea>
+
+                        <div *ngIf="nouvelleAugmentationForm.get('designationImmeuble')!.invalid && (nouvelleAugmentationForm.get('designationImmeuble')!.dirty || nouvelleAugmentationForm.get('designationImmeuble')!.touched)">
+                            <app-form-message [show]="nouvelleAugmentationForm.get('designationImmeuble')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="modeAcquisitionId" class="form-label ">Mode d'acquisition <span class="text-muted">*</span></label>
+                        <ng-select id="modeAcquisitionId" formControlName="modeAcquisitionId" (open)="getModesAcquisition()" [items]="modesAcquisition" bindValue="id" bindLabel="libelle"></ng-select>
+
+                        <div *ngIf="nouvelleAugmentationForm.get('modeAcquisitionId')!.invalid && (nouvelleAugmentationForm.get('modeAcquisitionId')!.dirty || nouvelleAugmentationForm.get('modeAcquisitionId')!.touched)">
+                            <app-form-message [show]="nouvelleAugmentationForm.get('modeAcquisitionId')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0">Contenance</h5>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <p class="text-muted m-0">Valeur: {{ getValeurContenance(nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.value, nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.value, nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.value) }}</p>
+                                <p class="text-muted m-0">Superficie = {{ getSuperficieContenance(nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.value, nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.value, nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.value) }} m²</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceImmeubleAcquisEnHectare" class="form-label ">Hectare (Ha) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceImmeubleAcquisEnHectare" formControlName="contenanceImmeubleAcquisEnHectare">
+
+                                <div *ngIf="nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.invalid && (nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.dirty || nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.touched)">
+                                    <app-form-message [show]="nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceImmeubleAcquisEnAre" class="form-label ">Are (a) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceImmeubleAcquisEnAre" formControlName="contenanceImmeubleAcquisEnAre">
+
+                                <div *ngIf="nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.invalid && (nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.dirty || nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.touched)">
+                                    <app-form-message [show]="nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceImmeubleAcquisEnCentiare" class="form-label">Centiare (ca) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceImmeubleAcquisEnCentiare" formControlName="contenanceImmeubleAcquisEnCentiare">
+
+                                <div *ngIf="nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.invalid && (nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.dirty || nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.touched)">
+                                    <app-form-message [show]="nouvelleAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="prixAcquisition" class="form-label">Prix d'acquisition</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="prixAcquisition" formControlName="prixAcquisition">
+                            <span class="input-group-text">F CFA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationAugmentation()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationAugmentation()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier cette augmentation" [show]="showModificationAugmentationModal" (modalClose)="annulerModificationAugmentation()">
+    <div body>
+        <form [formGroup]="modificationAugmentationForm">
+            <div class="row gy-4 mb-3">
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroBordereauAnalytique" class="form-label">Numéro de bordereau analytique <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroBordereauAnalytique" formControlName="numeroBordereauAnalytique">
+
+                        <div *ngIf="modificationAugmentationForm.get('numeroBordereauAnalytique')!.invalid && (modificationAugmentationForm.get('numeroBordereauAnalytique')!.dirty || modificationAugmentationForm.get('numeroBordereauAnalytique')!.touched)">
+                            <app-form-message [show]="modificationAugmentationForm.get('numeroBordereauAnalytique')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="dateInscription" class="form-label">Date d'inscription <span class="text-muted">*</span></label>
+                        <input type="date" class="form-control" id="dateInscription" formControlName="dateInscription">
+
+                        <div *ngIf="modificationAugmentationForm.get('dateInscription')!.invalid && (modificationAugmentationForm.get('dateInscription')!.dirty || modificationAugmentationForm.get('dateInscription')!.touched)">
+                            <app-form-message [show]="modificationAugmentationForm.get('dateInscription')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroTitreAcquis" class="form-label">Numéro du titre foncier où figurait l'immeuble acquis <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroTitreAcquis" formControlName="numeroTitreAcquis" placeholder="RM-00050-RT">
+
+                        <div *ngIf="modificationAugmentationForm.get('numeroTitreAcquis')!.invalid && (modificationAugmentationForm.get('numeroTitreAcquis')!.dirty || modificationAugmentationForm.get('numeroTitreAcquis')!.touched)">
+                            <app-form-message [show]="modificationAugmentationForm.get('numeroTitreAcquis')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="designationImmeuble" class="form-label">Désignation de l'immmeuble <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="designationImmeuble" formControlName="designationImmeuble" rows="3"></textarea>
+
+                        <div *ngIf="modificationAugmentationForm.get('designationImmeuble')!.invalid && (modificationAugmentationForm.get('designationImmeuble')!.dirty || modificationAugmentationForm.get('designationImmeuble')!.touched)">
+                            <app-form-message [show]="modificationAugmentationForm.get('designationImmeuble')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="modeAcquisitionId" class="form-label ">Mode d'acquisition <span class="text-muted">*</span></label>
+                        <ng-select id="modeAcquisitionId" formControlName="modeAcquisitionId" (open)="getModesAcquisition()" [items]="modesAcquisition" bindValue="id" bindLabel="libelle"></ng-select>
+
+                        <div *ngIf="modificationAugmentationForm.get('modeAcquisitionId')!.invalid && (modificationAugmentationForm.get('modeAcquisitionId')!.dirty || modificationAugmentationForm.get('modeAcquisitionId')!.touched)">
+                            <app-form-message [show]="modificationAugmentationForm.get('modeAcquisitionId')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0">Contenance</h5>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <p class="text-muted m-0">Valeur: {{ getValeurContenance(modificationAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.value, modificationAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.value, modificationAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.value) }}</p>
+                                <p class="text-muted m-0">Superficie = {{ getSuperficieContenance(modificationAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.value, modificationAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.value, modificationAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.value) }} m²</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceImmeubleAcquisEnHectare" class="form-label ">Hectare (Ha) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceImmeubleAcquisEnHectare" formControlName="contenanceImmeubleAcquisEnHectare">
+
+                                <div *ngIf="modificationAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.invalid && (modificationAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.dirty || modificationAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.touched)">
+                                    <app-form-message [show]="modificationAugmentationForm.get('contenanceImmeubleAcquisEnHectare')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceImmeubleAcquisEnAre" class="form-label ">Are (a) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceImmeubleAcquisEnAre" formControlName="contenanceImmeubleAcquisEnAre">
+
+                                <div *ngIf="modificationAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.invalid && (modificationAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.dirty || modificationAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.touched)">
+                                    <app-form-message [show]="modificationAugmentationForm.get('contenanceImmeubleAcquisEnAre')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceImmeubleAcquisEnCentiare" class="form-label">Centiare (ca) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceImmeubleAcquisEnCentiare" formControlName="contenanceImmeubleAcquisEnCentiare">
+
+                                <div *ngIf="modificationAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.invalid && (modificationAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.dirty || modificationAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.touched)">
+                                    <app-form-message [show]="modificationAugmentationForm.get('contenanceImmeubleAcquisEnCentiare')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="prixAcquisition" class="form-label">Prix d'acquisition</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="prixAcquisition" formControlName="prixAcquisition">
+                            <span class="input-group-text">F CFA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationAugmentation()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationAugmentation()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer cette augmentation" [show]="showSuppressionAugmentationModal" (modalClose)="closeSuppressionAugmentationModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer cette augmentation ? <span class="fw-bold">Elle sera déplacée dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionAugmentationModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionAugmentation()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

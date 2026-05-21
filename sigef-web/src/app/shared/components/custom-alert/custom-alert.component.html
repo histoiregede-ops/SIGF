@@ -1,0 +1,49 @@
+<div *ngIf="show" class="alert-fixed">
+    <!-- Primary Alert -->
+    <div *ngIf="type == 'primary'" class="alert alert-primary alert-border-left alert-dismissible fade show material-shadow" role="alert">
+        <i class="ri-user-smile-line me-3 align-middle"></i> {{text}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Secondary Alert -->
+    <div *ngIf="type == 'secondary'" class="alert alert-secondary alert-border-left alert-dismissible fade show material-shadow" role="alert">
+        <i class="ri-check-double-line me-3 align-middle"></i> {{text}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Success Alert -->
+    <div *ngIf="type == 'success'" class="alert alert-success alert-border-left alert-dismissible fade show material-shadow" role="alert">
+        <i class="ri-notification-off-line me-3 align-middle"></i> {{text}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Danger Alert -->
+    <div *ngIf="type == 'danger'" class="alert alert-danger alert-border-left alert-dismissible fade show material-shadow" role="alert">
+        <i class="ri-error-warning-line me-3 align-middle"></i> {{text}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Warning Alert -->
+    <div *ngIf="type == 'warning'" class="alert alert-warning alert-border-left alert-dismissible fade show material-shadow" role="alert">
+        <i class="ri-alert-line me-3 align-middle"></i> {{text}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Info Alert -->
+    <div *ngIf="type == 'info'" class="alert alert-info alert-border-left alert-dismissible fade show material-shadow" role="alert">
+        <i class="ri-airplay-line me-3 align-middle"></i> {{text}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Light Alert -->
+        <div *ngIf="type == 'light'" class="alert alert-light alert-border-left alert-dismissible fade show material-shadow" role="alert">
+            <i class="ri-mail-line me-3 align-middle"></i> {{text}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+    <!-- Dark Alert -->
+    <div *ngIf="type == 'dark'" class="alert alert-dark alert-border-left alert-dismissible fade show material-shadow" role="alert">
+        <i class="ri-refresh-line me-3 align-middle"></i> {{text}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>

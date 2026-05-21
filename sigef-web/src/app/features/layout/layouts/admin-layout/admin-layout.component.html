@@ -1,0 +1,113 @@
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <app-navbar-header></app-navbar-header>
+
+    <!-- ========== App Menu ========== -->
+    <div class="navbar-menu">
+        <ngx-simplebar class="w-100 vh-100" [options]="{ autoHide: false, scrollbarMinSize: 100 }">
+        <!-- LOGO -->
+        
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="index.html" class="invisible logo logo-dark">
+                <span class="logo-sm">
+                    <span class="fw-bold text-uppercase text-muted">SIGEF</span>
+                </span>
+                <span class="logo-lg">
+                    <span class="fw-bold text-uppercase text-muted">SIGEF</span>
+                </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="index.html" class="invisible logo logo-light">
+                <span class="logo-sm">
+                    <span class="fw-bold text-uppercase text-muted">SIGEF</span>
+                </span>
+                <span class="logo-lg">
+                    <span class="fw-bold text-uppercase text-muted">SIGEF</span>
+                </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+
+        <div id="scrollbar">
+            <div class="container-fluid">
+                <div id="two-column-menu">
+                </div>
+                <ul class="navbar-nav" id="navbar-nav">
+                    <app-navbar-menu-title title="Général"></app-navbar-menu-title>
+                    <app-navbar-menu-item icon="ri-information-line" title="Informations" link="/admin/general/informations"></app-navbar-menu-item>
+                    <app-navbar-menu-item icon="ri-image-line" title="Logo" link="/admin/general/logo"></app-navbar-menu-item>
+
+                    <app-navbar-menu-title title="Sécurité"></app-navbar-menu-title>
+                    <app-navbar-menu-item icon="ri-group-line" title="Utilisateurs" link="/admin/securite/utilisateurs"></app-navbar-menu-item>
+                    <app-navbar-menu-item icon="ri-profile-line" title="Profils" link="/admin/securite/profils"></app-navbar-menu-item>
+                    <app-navbar-menu-item icon="ri-shield-user-line" title="Rôles" link="/admin/securite/roles"></app-navbar-menu-item>
+
+                    <app-navbar-menu-title title="Paramétrages"></app-navbar-menu-title>
+                    <app-navbar-menu-item icon="ri-building-line" title="Types de registre" link="/admin/parametrage/types-registre"></app-navbar-menu-item>
+                    <app-navbar-menu-item icon="ri-book-mark-line" title="Qualités de document" link="/admin/parametrage/qualites-document"></app-navbar-menu-item>
+                    <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_ADMINISTRATEUER)" icon="ri-earth-line" title="Situations" link="/admin/parametrage/situations"
+                        menuGroupId="situations">
+                        <app-navbar-menu-item title="Périodes" link="/admin/parametrage/situations/periodes"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Regions" link="/admin/parametrage/situations/regions"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Préfectures" link="/admin/parametrage/situations/prefectures"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Communes" link="/admin/parametrage/situations/communes"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Cantons" link="/admin/parametrage/situations/cantons"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Quartiers" link="/admin/parametrage/situations/quartiers"></app-navbar-menu-item>
+                    </app-navbar-menu-group>
+                    <app-navbar-menu-group *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_ADMINISTRATEUER)" icon="ri-user-line" title="Parties prenantes" link="/admin/parametrage/parties-prenantes"
+                        menuGroupId="partiesPrenantes">
+                        <app-navbar-menu-item title="Civilités" link="/admin/parametrage/parties-prenantes/civilites"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Nationalités" link="/admin/parametrage/parties-prenantes/nationalites"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Professions" link="/admin/parametrage/parties-prenantes/professions"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Formes juridiques" link="/admin/parametrage/parties-prenantes/formes-juridiques"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Secteurs d'activité" link="/admin/parametrage/parties-prenantes/secteurs-activite"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Types de personne morale" link="/admin/parametrage/parties-prenantes/types-personne-morale"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Liens de groupe" link="/admin/parametrage/parties-prenantes/liens-groupe"></app-navbar-menu-item>
+                        <app-navbar-menu-item title="Natures de relation légale" link="/admin/parametrage/parties-prenantes/natures-relation-legale"></app-navbar-menu-item>
+                    </app-navbar-menu-group>
+                    
+                    <app-navbar-menu-title title="Configuration"></app-navbar-menu-title>
+                    <app-navbar-menu-item icon="ri-pie-chart-line" title="Menu 1" link="/indexation/stats"></app-navbar-menu-item>
+
+                    <app-navbar-menu-title title="Système"></app-navbar-menu-title>
+                    <app-navbar-menu-item icon="ri-pie-chart-line" title="Menu 1" link="/indexation/stats"></app-navbar-menu-item>
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+
+        <!-- <div class="sidebar-background"></div> -->
+        </ngx-simplebar>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <router-outlet></router-outlet>
+        <!-- End Page-content -->
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6"> 2025 © SIGEF
+                    </div>
+                    <div class="col-sm-6"> <div class="text-sm-end d-none d-sm-block">Système Intégré de Gestion Foncière</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->

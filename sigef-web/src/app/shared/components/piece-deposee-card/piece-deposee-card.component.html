@@ -1,0 +1,30 @@
+<div *ngIf="pieceDeposee" class="border rounded border-dashed p-2">
+    <div class="d-flex align-items-center">
+        <div class="flex-shrink-0 me-3">
+            <div class="avatar-sm">
+                <div class="avatar-title bg-light text-secondary rounded fs-24">
+                    <i *ngIf="!pieceDeposee.extension" class="ri-file-3-line align-bottom text-primary"></i>
+                    <div *ngIf="pieceDeposee.extension" [ngClass]="getFichierRessourceIcone(pieceDeposee.extension)" class="file-icon flex-shrink-0"></div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-grow-1 overflow-hidden">
+            <div class="fs-13 mb-1 text-body">{{ pieceDeposee.nom }}</div>
+            <div class="text-muted">{{ pieceDeposee.tailleEnOctets | fileSize }}</div>
+        </div>
+        <div class="flex-shrink-0 ms-2">
+            <div class="d-flex gap-1">
+                <button *ngIf="pieceDeposee.fichier" type="button" class="btn btn-icon text-muted btn-sm fs-18 material-shadow-none" title="Télécharger"><i class="ri-download-2-line"></i></button>
+                <div class="dropdown">
+                    <button class="btn btn-icon text-muted btn-sm fs-18 dropdown material-shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="ri-more-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Renommer</a></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i> Supprimer</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

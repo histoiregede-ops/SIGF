@@ -1,0 +1,249 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Titres Fonciers</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers">Dossiers</a></li>
+                            <li class="breadcrumb-item active">Titres Fonciers</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-end align-items-center flex-wrap gap-2">
+                            <!-- <div class="flex-grow-1"> -->
+                                <button class="btn btn-primary" role="link" routerLink="./nouveau"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                            <!-- </div> -->
+                            <!-- <div class="flex-shrink-0">
+                                <div class="search-box ms-2">
+                                    <input type="text" class="form-control" id="searchProductList" placeholder="Rechercher...">
+                                    <i class="ri-search-line search-icon"></i>
+                                </div>
+                                <div class="hstack text-nowrap gap-2">
+                                    <button class="btn btn-soft-danger material-shadow-none" id="remove-actions" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                                    <button class="btn btn-danger material-shadow-none"><i class="ri-filter-2-line me-1 align-bottom"></i> Filters</button>
+                                    <button class="btn btn-soft-success material-shadow-none">Import</button>
+                                    <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false" class="btn btn-soft-info material-shadow-none"><i class="ri-more-2-fill"></i></button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                        <li><a class="dropdown-item" href="#">All</a></li>
+                                        <li><a class="dropdown-item" href="#">Last Week</a></li>
+                                        <li><a class="dropdown-item" href="#">Last Month</a></li>
+                                        <li><a class="dropdown-item" href="#">Last Year</a></li>
+                                    </ul>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- <div class="d-flex justify-content-between align-items-center"> -->
+                            <!-- <h4 class="card-title mb-0 flex-grow-1">Filtres</h4> -->
+                            <div class="d-flex justify-content-end align-items-center form-check-success">
+                                <label class="form-check-label me-2" for="formCheck8">
+                                    Masquer les filtres
+                                </label>
+                                <input [(ngModel)]="masquerfiltresListeTitresFonciers" class="form-check-input" type="checkbox" id="formCheck8">
+                            </div>
+                        <!-- </div> -->
+                        
+                        <form *ngIf="!masquerfiltresListeTitresFonciers" [formGroup]="filtresListeTitresFonciersForm">
+                            <div class="row gy-4 mt-4 mb-4">                      
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="requisition" class="form-label text-muted">Numéro de réquisition</label>
+                                        <input type="text" class="form-control" id="requisition" formControlName="requisition">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="creatDebut" class="form-label text-muted">Dates de création (début)</label>
+                                        <input type="date" class="form-control" id="creatDebut" formControlName="creatDebut">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="creatFin" class="form-label text-muted">Dates de création (fin)</label>
+                                        <input type="date" class="form-control" id="creatFin" formControlName="creatFin">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="requerant" class="form-label text-muted">Réquérant</label>
+                                        <input type="text" class="form-control" id="requerant" formControlName="requerant">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="proprietaire" class="form-label text-muted">Propriétaire</label>
+                                        <input type="text" class="form-control" id="proprietaire" formControlName="proprietaire">
+                                    </div>
+                                </div>        
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="type" class="form-label text-muted">Type d'immeuble</label>
+                                        <select class="form-select" formControlName="type">
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="etat" class="form-label text-muted">Etat de l'immeuble</label>
+                                        <select class="form-select" formControlName="etat">
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="region" class="form-label text-muted">Région</label>
+                                        <select class="form-select" formControlName="region">
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="village" class="form-label text-muted">Village</label>
+                                        <input type="text" class="form-control" id="village" formControlName="village">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="lieudit" class="form-label text-muted">Lieudit</label>
+                                        <input type="text" class="form-control" id="lieudit" formControlName="lieudit">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="rue" class="form-label text-muted">Rue</label>
+                                        <input type="text" class="form-control" id="rue" formControlName="rue">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="circon" class="form-label text-muted">Circonférence</label>
+                                        <input type="text" class="form-control" id="circon" formControlName="circon">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="commune" class="form-label text-muted">Commune</label>
+                                        <input type="text" class="form-control" id="commune" formControlName="commune">
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4">
+                                <button (click)="filtrerListeTitresFonciers()" class="btn btn-success add-btn"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des dossiers</h4>
+                        <!-- <div class="flex-shrink-0">
+                            <div class="dropdown card-header-dropdown">
+                                <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="text-muted">02 Nov 2021 to 31 Dec 2021<i class="mdi mdi-chevron-down ms-1"></i></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Today</a>
+                                    <a class="dropdown-item" href="#">Last Week</a>
+                                    <a class="dropdown-item" href="#">Last Month</a>
+                                    <a class="dropdown-item" href="#">Current Year</a>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th scope="col">#</th>
+                                        <th scope="col">Numéro de titre foncier</th>
+                                        <th scope="col">Processus de création</th>
+                                        <th scope="col">Statut</th>
+                                        <th scope="col">Propriétaire actuel</th>
+                                        <th scope="col">Région</th>
+                                        <th scope="col">Période</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" align="center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let titreFoncier of listeTitresFonciers.data; index as titreFoncierIndex" [ngClass]="{'table-danger': titreFoncier.statut == statutsTitreFoncier.ANNULE}">
+                                        <td>
+                                            {{ (listeTitresFonciers.paginationSize! * listeTitresFonciers.currentPage!) + titreFoncierIndex + 1 }}
+                                        </td>
+                                        <td>{{ titreFoncier.numero | getNumeroTitreFoncier: titreFoncier.numeroPrefixe: titreFoncier.numeroSuffixe }}</td>
+                                        <td>
+                                            <div *ngIf="titreFoncier.processusCreation && titreFoncier.processusCreation == ProcessusCreationTitreFoncier.IMMATRICULATION"><span class="badge bg-success-subtle text-success text-uppercase">Immatriculation</span></div>
+                                            <div *ngIf="titreFoncier.processusCreation && titreFoncier.processusCreation == ProcessusCreationTitreFoncier.MORCELLEMENT"><span class="badge bg-info-subtle text-info text-uppercase">Morcellement</span></div>
+                                            <div *ngIf="titreFoncier.processusCreation && titreFoncier.processusCreation == ProcessusCreationTitreFoncier.COPROPRIETE"><span class="badge bg-danger-subtle text-danger text-uppercase">Copropriété</span></div>
+                                            <div *ngIf="!titreFoncier.processusCreation"><span class="badge bg-danger-subtle text-danger text-uppercase">Non spécifié</span></div>
+                                        </td>
+                                        <td>
+                                            <div [ngSwitch]="titreFoncier.statut">
+                                                <div *ngSwitchCase="statutsTitreFoncier.VALIDE"><span class="badge bg-success-subtle text-success text-uppercase">Valide</span></div>
+                                                <div *ngSwitchCase="statutsTitreFoncier.ANNULE"><span class="badge bg-danger-subtle text-danger text-uppercase">Annulé</span></div>
+                                                <div *ngSwitchDefault>----</div>
+                                            </div>
+                                        </td>
+                                        <!-- <td>{{ titreFoncier.mutations?.length }}</td> -->
+                                        <td>
+                                            <app-parties-prenantes-table [partiesPrenantes]="titreFoncier.mutations | getProprietaireActuel" [typePartiePrenante]="typesPartiePrenante.PROPRIETAIRE_SUCCESSIF" noPartiePrenanteText="Aucun propriétaire"></app-parties-prenantes-table>
+                                        </td>
+                                        <td>{{ titreFoncier.situationPropriete?.region?.libelle ?? '---' }}</td>
+                                        <td>{{ titreFoncier.situationPropriete?.region?.periode?.libelle ?? '---' }}</td>
+                                        <td>{{ titreFoncier.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}</td>
+                                        <td align="center">
+                                            <a [routerLink]="'./' + titreFoncier.id!"><i class="ri-edit-box-line fs-5"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeTitresFonciers.currentPage" [totalItems]="listeTitresFonciers.totalItems" [totalPages]="listeTitresFonciers.totalPages" (paginationChange)="getTitresFonciers($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeTitresFonciers.data.length == 0" text="Aucun titre foncier"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->

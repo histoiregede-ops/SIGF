@@ -1,0 +1,102 @@
+<div class="card h-100 border-0 shadow-sm overflow-hidden">
+  <div class="card-header bg-white border-bottom py-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="card-title mb-0 fw-bold text-primary">
+        <i class="bi bi-file-earmark-text me-2"></i>Indexation d'Acte
+      </h5>
+      <span class="badge bg-light text-primary border">Page {{ pageIndexation }}</span>
+    </div>
+  </div>
+
+  <div class="card-body p-0 overflow-auto" #scrollContainer>
+    <div class="p-4">
+      <!-- Métadonnées -->
+      <form [formGroup]="metadonneesForm">
+        <div class="row g-3 mb-4">
+          <div class="col-12">
+            <h6 class="text-uppercase text-muted fw-bold small mb-3">Informations Générales</h6>
+          </div>
+          
+          <div class="col-md-6">
+            <label class="form-label small fw-bold">Qualité du document</label>
+            <select class="form-select form-select-sm" formControlName="qualiteDocumentId">
+              <option [ngValue]="null">Sélectionner...</option>
+              <option *ngFor="let qualite of qualitesDocument" [ngValue]="qualite.id">{{ qualite.libelle }}</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-bold">Région</label>
+            <select class="form-select form-select-sm" formControlName="regionId">
+              <option [ngValue]="null">Sélectionner...</option>
+              <option *ngFor="let region of regionsMetadonneesForm" [ngValue]="region.id">{{ region.libelle }}</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-bold">Volume Registre</label>
+            <input type="text" class="form-control form-control-sm" formControlName="volumeRegistre">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-bold">Folio Registre</label>
+            <input type="text" class="form-control form-control-sm" formControlName="folioRegistre">
+          </div>
+        </div>
+      </form>
+
+      <hr class="my-4 opacity-10">
+
+      <!-- Détails de l'acte -->
+      <form [formGroup]="nouveauActeForm">
+        <div class="row g-3">
+          <div class="col-12">
+            <h6 class="text-uppercase text-muted fw-bold small mb-3">Détails de l'Acte</h6>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-bold">Numéro d'Ordre</label>
+            <input type="text" class="form-control form-control-sm" formControlName="numeroOrdre" placeholder="Ex: 123/2024">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-bold">Folio</label>
+            <input type="number" class="form-control form-control-sm" formControlName="folio">
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-bold">Description / Observations</label>
+            <textarea class="form-control form-control-sm" formControlName="description" rows="3"></textarea>
+          </div>
+        </div>
+      </form>
+
+      <div class="mt-4" [formGroup]="metadonneesForm">
+        <label class="form-label small fw-bold">Commentaires additionnels</label>
+        <textarea class="form-control form-control-sm" formControlName="commentaire" rows="2"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer bg-light border-top p-3">
+    <div class="d-flex gap-2">
+      <ng-container *ngIf="typeTacheIndexation === typesTacheIndexation.SAISIE">
+        <button *ngIf="!progressionTacheIndexation" class="btn btn-primary btn-sm flex-grow-1" (click)="validerSaisie()" [disabled]="!formulaireEtatActif">
+          <i class="bi bi-check-circle me-1"></i>Valider Saisie
+        </button>
+        <button *ngIf="progressionTacheIndexation" class="btn btn-warning btn-sm flex-grow-1" (click)="modifierSaisie()" [disabled]="!formulaireEtatActif">
+          <i class="bi bi-pencil me-1"></i>Modifier Saisie
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="typeTacheIndexation === typesTacheIndexation.CONTROLE">
+        <button class="btn btn-success btn-sm flex-grow-1" (click)="validerControle()" [disabled]="!formulaireEtatActif">
+          <i class="bi bi-check-all me-1"></i>Valider Contrôle
+        </button>
+        <button class="btn btn-danger btn-sm flex-grow-1" (click)="rejeter()" [disabled]="!formulaireEtatActif">
+          <i class="bi bi-x-circle me-1"></i>Rejeter
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</div>

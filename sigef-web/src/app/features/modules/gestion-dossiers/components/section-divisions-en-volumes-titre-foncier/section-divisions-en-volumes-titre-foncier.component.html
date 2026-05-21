@@ -1,0 +1,374 @@
+<div class="card">
+    <div class="card-header">
+        <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14"><span class="me-2">C</span> DIVISIONS EN VOLUMES</h6>
+    </div>
+    <div class="card-header">
+        <form>
+            <div class="row g-3 justify-content-between">
+                <div class="col-lg-10 col-md-8">
+                    <form [formGroup]="filtresListeDivisionsEnVolumesForm" class="row g-3">
+                        <div class="col-lg-5 col-md-12 col-sm-12">
+                            <div class="search-box">
+                                <input type="text" class="form-control" formControlName="search" placeholder="Rechercher...">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
+                        </div>
+                        <!--end col-->
+
+                        <div class="col-lg-3 col-md-4">
+                            <ng-select (open)="getModesAlienation()" bindValue="id" bindLabel="libelle" [items]="modesAlienation" formControlName="mode" placeholder="Toutes les modes"></ng-select>
+                        </div>
+                        <!--end col-->
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <div class="d-flex gap-2 align-items-center justify-content-end">
+                        <button (click)="filtrerListeDivisionsEnVolumes()" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                        <button (click)="openNouvelleDivisionEnVolumeModal()" class="btn btn-primary"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                    </div>
+                </div>
+                <!--end col-->
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive no-min-height mt-2 mb-3">
+            <table class="table table-borderless table-striped table-hover align-middle mb-0">
+                <thead class="">
+                    <tr class="border-bottom boder-light">
+                        <th rowspan="2">#</th>
+                        <th scope="col" rowspan="2">N° du volume</th>
+                        <th scope="col" colspan="2" class="text-center">Situation</th>
+                        <th scope="col" rowspan="2">Nature de description</th>
+                        <th scope="col" rowspan="2">Affectation</th>
+                        <th scope="col" rowspan="2">Contenance (m²)</th>
+                        <th scope="col" rowspan="2">Valeur du volume</th>
+                        <th scope="col" colspan="2" class="text-center">Mutations</th>
+                        <th scope="col" rowspan="2">Extinction du volume</th>
+                        <th rowspan="2" class="text-end">Action</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Bâtiment</th>
+                        <th scope="col">Niveau</th>
+                        <th scope="col">Mode d'alienation</th>
+                        <th scope="col">Titre foncier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let divisionEnVolume of listeDivisionsEnVolumes.data; index as divisionEnVolumeIndex">
+                        <td>
+                            {{ (listeDivisionsEnVolumes.paginationSize! * listeDivisionsEnVolumes.currentPage!) + divisionEnVolumeIndex + 1 }}
+                        </td>
+                        <td>{{ divisionEnVolume.numeroVolume }}</td>
+                        <td>{{ divisionEnVolume.situationBatiment }}</td>
+                        <td>{{ divisionEnVolume.situationNiveau }}</td>
+                        <td>{{ divisionEnVolume.natureDescription }}</td>
+                        <td>{{ divisionEnVolume.affectation }}</td>
+                        <td>{{ divisionEnVolume.contenance ?? 0 }} m²</td>
+                        <td>
+                            <span *ngIf="!divisionEnVolume.valeurVolume">-----</span>
+                            <span *ngIf="divisionEnVolume.valeurVolume">{{ divisionEnVolume.valeurVolume | number: '1.0-0' }}</span>
+                        </td>
+                        <td>{{ divisionEnVolume.modeAlienation ? divisionEnVolume.modeAlienation.libelle : '----' }}</td>
+                        <td>{{ divisionEnVolume.mutationTitreFoncier }}</td>
+                        <td>{{ divisionEnVolume.extinctionVolume }}</td>
+                        <td class="text-end">
+                            <div class="d-flex gap-3 justify-content-end align-items-center">
+                                <a role="button" (click)="openModificationDivisionEnVolumeModal(divisionEnVolumeIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                <a role="button" (click)="openSuppressionDivisionEnVolumeModal(divisionEnVolumeIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <app-custom-pagination-controls [currentPage]="listeDivisionsEnVolumes.currentPage" [totalItems]="listeDivisionsEnVolumes.totalItems" [totalPages]="listeDivisionsEnVolumes.totalPages" (paginationChange)="getDivisionsEnVolumes($event)"></app-custom-pagination-controls>
+            </div>
+
+            <app-no-data-banner [show]="listeDivisionsEnVolumes.data.length == 0" text="Aucune division en volume"></app-no-data-banner>
+        </div>
+    </div>
+    <!-- end card body -->
+</div>
+<!-- end card -->
+
+<!-- Modals -->
+<app-custom-modal title="Nouvelle division en volume" [show]="showNouvelleDivisionEnVolumeModal" (modalClose)="annulerCreationDivisionEnVolume()">
+    <div body>
+        <form [formGroup]="nouvelleDivisionEnVolumeForm">
+            <div class="row gy-4 mb-3">
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroVolume" class="form-label">Numéro du volume <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroVolume" formControlName="numeroVolume">
+
+                        <div *ngIf="nouvelleDivisionEnVolumeForm.get('numeroVolume')!.invalid && (nouvelleDivisionEnVolumeForm.get('numeroVolume')!.dirty || nouvelleDivisionEnVolumeForm.get('numeroVolume')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnVolumeForm.get('numeroVolume')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0 text-muted">Situation</h5>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="situationBatiment" class="form-label ">Bâtiment <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="situationBatiment" formControlName="situationBatiment">
+
+                                <div *ngIf="nouvelleDivisionEnVolumeForm.get('situationBatiment')!.invalid && (nouvelleDivisionEnVolumeForm.get('situationBatiment')!.dirty || nouvelleDivisionEnVolumeForm.get('situationBatiment')!.touched)">
+                                    <app-form-message [show]="nouvelleDivisionEnVolumeForm.get('situationBatiment')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="situationNiveau" class="form-label ">Niveau <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="situationNiveau" formControlName="situationNiveau">
+
+                                <div *ngIf="nouvelleDivisionEnVolumeForm.get('situationNiveau')!.invalid && (nouvelleDivisionEnVolumeForm.get('situationNiveau')!.dirty || nouvelleDivisionEnVolumeForm.get('situationNiveau')!.touched)">
+                                    <app-form-message [show]="nouvelleDivisionEnVolumeForm.get('situationNiveau')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="natureDescription" class="form-label ">Nature et description <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="natureDescription" formControlName="natureDescription" rows="3"></textarea>
+                
+                        <div *ngIf="nouvelleDivisionEnVolumeForm.get('natureDescription')!.invalid && (nouvelleDivisionEnVolumeForm.get('natureDescription')!.dirty || nouvelleDivisionEnVolumeForm.get('natureDescription')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnVolumeForm.get('natureDescription')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="affectation" class="form-label ">Affectation <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="affectation" formControlName="affectation" rows="3"></textarea>
+                
+                        <div *ngIf="nouvelleDivisionEnVolumeForm.get('affectation')!.invalid && (nouvelleDivisionEnVolumeForm.get('affectation')!.dirty || nouvelleDivisionEnVolumeForm.get('affectation')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnVolumeForm.get('affectation')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="contenance" class="form-label">Contenance (m²) <span class="text-muted">*</span></label>
+                        <input type="number" class="form-control" id="contenance" formControlName="contenance">
+
+                        <div *ngIf="nouvelleDivisionEnVolumeForm.get('contenance')!.invalid && (nouvelleDivisionEnVolumeForm.get('contenance')!.dirty || nouvelleDivisionEnVolumeForm.get('contenance')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnVolumeForm.get('contenance')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="valeurVolume" class="form-label">Valeur du volume <span class="text-muted">*</span></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="valeurVolume" formControlName="valeurVolume">
+                            <span class="input-group-text">F CFA</span>
+                        </div>
+
+                        <div *ngIf="nouvelleDivisionEnVolumeForm.get('valeurVolume')!.invalid && (nouvelleDivisionEnVolumeForm.get('valeurVolume')!.dirty || nouvelleDivisionEnVolumeForm.get('valeurVolume')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnVolumeForm.get('valeurVolume')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0 text-muted">Mutation</h5>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="modeAlienationId" class="form-label ">Mode d'aliénation <span class="text-muted">*</span></label>
+                                <ng-select id="modeAlienationId" formControlName="modeAlienationId" (open)="getModesAlienation()" [items]="modesAlienation" bindValue="id" bindLabel="libelle"></ng-select>
+        
+                                <div *ngIf="nouvelleDivisionEnVolumeForm.get('modeAlienationId')!.invalid && (nouvelleDivisionEnVolumeForm.get('modeAlienationId')!.dirty || nouvelleDivisionEnVolumeForm.get('modeAlienationId')!.touched)">
+                                    <app-form-message [show]="nouvelleDivisionEnVolumeForm.get('modeAlienationId')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="mutationTitreFoncier" class="form-label ">Titre foncier <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="mutationTitreFoncier" formControlName="mutationTitreFoncier">
+
+                                <div *ngIf="nouvelleDivisionEnVolumeForm.get('mutationTitreFoncier')!.invalid && (nouvelleDivisionEnVolumeForm.get('mutationTitreFoncier')!.dirty || nouvelleDivisionEnVolumeForm.get('mutationTitreFoncier')!.touched)">
+                                    <app-form-message [show]="nouvelleDivisionEnVolumeForm.get('mutationTitreFoncier')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="extinctionVolume" class="form-label">Extinction du volume <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="extinctionVolume" formControlName="extinctionVolume">
+
+                        <div *ngIf="nouvelleDivisionEnVolumeForm.get('extinctionVolume')!.invalid && (nouvelleDivisionEnVolumeForm.get('extinctionVolume')!.dirty || nouvelleDivisionEnVolumeForm.get('extinctionVolume')!.touched)">
+                            <app-form-message [show]="nouvelleDivisionEnVolumeForm.get('extinctionVolume')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationDivisionEnVolume()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationDivisionEnVolume()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier cette division en volume" [show]="showModificationDivisionEnVolumeModal" (modalClose)="annulerModificationDivisionEnVolume()">
+    <div body>
+        <form [formGroup]="modificationDivisionEnVolumeForm">
+            <div class="row gy-4 mb-3">
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroVolume" class="form-label">Numéro du volume <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroVolume" formControlName="numeroVolume">
+
+                        <div *ngIf="modificationDivisionEnVolumeForm.get('numeroVolume')!.invalid && (modificationDivisionEnVolumeForm.get('numeroVolume')!.dirty || modificationDivisionEnVolumeForm.get('numeroVolume')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnVolumeForm.get('numeroVolume')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0 text-muted">Situation</h5>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="situationBatiment" class="form-label ">Bâtiment <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="situationBatiment" formControlName="situationBatiment">
+
+                                <div *ngIf="modificationDivisionEnVolumeForm.get('situationBatiment')!.invalid && (modificationDivisionEnVolumeForm.get('situationBatiment')!.dirty || modificationDivisionEnVolumeForm.get('situationBatiment')!.touched)">
+                                    <app-form-message [show]="modificationDivisionEnVolumeForm.get('situationBatiment')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="situationNiveau" class="form-label ">Niveau <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="situationNiveau" formControlName="situationNiveau">
+
+                                <div *ngIf="modificationDivisionEnVolumeForm.get('situationNiveau')!.invalid && (modificationDivisionEnVolumeForm.get('situationNiveau')!.dirty || modificationDivisionEnVolumeForm.get('situationNiveau')!.touched)">
+                                    <app-form-message [show]="modificationDivisionEnVolumeForm.get('situationNiveau')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="natureDescription" class="form-label ">Nature et description <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="natureDescription" formControlName="natureDescription" rows="3"></textarea>
+                
+                        <div *ngIf="modificationDivisionEnVolumeForm.get('natureDescription')!.invalid && (modificationDivisionEnVolumeForm.get('natureDescription')!.dirty || modificationDivisionEnVolumeForm.get('natureDescription')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnVolumeForm.get('natureDescription')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="affectation" class="form-label ">Affectation <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="affectation" formControlName="affectation" rows="3"></textarea>
+                
+                        <div *ngIf="modificationDivisionEnVolumeForm.get('affectation')!.invalid && (modificationDivisionEnVolumeForm.get('affectation')!.dirty || modificationDivisionEnVolumeForm.get('affectation')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnVolumeForm.get('affectation')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="contenance" class="form-label">Contenance (m²) <span class="text-muted">*</span></label>
+                        <input type="number" class="form-control" id="contenance" formControlName="contenance">
+
+                        <div *ngIf="modificationDivisionEnVolumeForm.get('contenance')!.invalid && (modificationDivisionEnVolumeForm.get('contenance')!.dirty || modificationDivisionEnVolumeForm.get('contenance')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnVolumeForm.get('contenance')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="valeurVolume" class="form-label">Valeur du volume <span class="text-muted">*</span></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="valeurVolume" formControlName="valeurVolume">
+                            <span class="input-group-text">F CFA</span>
+                        </div>
+
+                        <div *ngIf="modificationDivisionEnVolumeForm.get('valeurVolume')!.invalid && (modificationDivisionEnVolumeForm.get('valeurVolume')!.dirty || modificationDivisionEnVolumeForm.get('valeurVolume')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnVolumeForm.get('valeurVolume')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0 text-muted">Mutation</h5>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="modeAlienationId" class="form-label ">Mode d'aliénation <span class="text-muted">*</span></label>
+                                <ng-select id="modeAlienationId" formControlName="modeAlienationId" (open)="getModesAlienation()" [items]="modesAlienation" bindValue="id" bindLabel="libelle"></ng-select>
+        
+                                <div *ngIf="modificationDivisionEnVolumeForm.get('modeAlienationId')!.invalid && (modificationDivisionEnVolumeForm.get('modeAlienationId')!.dirty || modificationDivisionEnVolumeForm.get('modeAlienationId')!.touched)">
+                                    <app-form-message [show]="modificationDivisionEnVolumeForm.get('modeAlienationId')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div>
+                                <label for="mutationTitreFoncier" class="form-label ">Titre foncier <span class="text-muted">*</span></label>
+                                <input type="text" class="form-control" id="mutationTitreFoncier" formControlName="mutationTitreFoncier">
+
+                                <div *ngIf="modificationDivisionEnVolumeForm.get('mutationTitreFoncier')!.invalid && (modificationDivisionEnVolumeForm.get('mutationTitreFoncier')!.dirty || modificationDivisionEnVolumeForm.get('mutationTitreFoncier')!.touched)">
+                                    <app-form-message [show]="modificationDivisionEnVolumeForm.get('mutationTitreFoncier')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="extinctionVolume" class="form-label">Extinction du volume <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="extinctionVolume" formControlName="extinctionVolume">
+
+                        <div *ngIf="modificationDivisionEnVolumeForm.get('extinctionVolume')!.invalid && (modificationDivisionEnVolumeForm.get('extinctionVolume')!.dirty || modificationDivisionEnVolumeForm.get('extinctionVolume')!.touched)">
+                            <app-form-message [show]="modificationDivisionEnVolumeForm.get('extinctionVolume')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationDivisionEnVolume()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationDivisionEnVolume()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer cette division en volume" [show]="showSuppressionDivisionEnVolumeModal" (modalClose)="closeSuppressionDivisionEnVolumeModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer cette division en volume ? <span class="fw-bold">Elle sera déplacée dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionDivisionEnVolumeModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionDivisionEnVolume()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

@@ -1,0 +1,238 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Villages</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin">Administration</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin/situations">Situations</a></li>
+                            <li class="breadcrumb-item active">Villages</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeVillagesForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeVillages()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher un village..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheVillage()" *ngIf="filtresListeVillagesForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary add-btn" role="button" (click)="openNouveauVillageModal()"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un village</button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end align-items-center form-check-success">
+                            <label class="form-check-label me-2" for="formCheck8">
+                                Masquer les filtres
+                            </label>
+                            <input [(ngModel)]="masquerfiltresListeVillages" class="form-check-input" type="checkbox" id="formCheck8">
+                        </div>
+                        
+                        <form *ngIf="!masquerfiltresListeVillages" [formGroup]="filtresListeVillagesForm">
+                            <div class="row gy-4 mt-4 mb-4">                      
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="canton" class="form-label text-muted">Canton</label>
+                                        <ng-select formControlName="canton" bindLabel="libelle" placeholder="Tous les cantons" bindValue="id" [items]="cantons"></ng-select>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4 gap-2">
+                                <button (click)="effacerFiltresListeVillages()" class="btn btn-light">Effacer</button>
+                                <button (click)="filtrerListeVillages(0, listeVillages.paginationSize)" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des villages</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-striped table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th scope="col" style="width: 50px;">#</th>
+                                        <th scope="col">Libellé</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Canton</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let village of listeVillages.data; index as villageIndex">
+                                        <td>
+                                            {{ (listeVillages.paginationSize! * listeVillages.currentPage!) + villageIndex + 1 }}
+                                        </td>
+                                        <td>{{ village.libelle }}</td>
+                                        <td>
+                                            <span *ngIf="village.description">{{ village.description }}</span>
+                                            <span *ngIf="!village.description" class="text-muted text-end"><i>Aucune description</i></span>
+                                        </td>
+                                        <td>{{ village.canton ? village.canton.libelle  : '---' }}</td>
+                                        <td>
+                                            {{ village.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-3 justify-content-center align-items-center">
+                                                <a role="button" (click)="openModificationVillageModal(villageIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                                <a role="button" (click)="openSuppressionVillageModal(villageIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                                            </div>
+                                            <!-- <div class="d-flex gap-3 justify-content-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" role="button" (click)="openModificationVillageModal(villageIndex)">Modifier</a></li>
+                                                        <li class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a class="dropdown-item text-danger" role="button" (click)="openSuppressionVillageModal(villageIndex)">Supprimer</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div> -->
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeVillages.currentPage" [totalItems]="listeVillages.totalItems" [totalPages]="listeVillages.totalPages" (paginationChange)="getVillages($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeVillages.data.length == 0" text="Aucun village"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+
+<!-- Modals -->
+<app-custom-modal title="Nouveau village" [show]="showNouveauVillageModal" (modalClose)="annulerCreationVillage()">
+    <div body>
+        <form [formGroup]="nouveauVillageForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="nouveauVillageForm.get('libelle')!.invalid && (nouveauVillageForm.get('libelle')!.dirty || nouveauVillageForm.get('libelle')!.touched)">
+                            <app-form-message [show]="nouveauVillageForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="cantonId" class="form-label">Canton</label>
+                        <ng-select formControlName="cantonId" (open)="getCantons()">
+                            <ng-option *ngFor="let canton of cantons" [value]="canton.id">{{ canton.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="nouveauVillageForm.get('cantonId')!.invalid && (nouveauVillageForm.get('cantonId')!.dirty || nouveauVillageForm.get('cantonId')!.touched)">
+                            <app-form-message [show]="nouveauVillageForm.get('cantonId')!.errors?.['required']" type="danger" text="Choisir un canton"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationVillage()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationVillage()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier ce village" [show]="showModificationVillageModal" (modalClose)="annulerModificationVillage()">
+    <div body>
+        <form [formGroup]="modificationVillageForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="modificationVillageForm.get('libelle')!.invalid && (modificationVillageForm.get('libelle')!.dirty || modificationVillageForm.get('libelle')!.touched)">
+                            <app-form-message [show]="modificationVillageForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="cantonId" class="form-label">Canton</label>
+                        <ng-select formControlName="cantonId" (open)="getCantons()">
+                            <ng-option *ngFor="let canton of cantons" [value]="canton.id">{{ canton.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="modificationVillageForm.get('cantonId')!.invalid && (modificationVillageForm.get('cantonId')!.dirty || modificationVillageForm.get('cantonId')!.touched)">
+                            <app-form-message [show]="modificationVillageForm.get('cantonId')!.errors?.['required']" type="danger" text="Choisir un canton"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationVillage()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationVillage()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer ce village" [show]="showSuppressionVillageModal" (modalClose)="closeSuppressionVillageModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer ce village ? <span class="fw-bold">Il sera déplacé dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionVillageModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionVillage()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

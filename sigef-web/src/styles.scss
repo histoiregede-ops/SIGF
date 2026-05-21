@@ -1,0 +1,161 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+    // --color-primary: #0162B1 !important;
+    --color-primary: #187eb5 !important;
+    --es-primary: var(--color-primary) !important;
+    // --es-primary-rgb: 4, 77, 128 !important;
+    // --es-primary-rgb: 40, 151, 212 !important;
+    --es-primary-rgb: 24, 126, 181 !important;
+    --es-vertical-menu-bg: var(--color-primary) !important;
+    --es-vertical-menu-item-color: #e8ecff !important;
+    // --es-vertical-menu-title-color: #abb9e8 !important;
+    --es-vertical-menu-title-color: #c2b29f !important;
+
+    //#044D80
+}
+
+[data-bs-theme="dark"][data-sidebar="dark"] {
+    --es-vertical-menu-sub-item-color: #abb9e8;
+}
+
+.auth-bg-cover {
+    // background: linear-gradient(-45deg, var(--es-primary) 50%, var(--es-success));
+    background: var(--es-primary) !important;
+}
+
+.file-icon:before {
+    font-size: 18px !important;
+}
+
+.default-icon-lg,
+.file-icon-lg:before {
+    font-size: 36px !important;
+}
+
+// @media (min-width: 1024.1px) {
+//     [data-layout="horizontal"] .page-content {
+//         margin-top: 0 !important;
+//     }
+
+//     [data-layout="horizontal"] .container-fluid {
+//       max-width: 100%;
+//     }
+// }
+
+[data-layout="horizontal"] .page-content {
+    padding-top: 70px; // calc(70px + var(--es-grid-gutter-width));
+    padding-right: 0;
+    padding-bottom: 60px;
+    padding-left: 0;
+    margin: 0 !important;
+
+    height: calc(100vh - 70px) !important;
+}
+
+// [data-layout="horizontal"] .page-content .container-fluid {
+//     padding-right: var(--es-grid-gutter-width) !important;
+//     padding-left: var(--es-grid-gutter-width) !important;
+// }
+
+@media (min-width: 1024.1px) {
+    [data-layout="horizontal"] .page-title-box {
+        margin: 0;
+    }
+}
+
+[data-layout="horizontal"] .page-title-box {
+    padding: 1.2rem var(--es-grid-gutter-width);
+    --es-bg-opacity: 1;
+    background-color: rgba(var(--es-white-rgb), var(--es-bg-opacity)) !important;
+    -webkit-box-shadow: var(--es-page-title-box-shadow);
+    box-shadow: var(--es-page-title-box-shadow);
+    border-bottom: 1px solid var(--es-page-title-border);
+    margin: -23px 0 var(--es-grid-gutter-width) 0;
+    // margin: 0;
+}
+
+[data-layout="horizontal"] .btn-topbar {
+    color: #ced4da !important;
+}
+
+// Table
+.table-responsive {
+    min-height: 320px !important;
+}
+
+.table-responsive.no-min-height {
+    min-height: unset !important;
+}
+
+.h-35 {
+    height: 40% !important;
+}
+
+.h-65 {
+    height: 60% !important;
+}
+
+table thead {
+    background-color: var(--es-primary) !important;
+    color: white !important;
+    text-transform: uppercase;
+}
+
+// .table>:not(caption)>*>* {
+//     box-shadow: none !important;
+// }
+
+// .nav-item {
+//     color: white !important;
+// }
+
+// Titre des cards
+.card-title {
+    font-size: 15px !important;
+}
+
+// Ng Select
+[data-bs-theme="dark"] {
+    .ng-select .ng-select-container {
+        color: var(--es-body-color) !important;
+        background-color: var(--es-input-bg-custom) !important;
+        border: var(--es-border-width) solid var(--es-input-border-custom) !important;
+    }
+
+    .ng-dropdown-panel {
+        border: var(--es-border-width) solid var(--es-input-border-custom) !important;
+    }
+
+    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+        color: var(--es-body-color) !important;
+        background-color: var(--es-input-bg-custom) !important;
+    }
+
+    .ng-dropdown-panel.ng-select-bottom {
+        border-top-color: var(--es-input-border-custom) !important;
+    }
+
+    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option:hover,
+    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
+        background-color: #575b5f !important;
+    }
+}
+
+// Nav tabs
+.nav.text-body-secondary .nav-item .nav-link {
+    color: var(--es-text-body-secondary);
+}
+
+.nav.text-body-secondary .nav-item .nav-link.active {
+    color: var(--es-primary);
+    font-weight: 600 !important;
+}
+
+// Details Page header
+.header-icon {
+    color: var(--es-gray-700);
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+    vertical-align: middle;
+}

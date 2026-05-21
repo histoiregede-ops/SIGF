@@ -1,0 +1,6 @@
+<li class="nav-item">
+    <a class="nav-link menu-link" [routerLink]="link" [queryParams]="linkParams" routerLinkActive="active" [routerLinkActiveOptions]="{exact: link == '/'}">
+        <i *ngIf="icon" [ngClass]="icon"></i> <span>{{ title }}</span>
+        <span *ngIf="badgeText" class="badge badge-pill" [ngClass]="'bg-' + badgeColor">{{ badgeText }}</span>
+    </a>
+</li>

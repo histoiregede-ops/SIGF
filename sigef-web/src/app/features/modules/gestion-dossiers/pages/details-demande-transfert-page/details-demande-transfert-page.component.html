@@ -1,0 +1,194 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <div class="mb-sm-0">
+                        <a routerLink="../" class="text-muted fw-meium"><i class="ri-arrow-go-back-line me-1"></i> Retour</a>
+                    </div>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers">Dossiers</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers/transferts">Transferts</a></li>
+                            <li *ngIf="typeRegistre" class="breadcrumb-item"><a [routerLink]="['/dossiers/transferts', typeRegistreId]">{{ typeRegistre.libelle }}</a></li>
+                            <li class="breadcrumb-item active">Détails</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+    </div>
+
+    <div *ngIf="demandeTransfert" class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card mt-n4 mx-n4">
+                    <div [ngClass]="{'bg-success-subtle': demandeTransfert.statut == statutsDemandeTransfert.TRAITEE, 'bg-danger-subtle': demandeTransfert.statut == statutsDemandeTransfert.A_TRAITER, 'bg-info-subtle': demandeTransfert.statut == statutsDemandeTransfert.EN_COURS}">
+                        <div class="card-body py-4 px-4">
+                            <div class="row">
+                                <div class="col-md">
+                                    <div class="row align-items-center g-4">
+                                        <div class="col-md-auto">
+                                            <div class="avatar-md">
+                                                <div class="avatar-title bg-white rounded-circle">
+                                                    <!-- <img src="assets/images/brands/slack.png" alt="" class="avatar-xs"> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <div>
+                                                <div class="fs-5 fw-bold text-uppercase mb-1">Demande de transfert N° {{ demandeTransfert.id?.padEnd(5, '0') }}</div>
+                                                <div class="hstack gap-3 flex-wrap">
+                                                    <!-- <div><i class="ri-building-line align-bottom me-1"></i> Themesbrand</div>
+                                                    <div class="vr"></div> -->
+                                                    <div>Date de demande : <span class="fw-medium">{{ demandeTransfert.createdAt | date: 'dd MMMM YYYY' | titlecase }}</span></div>
+                                                    <div class="vr"></div>
+                                                    <div>Date de traitement : <span *ngIf="demandeTransfert.dateTraitement" class="fw-medium">{{ demandeTransfert.dateTraitement | date: 'dd MMMM YYYY' | titlecase }} à {{ demandeTransfert.dateTraitement | date: 'HH:mm' }}</span> <span *ngIf="!demandeTransfert.dateTraitement"><i>En attente</i></span></div>
+                                                    <div class="vr"></div>
+                                                    <div [ngSwitch]="demandeTransfert.statut"> Statut : 
+                                                        <span *ngSwitchCase="statutsDemandeTransfert.TRAITEE" class="badge rounded bg-success text-uppercase fs-10">Traitée</span>
+                                                        <span *ngSwitchCase="statutsDemandeTransfert.EN_COURS" class="badge rounded bg-info text-uppercase fs-10">En cours</span>
+                                                        <span *ngSwitchCase="statutsDemandeTransfert.A_TRAITER" class="badge rounded bg-danger text-uppercase fs-10">A traiter</span>
+                                                        <span *ngSwitchCase="statutsDemandeTransfert.ANNULEE" class="badge rounded bg-danger text-uppercase fs-10">Annulée</span>
+                                                        <!-- <div *ngSwitchDefault>output2</div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-auto">
+                                    <div class="hstack gap-1 flex-wrap">
+                                        <!-- <button type="button" class="btn py-0 fs-16 favourite-btn material-shadow-none active">
+                                            <i class="ri-star-fill"></i>
+                                        </button> -->
+                                        <!-- <button type="button" class="btn py-0 fs-16 text-body material-shadow-none">
+                                            <i class="ri-share-line"></i>
+                                        </button> -->
+                                        <!-- <button type="button" class="btn py-0 fs-16 text-body material-shadow-none">
+                                            <i class="ri-flag-line"></i>
+                                        </button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+
+        <div class="row">
+            <div class="col-xl-9 col-lg-8">
+                <div class="card">
+                    <!-- <div class="card-header">
+                        <form [formGroup]="filtresListeDemandeTransfertActesRegistresForm">
+                            <div class="row g-3 justify-content-between">
+                                <div class="col-lg-10 col-md-8">
+                                    <div class="row g-3">
+                                        <div class="col-lg-5 col-md-12 col-sm-12">
+                                            <div class="search-box">
+                                                <input type="text" class="form-control" formControlName="numeroOrdre" placeholder="Filtrer par le numéro d'ordre...">
+                                                <i class="ri-search-line search-icon"></i>
+                                            </div>
+                                        </div>
+            
+                                        <div class="col-lg-3 col-md-4">
+                                            <ng-select (change)="null" formControlName="statut" placeholder="Toutes les statuts">
+                                                <ng-option [value]="statutsOpposition.RECEVABLE">Recevable</ng-option>
+                                                <ng-option [value]="statutsOpposition.REJETEE">Rejetée</ng-option>
+                                                <ng-option [value]="statutsOpposition.LEVEE">Levée</ng-option>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4">
+                                    <div class="d-flex align-items-center justify-content-end">
+                                        <button (click)="filtrerListeDemandeTransfertActesRegistres()" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div> -->
+                    <div class="card-body">
+                        <!-- <div class="table-responsive mt-2 mb-3">
+                            <table class="table table-borderless table-striped table-hover align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th>#</th>
+                                        <th scope="col">N° d'ordre</th>
+                                        <th scope="col">Statut</th>
+                                        <th scope="col">Intervenant(s)</th>
+                                        <th scope="col">N° de réquisition</th>
+                                        <th scope="col">Date de l'opposition</th>
+                                        <th class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let opposition of listeDemandeTransfertActesRegistres.data; index as oppositionIndex">
+                                        <td>
+                                            {{ (listeDemandeTransfertActesRegistres.paginationSize! * listeDemandeTransfertActesRegistres.currentPage!) + oppositionIndex + 1 }}
+                                        </td>
+                                        <td>{{ opposition.numeroOrdre }}</td>
+                                        <td>
+                                            <div [ngSwitch]="opposition.statut">
+                                                <div *ngSwitchCase="statutsOpposition.RECEVABLE"><span class="badge bg-success-subtle text-success text-uppercase">Recevable</span></div>
+                                                <div *ngSwitchCase="statutsOpposition.REJETEE"><span class="badge bg-danger-subtle text-danger text-uppercase">Rejetée</span></div>
+                                                <div *ngSwitchCase="statutsOpposition.LEVEE"><span class="badge bg-info-subtle text-info text-uppercase">Levée</span></div>
+                                                <div *ngSwitchDefault>----</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <app-parties-prenantes-table [partiesPrenantes]="opposition.partiesPrenantes ?? []" [typePartiePrenante]="typesPartiePrenante.INTERVENANT" noPartiePrenanteText="Aucun intervenant"></app-parties-prenantes-table>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="!opposition.oppositionsRequisitions || opposition.oppositionsRequisitions.length == 0" class="text-muted"><i>Aucune réquisition</i></span>
+                                            <app-card-numero-requisition-details *ngFor="let oppositionRequisition of opposition.oppositionsRequisitions" [numeroRequisition]="oppositionRequisition.numeroRequisition"></app-card-numero-requisition-details>
+                                        </td>
+                                        <td>{{ opposition.dateOpposition | date: 'dd MMM YYYY HH:mm' | titlecase }}</td>
+                                        <td class="text-end">
+                                            <a [routerLink]="['/dossiers/oppositions/', opposition.id]"><i class="ri-edit-box-line fs-5"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeDemandeTransfertActesRegistres.currentPage" [totalItems]="listeDemandeTransfertActesRegistres.totalItems" [totalPages]="listeDemandeTransfertActesRegistres.totalPages" (paginationChange)="getOppositions($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeDemandeTransfertActesRegistres.data.length == 0" text="Aucune opposition"></app-no-data-banner>
+                        </div> -->
+                    </div>
+                    <!-- end card body -->
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14">Actions</h6>
+                        <div class="d-grid gap-2">
+                            <button *ngIf="demandeTransfert.statut != statutsDemandeTransfert.TRAITEE && demandeTransfert.statut != statutsDemandeTransfert.ANNULEE" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Traiter le dossier</button>
+
+                            <button *ngIf="demandeTransfert.statut != statutsDemandeTransfert.ANNULEE" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Annuler le dossier</button>
+                            
+                            <button *ngIf="true" (click)="null" type="button" class="btn bg-secondary-subtle text-secondary text-start waves-effect material-shadow-none"><i class="ri-add-fill me-1 align-bottom"></i> Importer un acte ou une pièce</button>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content --><p>details-demande-transfert-page works!</p>

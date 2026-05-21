@@ -1,0 +1,238 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Villes</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin">Administration</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin/situations">Situations</a></li>
+                            <li class="breadcrumb-item active">Villes</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeVillesForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeVilles()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher une ville..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheVille()" *ngIf="filtresListeVillesForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary add-btn" role="button" (click)="openNouvelleVilleModal()"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un ville</button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end align-items-center form-check-success">
+                            <label class="form-check-label me-2" for="formCheck8">
+                                Masquer les filtres
+                            </label>
+                            <input [(ngModel)]="masquerfiltresListeVilles" class="form-check-input" type="checkbox" id="formCheck8">
+                        </div>
+                        
+                        <form *ngIf="!masquerfiltresListeVilles" [formGroup]="filtresListeVillesForm">
+                            <div class="row gy-4 mt-4 mb-4">                      
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="canton" class="form-label text-muted">Canton</label>
+                                        <ng-select formControlName="canton" bindLabel="libelle" placeholder="Tous les cantons" bindValue="id" [items]="cantons"></ng-select>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4 gap-2">
+                                <button (click)="effacerFiltresListeVilles()" class="btn btn-light">Effacer</button>
+                                <button (click)="filtrerListeVilles(0, listeVilles.paginationSize)" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des villes</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-striped table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th scope="col" style="width: 50px;">#</th>
+                                        <th scope="col">Libellé</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Canton</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let ville of listeVilles.data; index as villeIndex">
+                                        <td>
+                                            {{ (listeVilles.paginationSize! * listeVilles.currentPage!) + villeIndex + 1 }}
+                                        </td>
+                                        <td>{{ ville.libelle }}</td>
+                                        <td>
+                                            <span *ngIf="ville.description">{{ ville.description }}</span>
+                                            <span *ngIf="!ville.description" class="text-muted text-end"><i>Aucune description</i></span>
+                                        </td>
+                                        <td>{{ ville.canton ? ville.canton.libelle  : '---' }}</td>
+                                        <td>
+                                            {{ ville.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-3 justify-content-center align-items-center">
+                                                <a role="button" (click)="openModificationVilleModal(villeIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                                <a role="button" (click)="openSuppressionVilleModal(villeIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                                            </div>
+                                            <!-- <div class="d-flex gap-3 justify-content-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" role="button" (click)="openModificationVilleModal(villeIndex)">Modifier</a></li>
+                                                        <li class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a class="dropdown-item text-danger" role="button" (click)="openSuppressionVilleModal(villeIndex)">Supprimer</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div> -->
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeVilles.currentPage" [totalItems]="listeVilles.totalItems" [totalPages]="listeVilles.totalPages" (paginationChange)="getVilles($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeVilles.data.length == 0" text="Aucune ville"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+
+<!-- Modals -->
+<app-custom-modal title="Nouvelle ville" [show]="showNouvelleVilleModal" (modalClose)="annulerCreationVille()">
+    <div body>
+        <form [formGroup]="nouvelleVilleForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="nouvelleVilleForm.get('libelle')!.invalid && (nouvelleVilleForm.get('libelle')!.dirty || nouvelleVilleForm.get('libelle')!.touched)">
+                            <app-form-message [show]="nouvelleVilleForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="cantonId" class="form-label">Canton</label>
+                        <ng-select formControlName="cantonId" (open)="getCantons()">
+                            <ng-option *ngFor="let canton of cantons" [value]="canton.id">{{ canton.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="nouvelleVilleForm.get('cantonId')!.invalid && (nouvelleVilleForm.get('cantonId')!.dirty || nouvelleVilleForm.get('cantonId')!.touched)">
+                            <app-form-message [show]="nouvelleVilleForm.get('cantonId')!.errors?.['required']" type="danger" text="Choisir un canton"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationVille()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationVille()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier cette ville" [show]="showModificationVilleModal" (modalClose)="annulerModificationVille()">
+    <div body>
+        <form [formGroup]="modificationVilleForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="modificationVilleForm.get('libelle')!.invalid && (modificationVilleForm.get('libelle')!.dirty || modificationVilleForm.get('libelle')!.touched)">
+                            <app-form-message [show]="modificationVilleForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="cantonId" class="form-label">Canton</label>
+                        <ng-select formControlName="cantonId" (open)="getCantons()">
+                            <ng-option *ngFor="let canton of cantons" [value]="canton.id">{{ canton.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="modificationVilleForm.get('cantonId')!.invalid && (modificationVilleForm.get('cantonId')!.dirty || modificationVilleForm.get('cantonId')!.touched)">
+                            <app-form-message [show]="modificationVilleForm.get('cantonId')!.errors?.['required']" type="danger" text="Choisir un canton"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationVille()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationVille()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer cette ville" [show]="showSuppressionVilleModal" (modalClose)="closeSuppressionVilleModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer cette ville ? <span class="fw-bold">Elle sera déplacée dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionVilleModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionVille()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

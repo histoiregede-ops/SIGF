@@ -1,0 +1,209 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Liens de groupe</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin">Administration</a></li>
+                            <li class="breadcrumb-item active">Liens de groupe</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeLiensGroupeForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeLiensGroupe()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher un lien de groupe..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheLienGroupe()" *ngIf="filtresListeLiensGroupeForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary add-btn" role="button" (click)="openNouveauLienGroupeModal()"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un region</button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="card-body">
+                        <div class="d-flex justify-content-end align-items-center form-check-success">
+                            <label class="form-check-label me-2" for="formCheck8">
+                                Masquer les filtres
+                            </label>
+                            <input [(ngModel)]="masquerfiltresListeLiensGroupe" class="form-check-input" type="checkbox" id="formCheck8">
+                        </div>
+                        
+                        <form *ngIf="!masquerfiltresListeLiensGroupe" [formGroup]="filtresListeLiensGroupeForm">
+                            <div class="row gy-4 mt-4 mb-4">                      
+                                <div class="col-lg-4 col-md-6">
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4 gap-2">
+                                <button (click)="effacerFiltresListeLiensGroupe()" class="btn btn-light">Effacer</button>
+                                <button (click)="filtrerListeLiensGroupe(0, listeLiensGroupe.paginationSize)" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des liens de groupe</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-striped table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th scope="col" style="width: 50px;">#</th>
+                                        <th scope="col">Libellé</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let lienGroupe of listeLiensGroupe.data; index as lienGroupeIndex">
+                                        <td>
+                                            {{ (listeLiensGroupe.paginationSize! * listeLiensGroupe.currentPage!) + lienGroupeIndex + 1 }}
+                                        </td>
+                                        <td>{{ lienGroupe.libelle }}</td>
+                                        <td>
+                                            <span *ngIf="lienGroupe.description">{{ lienGroupe.description }}</span>
+                                            <span *ngIf="!lienGroupe.description" class="text-muted text-end"><i>Aucune description</i></span>
+                                        </td>
+                                        <td>
+                                            {{ lienGroupe.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-3 justify-content-center align-items-center">
+                                                <a role="button" (click)="openModificationLienGroupeModal(lienGroupeIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                                <a role="button" (click)="openSuppressionLienGroupeModal(lienGroupeIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                                            </div>
+                                            <!-- <div class="d-flex gap-3 justify-content-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" role="button" (click)="openModificationLienGroupeModal(lienGroupeIndex)">Modifier</a></li>
+                                                        <li class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a class="dropdown-item text-danger" role="button" (click)="openSuppressionLienGroupeModal(lienGroupeIndex)">Supprimer</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div> -->
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeLiensGroupe.currentPage" [totalItems]="listeLiensGroupe.totalItems" [totalPages]="listeLiensGroupe.totalPages" (paginationChange)="getLiensGroupe($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeLiensGroupe.data.length == 0" text="Aucun lien de groupe"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+
+<!-- Modals -->
+<app-custom-modal title="Nouveau lien de groupe" [show]="showNouveauLienGroupeModal" (modalClose)="annulerCreationLienGroupe()">
+    <div body>
+        <form [formGroup]="nouveauLienGroupeForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="nouveauLienGroupeForm.get('libelle')!.invalid && (nouveauLienGroupeForm.get('libelle')!.dirty || nouveauLienGroupeForm.get('libelle')!.touched)">
+                            <app-form-message [show]="nouveauLienGroupeForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationLienGroupe()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationLienGroupe()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier ce lien de groupe" [show]="showModificationLienGroupeModal" (modalClose)="annulerModificationLienGroupe()">
+    <div body>
+        <form [formGroup]="modificationLienGroupeForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="modificationLienGroupeForm.get('libelle')!.invalid && (modificationLienGroupeForm.get('libelle')!.dirty || modificationLienGroupeForm.get('libelle')!.touched)">
+                            <app-form-message [show]="modificationLienGroupeForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationLienGroupe()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationLienGroupe()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer ce lien de groupe" [show]="showSuppressionLienGroupeModal" (modalClose)="closeSuppressionLienGroupeModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer ce lien de groupe ? <span class="fw-bold">Il sera déplacé dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionLienGroupeModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionLienGroupe()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

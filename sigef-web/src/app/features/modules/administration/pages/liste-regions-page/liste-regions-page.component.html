@@ -1,0 +1,318 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Régions</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin">Administration</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin/situations">Situations</a></li>
+                            <li class="breadcrumb-item active">Régions</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeRegionsForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeRegions()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher une région..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheRegion()" *ngIf="filtresListeRegionsForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary add-btn" role="button" (click)="openNouvelleRegionModal()"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un region</button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end align-items-center form-check-success">
+                            <label class="form-check-label me-2" for="formCheck8">
+                                Masquer les filtres
+                            </label>
+                            <input [(ngModel)]="masquerfiltresListeRegions" class="form-check-input" type="checkbox" id="formCheck8">
+                        </div>
+                        
+                        <form *ngIf="!masquerfiltresListeRegions" [formGroup]="filtresListeRegionsForm">
+                            <div class="row gy-4 mt-4 mb-4">                      
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="periode" class="form-label text-muted">Période</label>
+                                        <ng-select formControlName="periode" bindLabel="libelle" placeholder="Toutes les périodes" bindValue="id" [items]="periodes"></ng-select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="actuelle" class="form-label text-muted">Actuelle</label>
+                                        <ng-select formControlName="actuelle">
+                                            <ng-option [value]="null">Afficher toutes les régions</ng-option>
+                                            <ng-option [value]="true">Afficher uniquement les régions actuelles</ng-option>
+                                            <ng-option [value]="false">Ne pas afficher les régions actuelles</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4 gap-2">
+                                <button (click)="effacerFiltresListeRegions()" class="btn btn-light">Effacer</button>
+                                <button (click)="filtrerListeRegions(0, listeRegions.paginationSize)" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des régions</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-striped table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th scope="col" style="width: 50px;">#</th>
+                                        <th scope="col">Libellé</th>
+                                        <th scope="col">Sigle</th>
+                                        <th scope="col">Actuelle</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Période</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let region of listeRegions.data; index as regionIndex">
+                                        <td>
+                                            {{ (listeRegions.paginationSize! * listeRegions.currentPage!) + regionIndex + 1 }}
+                                        </td>
+                                        <td>{{ region.libelle }}</td>
+                                        <td>{{ region.sigle }}</td>
+                                        <td>
+                                            <span *ngIf="region.actuelle == true" class="badge bg-success-subtle text-success text-uppercase">Oui</span>
+                                            <span *ngIf="region.actuelle == false" class="badge bg-danger-subtle text-danger text-uppercase">Non</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="region.description">{{ region.description }}</span>
+                                            <span *ngIf="!region.description" class="text-muted text-end"><i>Aucune description</i></span>
+                                        </td>
+                                        <td>{{ region.periode ? region.periode.libelle  : '---' }}</td>
+                                        <td>
+                                            {{ region.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-3 justify-content-center align-items-center">
+                                                <a role="button" (click)="openModificationRegionModal(regionIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                                <a role="button" (click)="openSuppressionRegionModal(regionIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                                            </div>
+                                            <!-- <div class="d-flex gap-3 justify-content-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" role="button" (click)="openModificationRegionModal(regionIndex)">Modifier</a></li>
+                                                        <li class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a class="dropdown-item text-danger" role="button" (click)="openSuppressionRegionModal(regionIndex)">Supprimer</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div> -->
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeRegions.currentPage" [totalItems]="listeRegions.totalItems" [totalPages]="listeRegions.totalPages" (paginationChange)="getRegions($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeRegions.data.length == 0" text="Aucune région"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+
+<!-- Modals -->
+<app-custom-modal title="Nouvelle région" [show]="showNouvelleRegionModal" (modalClose)="annulerCreationRegion()">
+    <div body>
+        <form [formGroup]="nouvelleRegionForm">
+            <div class="row g-3">
+                <div class="col-lg-8">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="nouvelleRegionForm.get('libelle')!.invalid && (nouvelleRegionForm.get('libelle')!.dirty || nouvelleRegionForm.get('libelle')!.touched)">
+                            <app-form-message [show]="nouvelleRegionForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label for="sigle" class="form-label">Sigle</label>
+                        <input type="text" class="form-control" id="sigle" formControlName="sigle">
+                        <div *ngIf="nouvelleRegionForm.get('sigle')!.invalid && (nouvelleRegionForm.get('sigle')!.dirty || nouvelleRegionForm.get('sigle')!.touched)">
+                            <app-form-message [show]="nouvelleRegionForm.get('sigle')!.errors?.['required']" type="danger" text="Entrer le sigle"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div>
+                        <label for="periodeId" class="form-label">Période</label>
+                        <ng-select formControlName="periodeId" (open)="getPeriodes()">
+                            <ng-option *ngFor="let periode of periodes" [value]="periode.id">{{ periode.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="nouvelleRegionForm.get('periodeId')!.invalid && (nouvelleRegionForm.get('periodeId')!.dirty || nouvelleRegionForm.get('periodeId')!.touched)">
+                            <app-form-message [show]="nouvelleRegionForm.get('periodeId')!.errors?.['required']" type="danger" text="Choisir une période"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div>
+                        <label for="actuelle" class="form-label">Est-ce une région de la période actuelle ?</label>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="me-4">
+                                <input class="form-check-input" type="radio" [id]="'Oui'" formControlName="actuelle" [value]="true">
+                                <label class="form-check-label ps-2" [for]="'Oui'">
+                                    Oui
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input" type="radio" [id]="'Non'" formControlName="actuelle" [value]="false">
+                                <label class="form-check-label ps-2" [for]="'Non'">
+                                    Non
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="nouvelleRegionForm.get('actuelle')!.invalid && (nouvelleRegionForm.get('actuelle')!.dirty || nouvelleRegionForm.get('actuelle')!.touched)">
+                            <app-form-message [show]="nouvelleRegionForm.get('actuelle')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationRegion()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationRegion()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier cette région" [show]="showModificationRegionModal" (modalClose)="annulerModificationRegion()">
+    <div body>
+        <form [formGroup]="modificationRegionForm">
+            <div class="row g-3">
+                <div class="col-lg-8">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="modificationRegionForm.get('libelle')!.invalid && (modificationRegionForm.get('libelle')!.dirty || modificationRegionForm.get('libelle')!.touched)">
+                            <app-form-message [show]="modificationRegionForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label for="sigle" class="form-label">Sigle</label>
+                        <input type="text" class="form-control" id="sigle" formControlName="sigle">
+                        <div *ngIf="modificationRegionForm.get('sigle')!.invalid && (modificationRegionForm.get('sigle')!.dirty || modificationRegionForm.get('sigle')!.touched)">
+                            <app-form-message [show]="modificationRegionForm.get('sigle')!.errors?.['required']" type="danger" text="Entrer le sigle"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div>
+                        <label for="periodeId" class="form-label">Période</label>
+                        <ng-select formControlName="periodeId" (open)="getPeriodes()">
+                            <ng-option *ngFor="let periode of periodes" [value]="periode.id">{{ periode.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="modificationRegionForm.get('periodeId')!.invalid && (modificationRegionForm.get('periodeId')!.dirty || modificationRegionForm.get('periodeId')!.touched)">
+                            <app-form-message [show]="modificationRegionForm.get('periodeId')!.errors?.['required']" type="danger" text="Choisir une période"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div>
+                        <label for="actuelle" class="form-label">Est-ce une région de la période actuelle ?</label>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="me-4">
+                                <input class="form-check-input" type="radio" [id]="'Oui'" formControlName="actuelle" [value]="true">
+                                <label class="form-check-label ps-2" [for]="'Oui'">
+                                    Oui
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input" type="radio" [id]="'Non'" formControlName="actuelle" [value]="false">
+                                <label class="form-check-label ps-2" [for]="'Non'">
+                                    Non
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="modificationRegionForm.get('actuelle')!.invalid && (modificationRegionForm.get('actuelle')!.dirty || modificationRegionForm.get('actuelle')!.touched)">
+                            <app-form-message [show]="modificationRegionForm.get('actuelle')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationRegion()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationRegion()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer cette région" [show]="showSuppressionRegionModal" (modalClose)="closeSuppressionRegionModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer cette région ? <span class="fw-bold">Elle sera déplacée dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionRegionModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionRegion()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

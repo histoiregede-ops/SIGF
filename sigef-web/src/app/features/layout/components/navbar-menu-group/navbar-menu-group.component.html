@@ -1,0 +1,10 @@
+<li class="nav-item">
+    <a class="nav-link menu-link" [href]="'#menu-dropdown-'+menuGroupId" data-bs-toggle="collapse" role="button" aria-expanded="false" [attr.aria-controls]="'menu-dropdown-'+menuGroupId">
+        <i *ngIf="icon" [ngClass]="icon"></i> <span data-key="t-dashboards">{{ title }}</span>
+    </a>
+    <div class="collapse menu-dropdown" [id]="'menu-dropdown-'+menuGroupId">
+        <ul class="nav nav-sm flex-column">
+            <ng-content></ng-content>
+        </ul>
+    </div>
+</li>

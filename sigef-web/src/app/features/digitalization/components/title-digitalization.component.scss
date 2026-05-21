@@ -1,0 +1,298 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+// Variables
+$primary-color: #2563eb;
+$success-color: #16a34a;
+$warning-color: #ea580c;
+$danger-color: #dc2626;
+$info-color: #0284c7;
+$light-bg: #f8fafc;
+$card-bg: #ffffff;
+$text-primary: #1e293b;
+$text-secondary: #64748b;
+$text-muted: #94a3b8;
+$border-color: #e2e8f0;
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+// Mixins
+@mixin smooth-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+@mixin subtle-shadow {
+  box-shadow: $shadow-sm;
+  
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+// Main Container
+.digitalization-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid $border-color;
+  gap: 2rem;
+  
+  @media (max-width: 1400px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+}
+
+.header-left {
+  flex: 0 0 auto;
+  min-width: 200px;
+}
+
+.folder-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: $text-primary;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.5px;
+}
+
+.header-center {
+  flex: 1;
+  min-width: 300px;
+}
+
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $text-secondary;
+  font-family: 'Inter', sans-serif;
+}
+
+.progress-percentage {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $primary-color;
+  font-family: 'Inter', sans-serif;
+}
+
+.progress-bar-wrapper {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 0.5rem;
+  padding: 2px;
+  border: 1px solid $border-color;
+}
+
+.progress {
+  height: 6px;
+  background: transparent;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, $primary-color, $info-color);
+  border-radius: 3px;
+}
+
+.progress-sublabel {
+  font-size: 0.75rem;
+  color: $text-muted;
+  font-family: 'Inter', sans-serif;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 0 0 auto;
+  justify-content: flex-end;
+  
+  @media (max-width: 1400px) {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  @include subtle-shadow;
+}
+
+.status-label {
+  opacity: 0.85;
+  font-weight: 600;
+}
+
+.status-value {
+  font-weight: 500;
+}
+
+.action-button {
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-family: 'Inter', sans-serif;
+  border: none;
+  cursor: pointer;
+  @include smooth-transition;
+  @include subtle-shadow;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &.btn-primary {
+    background: $primary-color;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: darken($primary-color, 8%);
+    }
+  }
+
+  &.btn-warning {
+    background: $warning-color;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: darken($warning-color, 8%);
+    }
+  }
+
+  &.btn-success {
+    background: $success-color;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: darken($success-color, 8%);
+    }
+  }
+
+  &.btn-danger {
+    background: $danger-color;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: darken($danger-color, 8%);
+    }
+  }
+}
+
+// Main Layout
+.digitalization-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  background: $light-bg;
+  min-height: calc(100vh - 140px);
+  font-family: 'Inter', sans-serif;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+.viewer-column {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 0.75rem;
+  @include subtle-shadow;
+  overflow: hidden;
+
+  @media (max-width: 1200px) {
+    order: 1;
+  }
+}
+
+.editor-column {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 0.75rem;
+  @include subtle-shadow;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+
+  @media (max-width: 1200px) {
+    order: 2;
+    max-height: none;
+  }
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $border-color;
+    border-radius: 3px;
+
+    &:hover {
+      background: $text-muted;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .digitalization-header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .folder-title {
+    font-size: 1.25rem;
+  }
+
+  .digitalization-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .header-right {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .progress-container {
+    min-width: auto;
+  }
+}

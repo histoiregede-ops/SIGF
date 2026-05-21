@@ -1,0 +1,266 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Formes juridiques</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin">Administration</a></li>
+                            <li class="breadcrumb-item active">Formes juridiques</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeFormesJuridiqueForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeFormesJuridique()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher une forme juridique..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheFormeJuridique()" *ngIf="filtresListeFormesJuridiqueForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <button class="btn btn-primary add-btn" role="button" (click)="openNouvelleFormeJuridiqueModal()"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un region</button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end align-items-center form-check-success">
+                            <label class="form-check-label me-2" for="formCheck8">
+                                Masquer les filtres
+                            </label>
+                            <input [(ngModel)]="masquerfiltresListeFormesJuridique" class="form-check-input" type="checkbox" id="formCheck8">
+                        </div>
+                        
+                        <form *ngIf="!masquerfiltresListeFormesJuridique" [formGroup]="filtresListeFormesJuridiqueForm">
+                            <div class="row gy-4 mt-4 mb-4">                      
+                                <div class="col-lg-4 col-md-6">
+                                    <div>
+                                        <label for="declaree" class="form-label text-muted">Déclarée</label>
+                                        <ng-select formControlName="declaree">
+                                            <ng-option [value]="null">Afficher toutes les formes juridiques</ng-option>
+                                            <ng-option [value]="true">Afficher uniquement les formes juridiques déclarées</ng-option>
+                                            <ng-option [value]="false">Ne pas afficher les formes juridiques déclarées</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4 gap-2">
+                                <button (click)="effacerFiltresListeFormesJuridique()" class="btn btn-light">Effacer</button>
+                                <button (click)="filtrerListeFormesJuridique(0, listeFormesJuridique.paginationSize)" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des formes juridiques</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-striped table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th scope="col" style="width: 50px;">#</th>
+                                        <th scope="col">Libellé</th>
+                                        <th scope="col">Déclarée</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let formeJuridique of listeFormesJuridique.data; index as formeJuridiqueIndex">
+                                        <td>
+                                            {{ (listeFormesJuridique.paginationSize! * listeFormesJuridique.currentPage!) + formeJuridiqueIndex + 1 }}
+                                        </td>
+                                        <td>{{ formeJuridique.libelle }}</td>
+                                        <td>
+                                            <span *ngIf="formeJuridique.declaree == true" class="badge bg-success-subtle text-success text-uppercase">Oui</span>
+                                            <span *ngIf="formeJuridique.declaree == false" class="badge bg-danger-subtle text-danger text-uppercase">Non</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="formeJuridique.description">{{ formeJuridique.description }}</span>
+                                            <span *ngIf="!formeJuridique.description" class="text-muted text-end"><i>Aucune description</i></span>
+                                        </td>
+                                        <td>
+                                            {{ formeJuridique.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-3 justify-content-center align-items-center">
+                                                <a role="button" (click)="openModificationFormeJuridiqueModal(formeJuridiqueIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                                <a role="button" (click)="openSuppressionFormeJuridiqueModal(formeJuridiqueIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                                            </div>
+                                            <!-- <div class="d-flex gap-3 justify-content-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" role="button" (click)="openModificationFormeJuridiqueModal(formeJuridiqueIndex)">Modifier</a></li>
+                                                        <li class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a class="dropdown-item text-danger" role="button" (click)="openSuppressionFormeJuridiqueModal(formeJuridiqueIndex)">Supprimer</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div> -->
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeFormesJuridique.currentPage" [totalItems]="listeFormesJuridique.totalItems" [totalPages]="listeFormesJuridique.totalPages" (paginationChange)="getFormesJuridique($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeFormesJuridique.data.length == 0" text="Aucune forme juridique"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+
+<!-- Modals -->
+<app-custom-modal title="Nouvelle forme juridique" [show]="showNouvelleFormeJuridiqueModal" (modalClose)="annulerCreationFormeJuridique()">
+    <div body>
+        <form [formGroup]="nouvelleFormeJuridiqueForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="nouvelleFormeJuridiqueForm.get('libelle')!.invalid && (nouvelleFormeJuridiqueForm.get('libelle')!.dirty || nouvelleFormeJuridiqueForm.get('libelle')!.touched)">
+                            <app-form-message [show]="nouvelleFormeJuridiqueForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="declaree" class="form-label">Est-ce une forme juridique déclarée ?</label>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="me-4">
+                                <input class="form-check-input" type="radio" [id]="'Oui'" formControlName="declaree" [value]="true">
+                                <label class="form-check-label ps-2" [for]="'Oui'">
+                                    Oui
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input" type="radio" [id]="'Non'" formControlName="declaree" [value]="false">
+                                <label class="form-check-label ps-2" [for]="'Non'">
+                                    Non
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="nouvelleFormeJuridiqueForm.get('declaree')!.invalid && (nouvelleFormeJuridiqueForm.get('declaree')!.dirty || nouvelleFormeJuridiqueForm.get('declaree')!.touched)">
+                            <app-form-message [show]="nouvelleFormeJuridiqueForm.get('declaree')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationFormeJuridique()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationFormeJuridique()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier cette forme juridique" [show]="showModificationFormeJuridiqueModal" (modalClose)="annulerModificationFormeJuridique()">
+    <div body>
+        <form [formGroup]="modificationFormeJuridiqueForm">
+            <div class="row g-3">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="libelle" class="form-label">Libellé</label>
+                        <input type="text" class="form-control" id="libelle" formControlName="libelle">
+                        <div *ngIf="modificationFormeJuridiqueForm.get('libelle')!.invalid && (modificationFormeJuridiqueForm.get('libelle')!.dirty || modificationFormeJuridiqueForm.get('libelle')!.touched)">
+                            <app-form-message [show]="modificationFormeJuridiqueForm.get('libelle')!.errors?.['required']" type="danger" text="Entrer un libellé"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="declaree" class="form-label">Est-ce une forme juridique à signaler ?</label>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="me-4">
+                                <input class="form-check-input" type="radio" [id]="'Oui'" formControlName="declaree" [value]="true">
+                                <label class="form-check-label ps-2" [for]="'Oui'">
+                                    Oui
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input" type="radio" [id]="'Non'" formControlName="declaree" [value]="false">
+                                <label class="form-check-label ps-2" [for]="'Non'">
+                                    Non
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="modificationFormeJuridiqueForm.get('declaree')!.invalid && (modificationFormeJuridiqueForm.get('declaree')!.dirty || modificationFormeJuridiqueForm.get('declaree')!.touched)">
+                            <app-form-message [show]="modificationFormeJuridiqueForm.get('declaree')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationFormeJuridique()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationFormeJuridique()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer cette forme juridique" [show]="showSuppressionFormeJuridiqueModal" (modalClose)="closeSuppressionFormeJuridiqueModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer cette forme juridique ? <span class="fw-bold">Elle sera déplacée dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionFormeJuridiqueModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionFormeJuridique()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

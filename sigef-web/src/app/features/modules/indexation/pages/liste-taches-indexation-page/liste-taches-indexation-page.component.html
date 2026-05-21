@@ -1,0 +1,211 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Tâches <span *ngIf="typeRegistre"> - {{ typeRegistre.libelle }}</span></h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item">Tâches</li>
+                            <li *ngIf="typeTacheIndexation == typesTacheIndexation.SAISIE" class="breadcrumb-item">Saisie</li>
+                            <li *ngIf="typeTacheIndexation == typesTacheIndexation.CONTROLE" class="breadcrumb-item">Contôle</li>
+                            <li *ngIf="typeRegistre" class="breadcrumb-item active">{{ typeRegistre.libelle }}</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeTachesIndexationForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeTachesIndexation()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher un fichier..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheTacheIndexation()" *ngIf="filtresListeTachesIndexationForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <!-- <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des dossiers</h4>
+                    </div> -->
+                    <div class="card-body pt-0">
+                        <div class="d-flex align-items-center gap-2">
+                            <ul *ngIf="typeTacheIndexation == typesTacheIndexation.SAISIE" class="nav nav-tabs nav-tabs-custom nav-primary" role="tablist">
+                                <li class="nav-item">
+                                    <a [ngClass]="{'active': filtresListeTachesIndexationForm.get('etatSaisie')!.value == null}" class="nav-link py-3" role="button" (click)="onEtatTacheIndexationChange()">
+                                        <i class="ri-store-2-fill me-1 align-bottom"></i> Tous
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a [ngClass]="{'active': filtresListeTachesIndexationForm.get('etatSaisie')!.value == etatsSaisieIndexation.A_INDEXER}" class="nav-link py-3" role="button" (click)="onEtatTacheIndexationChange(etatsSaisieIndexation.A_INDEXER)">
+                                        <i class="ri-arrow-left-right-fill me-1 align-bottom"></i> A indexer
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a [ngClass]="{'active': filtresListeTachesIndexationForm.get('etatSaisie')!.value == etatsSaisieIndexation.EN_COURS}" class="nav-link py-3" role="button" (click)="onEtatTacheIndexationChange(etatsSaisieIndexation.EN_COURS)">
+                                        <i class="ri-arrow-left-right-fill me-1 align-bottom"></i> En cours
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a [ngClass]="{'active': filtresListeTachesIndexationForm.get('etatSaisie')!.value == etatsSaisieIndexation.INDEXE}" class="nav-link py-3" role="button" (click)="onEtatTacheIndexationChange(etatsSaisieIndexation.INDEXE)">
+                                        <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Indexé
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul *ngIf="typeTacheIndexation == typesTacheIndexation.CONTROLE" class="nav nav-tabs nav-tabs-custom nav-primary" role="tablist">
+                                <li class="nav-item">
+                                    <a [ngClass]="{'active': filtresListeTachesIndexationForm.get('etatControle')!.value == null}" class="nav-link py-3" role="button" (click)="onEtatTacheIndexationChange()">
+                                        <i class="ri-store-2-fill me-1 align-bottom"></i> Tous
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a [ngClass]="{'active': filtresListeTachesIndexationForm.get('etatControle')!.value == etatsControleIndexation.EN_ATTENTE}" class="nav-link py-3" role="button" (click)="onEtatTacheIndexationChange(etatsControleIndexation.EN_ATTENTE)">
+                                        <i class="ri-time-line me-1 align-bottom"></i> En attentes
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a [ngClass]="{'active': filtresListeTachesIndexationForm.get('etatControle')!.value == etatsControleIndexation.A_CONTROLER}" class="nav-link py-3" role="button" (click)="onEtatTacheIndexationChange(etatsControleIndexation.A_CONTROLER)">
+                                        <i class="ri-arrow-left-right-fill me-1 align-bottom"></i> A contrôler
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a [ngClass]="{'active': filtresListeTachesIndexationForm.get('etatControle')!.value == etatsControleIndexation.EN_COURS}" class="nav-link py-3" role="button" (click)="onEtatTacheIndexationChange(etatsControleIndexation.EN_COURS)">
+                                        <i class="ri-arrow-left-right-fill me-1 align-bottom"></i> En cours
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a [ngClass]="{'active': filtresListeTachesIndexationForm.get('etatControle')!.value == etatsControleIndexation.CONTROLE}" class="nav-link py-3" role="button" (click)="onEtatTacheIndexationChange(etatsControleIndexation.CONTROLE)">
+                                        <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Contrôlé
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- <ul class="nav nav-tabs nav-tabs-custom nav-danger" role="tablist">
+                                <li class="nav-item">
+                                    <a [ngClass]="{'active': filtresListeTachesIndexationForm.get('etat')!.value == etatsProgressionIndexation.SIGNALE}" class="nav-link py-3" role="button" (click)="onEtatTacheIndexationChange(undefined, etatsProgressionIndexation.SIGNALE)">
+                                        <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Signalé
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a [ngClass]="{'active': filtresListeTachesIndexationForm.get('etat')!.value == etatsProgressionIndexation.REJETE}" class="nav-link py-3" role="button" (click)="onEtatTacheIndexationChange(undefined, etatsProgressionIndexation.REJETE)">
+                                        <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Rejeté
+                                    </a>
+                                </li>
+                            </ul> -->
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="textuppercase">
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nom du fichier</th>
+                                        <th *ngIf="typeTacheIndexation == typesTacheIndexation.SAISIE" scope="col">Etat de saisie</th>
+                                        <th *ngIf="typeTacheIndexation == typesTacheIndexation.CONTROLE" scope="col">Etat de contrôle</th>
+                                        <th scope="col">Progression</th>
+                                        <th class="text-center">Nombre de pages</th>
+                                        <!-- <th scope="col">Indexeur</th>
+                                        <th scope="col">Contrôleur qualité</th> -->
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let tacheIndexation of listeTachesIndexation.data; index as tacheIndexationIndex" [ngClass]="{'table-danger': getEtatSignalisationOuRejetTacheIndexation(tacheIndexation)}">
+                                        <td>
+                                            {{ (listeTachesIndexation.paginationSize! * listeTachesIndexation.currentPage!) + tacheIndexationIndex + 1 }}
+                                        </td>
+                                        <td>
+                                            <div *ngIf="tacheIndexation.fichier" class="d-flex align-items-center">
+                                                <div *ngIf="tacheIndexation.fichier.extension" [ngClass]="getFichierRessourceIcone(tacheIndexation.fichier.extension)" class="file-icon flex-shrink-0 me-2"></div>
+                                                <div *ngIf="!tacheIndexation.fichier.extension" class="flex-shrink-0 fs-17 me-2 filelist-icon"><i class="ri-file-3-line align-bottom text-primary"></i></div>
+                                                <div class="flex-grow-1">{{ tacheIndexation.fichier.nom }}</div>
+                                            </div>
+                                        </td>
+                                        <td *ngIf="typeTacheIndexation == typesTacheIndexation.SAISIE">
+                                            <span *ngIf="tacheIndexation.etatSaisie == etatsSaisieIndexation.A_INDEXER" class="badge bg-danger-subtle text-danger text-uppercase">A indexer</span>
+                                            <span *ngIf="tacheIndexation.etatSaisie == etatsSaisieIndexation.EN_COURS" class="badge bg-secondary-subtle text-secondary text-uppercase">En cours</span>
+                                            <span *ngIf="tacheIndexation.etatSaisie == etatsSaisieIndexation.INDEXE" class="badge bg-success-subtle text-success text-uppercase">Indexé</span>
+                                        </td>
+                                        <td *ngIf="typeTacheIndexation == typesTacheIndexation.CONTROLE">
+                                            <span *ngIf="tacheIndexation.etatControle == etatsControleIndexation.EN_ATTENTE" class="badge bg-warning-subtle text-warning text-uppercase">En attente</span>
+                                            <span *ngIf="tacheIndexation.etatControle == etatsControleIndexation.A_CONTROLER" class="badge bg-danger-subtle text-danger text-uppercase">A Contrôleur</span>
+                                            <span *ngIf="tacheIndexation.etatControle == etatsControleIndexation.EN_COURS" class="badge bg-secondary-subtle text-secondary text-uppercase">En cours</span>
+                                            <span *ngIf="tacheIndexation.etatControle == etatsControleIndexation.CONTROLE" class="badge bg-success-subtle text-success text-uppercase">Contrôlé</span>
+                                        </td>
+                                        <td style="min-width: 120px;">
+                                            <!-- <span *ngIf="!tacheIndexation || !tacheIndexation.indexeurUtilisateur" class="badge bg-primary-subtle text-primary text-uppercase">Non assigné</span> -->
+                                            <app-indexation-progress-bar *ngIf="tacheIndexation && tacheIndexation.progressionsTacheIndexation" [nombrePages]="tacheIndexation.fichier?.nombrePages ?? 0" [tacheIndexation]="tacheIndexation"></app-indexation-progress-bar>
+                                        </td>
+                                        <td class="text-center">{{ tacheIndexation.fichier?.nombrePages ?? '----' }}</td>
+                                        <!-- <td>
+                                            <div *ngIf="tacheIndexation.indexeurUtilisateur">
+                                                <app-user-avatar [photoDeProfil]="tacheIndexation.indexeurUtilisateur.photoDeProfil" [type]="2"></app-user-avatar>
+                                                <span>{{ tacheIndexation.indexeurUtilisateur.nom }} {{ tacheIndexation.indexeurUtilisateur.prenoms }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="!tacheIndexation" class="badge bg-primary-subtle text-primary text-uppercase">Non assigné</span>
+                                            <div *ngIf="tacheIndexation.controleurUtilisateur">
+                                                <app-user-avatar [photoDeProfil]="tacheIndexation.controleurUtilisateur.photoDeProfil" [type]="2"></app-user-avatar>
+                                                <span>{{ tacheIndexation.controleurUtilisateur.nom }} {{ tacheIndexation.controleurUtilisateur.prenoms }}</span>
+                                            </div>
+                                        </td> -->
+                                        <td>{{ tacheIndexation.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}</td>
+                                        <td>
+                                            <div class="d-flex gap-3 justify-content-end align-items-center">
+                                                <a *ngIf="getEtatSignalisationOuRejetTacheIndexation(tacheIndexation)" role="button" (click)="openPagesSignaleesOuRejeteesModal(tacheIndexation)" [title]="'Voir les pages signalées ou rejetées'">
+                                                    <i class="mdi mdi-alert-decagram fs-4 text-danger align-bottom"></i>
+                                                </a>
+                                                <!-- <a role="button" (click)="!tacheIndexation ? openAttributionLotModal(fichier.id!) : null" [title]="!tacheIndexation ? 'Assigner le lot' : 'Désaffecter le lot'">
+                                                    <i *ngIf="!tacheIndexation" class="mdi mdi-account-multiple-check-outline fs-3 text-success align-bottom"></i>
+                                                    <i *ngIf="tacheIndexation" class="mdi mdi-account-multiple-remove-outline fs-3 text-danger align-bottom"></i>
+                                                </a> -->
+                                                <a role="button" (click)="openTacheDetails(tacheIndexation)" title="Ouvrir"><i class="ri-edit-box-line fs-4 text-primary align-bottom"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeTachesIndexation.currentPage" [totalItems]="listeTachesIndexation.totalItems" [totalPages]="listeTachesIndexation.totalPages" (paginationChange)="getTachesIndexation($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeTachesIndexation.data.length == 0" text="Aucune tâche"></app-no-data-banner>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+<!-- Modalss -->
+<app-custom-modal title="Pages signalées ou rejetées" size="lg" [show]="showPagesSignaleesOuRejeteesModal" (modalClose)="closePagesSignaleesOuRejeteesModal()">
+    <div body>
+        <div *ngIf="selectedFichier">
+            <app-indexation-page-signalees-rejetees [selectedFichier]="selectedFichier" [showUtilisateurs]="false"></app-indexation-page-signalees-rejetees>       
+        </div>
+    </div>
+    <!-- <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerAttributionLot()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerAttributionLot()" class="btn btn-primary">Valider</button>
+        </div>
+    </div> -->
+</app-custom-modal>

@@ -1,0 +1,36 @@
+<div *ngIf="partiesPrenantes ?? [] | getPartiesPrenatesParCategorie: typePartiePrenante as parties">
+    <!-- {{ 'Blabla' + parties }} -->
+    <table>
+        <tbody>
+            <tr *ngIf="parties != 'null' && parties[categoriesPartiePrenante.PERSONNE_PHYSIQUE]" class="mb-2">
+                <td class="text-muted fs-11 pe-2">Personne physique:</td>
+                <td>{{ parties[categoriesPartiePrenante.PERSONNE_PHYSIQUE] }}</td>
+            </tr>
+            <tr *ngIf="parties != 'null' && parties[categoriesPartiePrenante.PERSONNE_MORALE]" class="mb-2">
+                <td class="text-muted fs-11 pe-2">Personne morale:</td>
+                <td>{{ parties[categoriesPartiePrenante.PERSONNE_MORALE] }}</td>
+            </tr>
+            <tr *ngIf="parties != 'null' && parties[categoriesPartiePrenante.PERSONNE_RELATION_LEGALE]" class="mb-2">
+                <td class="text-muted fs-11 pe-2">Relation légale:</td>
+                <td>{{ parties[categoriesPartiePrenante.PERSONNE_RELATION_LEGALE] }}</td>
+            </tr>
+            <tr *ngIf="parties != 'null' && parties[categoriesPartiePrenante.GROUPE_PERSONNE_PHYSIQUE]" class="mb-2">
+                <td class="text-muted fs-11 pe-2">Indivisaires:</td>
+                <td>{{ parties[categoriesPartiePrenante.GROUPE_PERSONNE_PHYSIQUE] }}</td>
+            </tr>
+            <tr *ngIf="parties != 'null' && parties[categoriesPartiePrenante.GROUPE_CONJOINTS]" class="mb-2">
+                <td class="text-muted fs-11 pe-2">Conjoints:</td>
+                <td>{{ parties[categoriesPartiePrenante.GROUPE_CONJOINTS] }}</td>
+            </tr>
+            <tr *ngIf="parties != 'null' && parties[categoriesPartiePrenante.GROUPE_HERITIERS]" class="mb-2">
+                <td class="text-muted fs-11 pe-2">Groupe d'héritiers:</td>
+                <td>{{ parties[categoriesPartiePrenante.GROUPE_HERITIERS] }}</td>
+            </tr>
+            <tr *ngIf="parties == 'null'" class="mb-2">
+                <td colspan="2">
+                    <span class="text-muted"><i>{{ noPartiePrenanteText }}</i></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

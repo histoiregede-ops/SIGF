@@ -1,0 +1,27 @@
+{
+  "exclude": ["migrations", "dist", "node_modules"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+      "moduleResolution": "node"
+    }
+  },
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "module": "nodenext",
+    "target": "ES6",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@modules/*": ["src/modules/*"],
+      "@core/*": ["src/core/*"],
+      "@legacy/*": ["src/modules/gestion-dossiers-legacy/*"],
+      "@titres-fonciers/*": ["src/modules/titres-fonciers/*"]
+    },
+    "moduleResolution": "NodeNext",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src"
+  }
+}

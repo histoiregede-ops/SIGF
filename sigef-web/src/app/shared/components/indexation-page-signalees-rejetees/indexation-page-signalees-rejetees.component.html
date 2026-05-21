@@ -1,0 +1,89 @@
+
+<div class="row mb-3">
+    <div class="col-md">
+        <div class="row align-items-center g-3">
+            <div class="col-md-auto">
+                <div class="avatar-md">
+                    <div class="avatar-title bg-transparent rounded-circle">
+                        <div *ngIf="!selectedFichier.extension" class="flex-shrink-0 default-icon-lg filelist-icon"><i class="ri-file-3-line align-bottom text-primary"></i></div>
+                        <div *ngIf="selectedFichier.extension" [ngClass]="getFichierRessourceIcone(selectedFichier.extension)" class="file-icon file-icon-lg flex-shrink-0"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div>
+                    <h5 class="fw-bold">{{ selectedFichier.nom }}</h5>
+                    <div class="hstack gap-3 flex-wrap">
+                        <div><i class="ri-building-line align-bottom me-1"></i> {{ selectedFichier.typeRegistre?.libelle }}</div>
+                        <div class="vr"></div>
+                        <div>Date d'attribution : <span class="fw-medium">{{ selectedFichier.tacheIndexation?.createdAt| date: 'dd MMM YYYY HH:mm' | titlecase }}</span></div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="selectedFichier.tacheIndexation" class="col-md-auto">
+                <div class="d-flex justify-content-end align-items-center">
+                    <a role="button" (click)="exporter(selectedFichier.tacheIndexation)" title="Ouvrir"><i class="ri-download-2-line fs-24 text-primary align-bottom"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="showUtilisateurs && selectedFichier.tacheIndexation" class="row row-cols-2 mb-4">
+    <div *ngIf="selectedFichier.tacheIndexation.indexeurUtilisateur" class="col">
+        <div class="card border card-border-success">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0">
+                        <app-user-avatar [photoDeProfil]="selectedFichier.tacheIndexation.indexeurUtilisateur.photoDeProfil" [type]="2"></app-user-avatar>
+                    </div>
+                    <div class="flex-grow-1 ms-2">
+                        <h5 class="fs-6 fw-medium mb-1">{{ selectedFichier.tacheIndexation.indexeurUtilisateur.nom }} {{ selectedFichier.tacheIndexation.indexeurUtilisateur.prenoms }}</h5>
+                        <p class="text-muted mb-0">Indexeur</p>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <div *ngIf="selectedFichier.tacheIndexation.controleurUtilisateur" class="col">
+        <div class="card border card-border-success">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0">
+                        <app-user-avatar [photoDeProfil]="selectedFichier.tacheIndexation.controleurUtilisateur.photoDeProfil" [type]="2"></app-user-avatar>
+                    </div>
+                    <div class="flex-grow-1 ms-2">
+                        <h5 class="fs-6 fw-medium mb-1">{{ selectedFichier.tacheIndexation.controleurUtilisateur.nom }} {{ selectedFichier.tacheIndexation.controleurUtilisateur.prenoms }}</h5>
+                        <p class="text-muted mb-0">Contrôleur qualité</p>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+<div *ngIf="selectedFichier.tacheIndexation">
+    <div class="table-responsive no-min-height">
+        <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+            <thead class="">
+                <tr class="text-uppercase">
+                    <th scope="col">Numéro de page</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Heure</th>
+                    <th scope="col" class="text-end">Etat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let progressionTacheIndexation of getPagesSignaleesOuRejetees(selectedFichier.tacheIndexation.progressionsTacheIndexation ?? [])">
+                    <td>{{ progressionTacheIndexation.page }}</td>
+                    <td>{{ progressionTacheIndexation.updatedAt | date: 'dd MMM YYYY' | titlecase  }}</td>
+                    <td>{{ progressionTacheIndexation.updatedAt | date: 'HH:mm' | titlecase  }}</td>
+                    <td class="text-end">
+                        <span *ngIf="progressionTacheIndexation.etat == etatsProgressionIndexation.SIGNALE" class="text-uppercase fw-bold text-warning">Signalée</span>
+                        <span *ngIf="progressionTacheIndexation.etat == etatsProgressionIndexation.REJETE" class="text-uppercase fw-bold text-danger">Rejetée</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>            

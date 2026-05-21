@@ -1,0 +1,59 @@
+<!-- Header Section -->
+<div class="digitalization-header">
+  <div class="header-left">
+    <h1 class="folder-title" *ngIf="document">
+      {{ document.folderName }}
+    </h1>
+  </div>
+
+  <div class="header-center">
+    <div class="progress-container" *ngIf="metrics">
+      <div class="progress-info">
+        <span class="progress-label">Progression globale</span>
+        <span class="progress-percentage">{{ metrics.percentage }}%</span>
+      </div>
+      <div class="progress-bar-wrapper">
+        <div class="progress" role="progressbar" [attr.aria-valuenow]="metrics.percentage" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar progress-bar-animated" [style.width.%]="metrics.percentage"></div>
+        </div>
+      </div>
+      <div class="progress-sublabel">{{ metrics.completedSections }}/{{ metrics.totalSections }} sections complétées</div>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="status-badge" [ngClass]="getOCRStatusBadgeClass()">
+      <span class="status-label">OCR:</span>
+      <span class="status-value">{{ getOCRStatusText() }}</span>
+    </div>
+    <button 
+      class="btn action-button" 
+      [ngClass]="getMainActionButtonClass()"
+      [disabled]="isMainActionDisabled()"
+      (click)="handleMainAction()">
+      {{ getMainActionButtonText() }}
+    </button>
+  </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="digitalization-container">
+  <!-- Left Column: Image Viewer -->
+  <div class="viewer-column">
+    <app-image-viewer 
+      [page]="getCurrentPageData()"
+      [currentPage]="currentPage"
+      [totalPages]="totalPages"
+      (previousPage)="previousPage()"
+      (nextPage)="nextPage()">
+    </app-image-viewer>
+  </div>
+
+  <!-- Right Column: Metadata Editor -->
+  <div class="editor-column">
+    <app-metadata-editor 
+      *ngIf="document"
+      [metadata]="document.metadata">
+    </app-metadata-editor>
+  </div>
+</div>

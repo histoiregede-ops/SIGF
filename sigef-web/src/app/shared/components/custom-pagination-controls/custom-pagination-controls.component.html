@@ -1,0 +1,28 @@
+<div class="d-flex align-items-center justify-content-between">
+    <div *ngIf="totalItems != 0" class="text-body-secondary d-flex align-items-center gap-2">
+        <div>Affichage de</div>
+        <ng-select [(ngModel)]="paginationSize" (change)="changePaginationSize()" [clearable]="false" [searchable]="false" appendTo="body" style="min-width: 60px;">
+            <ng-option [value]="8">8</ng-option>
+            <ng-option [value]="10">10</ng-option>
+            <!-- <ng-option [value]="2">2</ng-option>
+            <ng-option [value]="5">5</ng-option> -->
+            <ng-option [value]="25">25</ng-option>
+            <ng-option [value]="50">50</ng-option>
+            <ng-option [value]="100">100</ng-option>
+        </ng-select>
+        <div>sur {{totalItems}} résultat{{totalItems > 1 ? 's' : ''}}</div>
+    </div>
+    <nav *ngIf="totalPages > 0" class="d-flex justify-content-end">
+        <ul class="pagination ms-0 me-0 mt-3">
+            <li class="page-item" [ngClass]="{'disabled': currentPage == 0}">
+                <a (click)="prev()" class="page-link" role="button">Précédent</a>
+            </li>
+            <li *ngFor="let page of pages" [ngClass]="{'active': page == currentPage}" class="page-item">
+                <a (click)="page == currentPage ? null : changePage(page)" class="page-link" role="button">{{ page + 1 }}</a>
+            </li>
+            <li class="page-item" [ngClass]="{'disabled': currentPage == totalPages - 1}">
+                <a (click)="next()" class="page-link" role="button">Suivant</a>
+            </li>
+        </ul>
+    </nav>
+</div>

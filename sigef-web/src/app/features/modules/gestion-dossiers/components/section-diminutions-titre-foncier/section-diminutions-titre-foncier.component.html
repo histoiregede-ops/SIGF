@@ -1,0 +1,336 @@
+<div class="card">
+    <div class="card-header">
+        <h6 class="mb-2 py-2 fw-bold text-uppercase text-primary fs-14"><span class="me-2">B</span> DIMINUTIONS (Aliénations partielles)</h6>
+    </div>
+    <div class="card-header">
+        <form>
+            <div class="row g-3 justify-content-between">
+                <div class="col-lg-10 col-md-8">
+                    <form [formGroup]="filtresListeDiminutionsForm" class="row g-3">
+                        <div class="col-lg-5 col-md-12 col-sm-12">
+                            <div class="search-box">
+                                <input type="text" class="form-control" formControlName="search" placeholder="Rechercher...">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
+                        </div>
+                        <!--end col-->
+
+                        <div class="col-lg-3 col-md-4">
+                            <input type="date" class="form-control" formControlName="dateInscription" placeholder="Date d'inscription...">
+                        </div>
+
+                        <div class="col-lg-3 col-md-4">
+                            <ng-select (open)="getModesAlienation()" bindValue="id" bindLabel="libelle" [items]="modesAlienation" formControlName="mode" placeholder="Toutes les modes"></ng-select>
+                        </div>
+                        <!--end col-->
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <div class="d-flex gap-2 align-items-center justify-content-end">
+                        <button (click)="filtrerListeDiminutions()" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                        <button (click)="openNouvelleDiminutionModal()" class="btn btn-primary"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                    </div>
+                </div>
+                <!--end col-->
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive no-min-height mt-2 mb-3">
+            <table class="table table-borderless table-striped table-hover align-middle mb-0">
+                <thead class="">
+                    <tr class="">
+                        <th>#</th>
+                        <th scope="col">N° BA</th>
+                        <th scope="col">Date d'inscription</th>
+                        <th scope="col">N° du titre foncier aliéné</th>
+                        <th scope="col">Désignation</th>
+                        <th scope="col">Mode d'alienation</th>
+                        <th scope="col">Contenance</th>
+                        <th scope="col">Prix d'aliénation</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let diminution of listeDiminutions.data; index as diminutionIndex">
+                        <td>
+                            {{ (listeDiminutions.paginationSize! * listeDiminutions.currentPage!) + diminutionIndex + 1 }}
+                        </td>
+                        <td>{{ diminution.numeroBordereauAnalytique }}</td>
+                        <td>{{ diminution.dateInscription | date: 'dd MMM YYYY' | titlecase }}</td>
+                        <td>{{ diminution.numeroTitreAliene }}</td>
+                        <td>{{ diminution.designationImmeuble }}</td>
+                        <td>{{ diminution.modeAlienation ? diminution.modeAlienation.libelle : '----' }}</td>
+                        <td>{{ diminution.contenanceParcelleAlieneeEnHectare ?? 0 }} ha {{ diminution.contenanceParcelleAlieneeEnAre ?? 0 }} a {{ diminution.contenanceParcelleAlieneeEnCentiare ?? 0 }} ca</td>
+                        <td>
+                            <span *ngIf="!diminution.prixAlienation">-----</span>
+                            <span *ngIf="diminution.prixAlienation">{{ diminution.prixAlienation | number: '1.0-0' }}</span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-flex gap-3 justify-content-end align-items-center">
+                                <a role="button" (click)="openModificationDiminutionModal(diminutionIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                <a role="button" (click)="openSuppressionDiminutionModal(diminutionIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <app-custom-pagination-controls [currentPage]="listeDiminutions.currentPage" [totalItems]="listeDiminutions.totalItems" [totalPages]="listeDiminutions.totalPages" (paginationChange)="getDiminutions($event)"></app-custom-pagination-controls>
+            </div>
+
+            <app-no-data-banner [show]="listeDiminutions.data.length == 0" text="Aucune diminution"></app-no-data-banner>
+        </div>
+    </div>
+    <!-- end card body -->
+</div>
+<!-- end card -->
+
+<!-- Modals -->
+<app-custom-modal title="Nouvelle diminution" [show]="showNouvelleDiminutionModal" (modalClose)="annulerCreationDiminution()">
+    <div body>
+        <form [formGroup]="nouvelleDiminutionForm">
+            <div class="row gy-4 mb-3">
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroBordereauAnalytique" class="form-label">Numéro de bordereau analytique <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroBordereauAnalytique" formControlName="numeroBordereauAnalytique">
+
+                        <div *ngIf="nouvelleDiminutionForm.get('numeroBordereauAnalytique')!.invalid && (nouvelleDiminutionForm.get('numeroBordereauAnalytique')!.dirty || nouvelleDiminutionForm.get('numeroBordereauAnalytique')!.touched)">
+                            <app-form-message [show]="nouvelleDiminutionForm.get('numeroBordereauAnalytique')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="dateInscription" class="form-label">Date d'inscription <span class="text-muted">*</span></label>
+                        <input type="date" class="form-control" id="dateInscription" formControlName="dateInscription">
+
+                        <div *ngIf="nouvelleDiminutionForm.get('dateInscription')!.invalid && (nouvelleDiminutionForm.get('dateInscription')!.dirty || nouvelleDiminutionForm.get('dateInscription')!.touched)">
+                            <app-form-message [show]="nouvelleDiminutionForm.get('dateInscription')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroTitreAliene" class="form-label">Numéro du titre foncier où figurait la parcelle aliénée <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroTitreAliene" formControlName="numeroTitreAliene" placeholder="RM-00050-RT">
+
+                        <div *ngIf="nouvelleDiminutionForm.get('numeroTitreAliene')!.invalid && (nouvelleDiminutionForm.get('numeroTitreAliene')!.dirty || nouvelleDiminutionForm.get('numeroTitreAliene')!.touched)">
+                            <app-form-message [show]="nouvelleDiminutionForm.get('numeroTitreAliene')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="designationImmeuble" class="form-label">Désignation de l'immmeuble <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="designationImmeuble" formControlName="designationImmeuble" rows="3"></textarea>
+
+                        <div *ngIf="nouvelleDiminutionForm.get('designationImmeuble')!.invalid && (nouvelleDiminutionForm.get('designationImmeuble')!.dirty || nouvelleDiminutionForm.get('designationImmeuble')!.touched)">
+                            <app-form-message [show]="nouvelleDiminutionForm.get('designationImmeuble')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="modeAlienationId" class="form-label ">Mode d'alienation <span class="text-muted">*</span></label>
+                        <ng-select id="modeAlienationId" formControlName="modeAlienationId" (open)="getModesAlienation()" [items]="modesAlienation" bindValue="id" bindLabel="libelle"></ng-select>
+
+                        <div *ngIf="nouvelleDiminutionForm.get('modeAlienationId')!.invalid && (nouvelleDiminutionForm.get('modeAlienationId')!.dirty || nouvelleDiminutionForm.get('modeAlienationId')!.touched)">
+                            <app-form-message [show]="nouvelleDiminutionForm.get('modeAlienationId')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0">Contenance</h5>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <p class="text-muted m-0">Valeur: {{ getValeurContenance(nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.value, nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.value, nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.value) }}</p>
+                                <p class="text-muted m-0">Superficie = {{ getSuperficieContenance(nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.value, nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.value, nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.value) }} m²</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceParcelleAlieneeEnHectare" class="form-label ">Hectare (Ha) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceParcelleAlieneeEnHectare" formControlName="contenanceParcelleAlieneeEnHectare">
+
+                                <div *ngIf="nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.invalid && (nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.dirty || nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.touched)">
+                                    <app-form-message [show]="nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceParcelleAlieneeEnAre" class="form-label ">Are (a) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceParcelleAlieneeEnAre" formControlName="contenanceParcelleAlieneeEnAre">
+
+                                <div *ngIf="nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.invalid && (nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.dirty || nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.touched)">
+                                    <app-form-message [show]="nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceParcelleAlieneeEnCentiare" class="form-label">Centiare (ca) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceParcelleAlieneeEnCentiare" formControlName="contenanceParcelleAlieneeEnCentiare">
+
+                                <div *ngIf="nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.invalid && (nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.dirty || nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.touched)">
+                                    <app-form-message [show]="nouvelleDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="prixAlienation" class="form-label">Prix d'alienation</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="prixAlienation" formControlName="prixAlienation">
+                            <span class="input-group-text">F CFA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationDiminution()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationDiminution()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier cette diminution" [show]="showModificationDiminutionModal" (modalClose)="annulerModificationDiminution()">
+    <div body>
+        <form [formGroup]="modificationDiminutionForm">
+            <div class="row gy-4 mb-3">
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroBordereauAnalytique" class="form-label">Numéro de bordereau analytique <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroBordereauAnalytique" formControlName="numeroBordereauAnalytique">
+
+                        <div *ngIf="modificationDiminutionForm.get('numeroBordereauAnalytique')!.invalid && (modificationDiminutionForm.get('numeroBordereauAnalytique')!.dirty || modificationDiminutionForm.get('numeroBordereauAnalytique')!.touched)">
+                            <app-form-message [show]="modificationDiminutionForm.get('numeroBordereauAnalytique')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="dateInscription" class="form-label">Date d'inscription <span class="text-muted">*</span></label>
+                        <input type="date" class="form-control" id="dateInscription" formControlName="dateInscription">
+
+                        <div *ngIf="modificationDiminutionForm.get('dateInscription')!.invalid && (modificationDiminutionForm.get('dateInscription')!.dirty || modificationDiminutionForm.get('dateInscription')!.touched)">
+                            <app-form-message [show]="modificationDiminutionForm.get('dateInscription')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroTitreAliene" class="form-label">Numéro du titre foncier où figurait la parcelle aliénée <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroTitreAliene" formControlName="numeroTitreAliene" placeholder="RM-00050-RT">
+
+                        <div *ngIf="modificationDiminutionForm.get('numeroTitreAliene')!.invalid && (modificationDiminutionForm.get('numeroTitreAliene')!.dirty || modificationDiminutionForm.get('numeroTitreAliene')!.touched)">
+                            <app-form-message [show]="modificationDiminutionForm.get('numeroTitreAliene')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="designationImmeuble" class="form-label">Désignation de l'immmeuble <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="designationImmeuble" formControlName="designationImmeuble" rows="3"></textarea>
+
+                        <div *ngIf="modificationDiminutionForm.get('designationImmeuble')!.invalid && (modificationDiminutionForm.get('designationImmeuble')!.dirty || modificationDiminutionForm.get('designationImmeuble')!.touched)">
+                            <app-form-message [show]="modificationDiminutionForm.get('designationImmeuble')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="modeAlienationId" class="form-label ">Mode d'alienation <span class="text-muted">*</span></label>
+                        <ng-select id="modeAlienationId" formControlName="modeAlienationId" (open)="getModesAlienation()" [items]="modesAlienation" bindValue="id" bindLabel="libelle"></ng-select>
+
+                        <div *ngIf="modificationDiminutionForm.get('modeAlienationId')!.invalid && (modificationDiminutionForm.get('modeAlienationId')!.dirty || modificationDiminutionForm.get('modeAlienationId')!.touched)">
+                            <app-form-message [show]="modificationDiminutionForm.get('modeAlienationId')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="row gy-4">
+                        <div class="col-12">
+                            <h5 class="fs-14 mb-0">Contenance</h5>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <p class="text-muted m-0">Valeur: {{ getValeurContenance(modificationDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.value, modificationDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.value, modificationDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.value) }}</p>
+                                <p class="text-muted m-0">Superficie = {{ getSuperficieContenance(modificationDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.value, modificationDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.value, modificationDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.value) }} m²</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceParcelleAlieneeEnHectare" class="form-label ">Hectare (Ha) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceParcelleAlieneeEnHectare" formControlName="contenanceParcelleAlieneeEnHectare">
+
+                                <div *ngIf="modificationDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.invalid && (modificationDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.dirty || modificationDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.touched)">
+                                    <app-form-message [show]="modificationDiminutionForm.get('contenanceParcelleAlieneeEnHectare')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceParcelleAlieneeEnAre" class="form-label ">Are (a) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceParcelleAlieneeEnAre" formControlName="contenanceParcelleAlieneeEnAre">
+
+                                <div *ngIf="modificationDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.invalid && (modificationDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.dirty || modificationDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.touched)">
+                                    <app-form-message [show]="modificationDiminutionForm.get('contenanceParcelleAlieneeEnAre')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div>
+                                <label for="contenanceParcelleAlieneeEnCentiare" class="form-label">Centiare (ca) <span class="text-muted">*</span></label>
+                                <input type="number" class="form-control" id="contenanceParcelleAlieneeEnCentiare" formControlName="contenanceParcelleAlieneeEnCentiare">
+
+                                <div *ngIf="modificationDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.invalid && (modificationDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.dirty || modificationDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.touched)">
+                                    <app-form-message [show]="modificationDiminutionForm.get('contenanceParcelleAlieneeEnCentiare')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="prixAlienation" class="form-label">Prix d'alienation</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="prixAlienation" formControlName="prixAlienation">
+                            <span class="input-group-text">F CFA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationDiminution()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationDiminution()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer cette diminution" [show]="showSuppressionDiminutionModal" (modalClose)="closeSuppressionDiminutionModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer cette diminution ? <span class="fw-bold">Elle sera déplacée dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionDiminutionModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionDiminution()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

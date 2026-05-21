@@ -1,0 +1,63 @@
+<div class="dropzone" id="drag-target" (drop)="onDropFile($event)" (dragover)="onDragOver($event)" (dragenter)="onDragEnter()"
+(dragleave)="onDragLeave()"
+[ngClass]="[isOver ? 'border border-secondary' : '']" >
+                                        
+    <div class="d-flex flex-column justify-content-center align-items-center p-4">
+        <div class="mb-3">
+            <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+        </div>
+
+        <div class="d-flex flex-column justify-content-center align-items-center text-muted">
+            <div>Glisser/Déposer ou </div>
+            <label [for]="inputID" (dragover)="isOver = true" (dragenter)="isOver = true" (dragleave)="isOver = true"
+                class="link-secondary fw-bold" style="cursor: pointer;">
+                <span *ngIf="!multiple">Sélectionner un fichier</span>
+                <span *ngIf="multiple">Sélectionner les fichiers</span>
+                <input [id]="inputID" type="file" [name]="inputID" (change)="onFileChange($event)" [multiple]="true"
+                    [accept]="mediaType == typesMedia.IMAGE ? 'image/png, image/jpg, image/jpeg' : mediaType == typesMedia.VIDEO ? 'video/mp4, video/mkv, video/x-m4v, video/*' : '*/*'" class="sr-only">
+            </label>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!multiple" class="d-flex align-items-center justify-content-between mt-2 px-1 py-2">
+    <div class="d-flex align-items-center justify-content-start gap-2">
+        <div *ngIf="media != undefined" [ngClass]="getFichierRessourceIcone(media)" class="file-icon"></div>
+        <div *ngIf="media != undefined" class="text-muted">{{media}}</div>
+    </div>
+    <div class="d-flex align-items-center justify-content-end">
+        <div *ngIf="media == undefined" class="text-muted">Aucun fichier sélectionné</div>
+        <a *ngIf="media != undefined" role="button" (click)="removeFile()" class="d-block"><i class="ri-delete-bin-6-line fs-4 text-danger"></i></a>   
+    </div>
+</div>
+
+<div *ngIf="multiple" class="mt-2 px-1 py-2">
+    <div *ngFor="let media of medias; index as mediaIndex" class="d-flex align-items-center justify-content-between px-1 py-2">
+        <div class="d-flex align-items-center justify-content-start gap-2">
+            <div *ngIf="media != undefined" [ngClass]="getFichierRessourceIcone(media)" class="file-icon"></div>
+            <div *ngIf="media != undefined" class="text-muted">{{media}}</div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end">
+            <div *ngIf="media == undefined" class="text-muted">Aucun fichier sélectionné</div>
+            <a *ngIf="media != undefined" role="button" (click)="removeFiles(mediaIndex)" class="d-block"><i class="ri-delete-bin-6-line fs-4 text-danger"></i></a>   
+        </div>
+    </div>
+    <div *ngIf="medias == undefined || medias?.length == 0" class="d-flex align-items-center justify-content-end">
+        <div class="text-muted">Aucun fichier sélectionné</div>
+    </div>
+</div>
+
+
+<!-- <div class="flex justify-between items-center mt-2 bg-blue-100 rounded-lg px-3 py-2">
+    <div class="flex justify-start items-center gap-x-3">
+        <img *ngIf="media == undefined" width="20" [src]="mediaType == typesMedia.IMAGE ? 'assets/icons/image-file.svg' : mediaType == typesMedia.VIDEO ? 'assets/icons/video-file.svg' : 'assets/icons/file.svg'" alt="icon">
+        <div *ngIf="media != undefined" [ngClass]="getFichierRessourceIcone(media)" class="file-icon"></div>
+        <div *ngIf="media != undefined" class="text-sm text-blue-600">{{media}}</div>
+    </div>
+    <div class="flex justify-end items-center">
+        <div *ngIf="media == undefined" class="text-sm text-gray-700">Aucun fichier sélectionné</div>
+        <button *ngIf="media != undefined" (click)="removeFile()">
+            <img src="assets/icons/baseline-delete.svg" alt="icon">
+        </button>
+    </div>
+</div> -->

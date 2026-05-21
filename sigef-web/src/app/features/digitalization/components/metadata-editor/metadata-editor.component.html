@@ -1,0 +1,44 @@
+<!-- Metadata Editor Container -->
+<div class="metadata-editor">
+  <div class="sections-container">
+    <!-- Section 1: Désignation et description -->
+    <app-section1 
+      [section]="metadata.section1"
+      [isExpanded]="expandedSections.section1"
+      (toggleExpand)="toggleSection('section1')"
+      (statusChange)="updateSectionStatus('section1', $event)">
+    </app-section1>
+
+    <!-- Section 2: Modifications consistance -->
+    <app-section2 
+      [section]="metadata.section2"
+      [isExpanded]="expandedSections.section2"
+      (toggleExpand)="toggleSection('section2')"
+      (statusChange)="updateSectionStatus('section2', $event)">
+    </app-section2>
+
+    <!-- Section 3: Modifications droit de propriété -->
+    <app-section3 
+      [section]="metadata.section3"
+      [isExpanded]="expandedSections.section3"
+      (toggleExpand)="toggleSection('section3')"
+      (statusChange)="updateSectionStatus('section3', $event)">
+    </app-section3>
+
+    <!-- Section 4: Mutations -->
+    <app-section4 
+      [section]="metadata.section4"
+      [isExpanded]="expandedSections.section4"
+      (toggleExpand)="toggleSection('section4')"
+      (statusChange)="updateSectionStatus('section4', $event)">
+    </app-section4>
+
+    <!-- Section 5: Privilèges et hypothèques -->
+    <app-section5 
+      [section]="metadata.section5"
+      [isExpanded]="expandedSections.section5"
+      (toggleExpand)="toggleSection('section5')"
+      (statusChange)="updateSectionStatus('section5', $event)">
+    </app-section5>
+  </div>
+</div>

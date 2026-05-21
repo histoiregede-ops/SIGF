@@ -1,0 +1,41 @@
+# Antigravity/Agent temp data
+antigravity/
+.git_backup
+sigef-api/.git_backup
+
+# Secrets
+.env
+.env.local
+.env.production
+.env.development
+.env.staging
+sigef-api/.env
+
+# Node
+node_modules/
+**/node_modules/
+npm-debug.log
+yarn-error.log
+
+# Angular
+.angular/
+**/.angular/
+.angular_old/
+**/.angular_old/
+
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+out-tsc/
+bazel-out/
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-workspace
+
+# System files
+.DS_Store
+Thumbs.db

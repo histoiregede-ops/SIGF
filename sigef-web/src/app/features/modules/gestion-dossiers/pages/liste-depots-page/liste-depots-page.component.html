@@ -1,0 +1,196 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Dépôts</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers">Dossiers</a></li>
+                            <li class="breadcrumb-item active">Dépôts</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-end align-items-center flex-wrap gap-2">
+                            <!-- <div class="flex-grow-1"> -->
+                                <button class="btn btn-primary" role="link" routerLink="./nouveau"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                            <!-- </div> -->
+                            <!-- <div class="flex-shrink-0">
+                                <div class="search-box ms-2">
+                                    <input type="text" class="form-control" id="searchProductList" placeholder="Rechercher...">
+                                    <i class="ri-search-line search-icon"></i>
+                                </div>
+                                <div class="hstack text-nowrap gap-2">
+                                    <button class="btn btn-soft-danger material-shadow-none" id="remove-actions" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                                    <button class="btn btn-danger material-shadow-none"><i class="ri-filter-2-line me-1 align-bottom"></i> Filters</button>
+                                    <button class="btn btn-soft-success material-shadow-none">Import</button>
+                                    <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false" class="btn btn-soft-info material-shadow-none"><i class="ri-more-2-fill"></i></button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                        <li><a class="dropdown-item" href="#">All</a></li>
+                                        <li><a class="dropdown-item" href="#">Last Week</a></li>
+                                        <li><a class="dropdown-item" href="#">Last Month</a></li>
+                                        <li><a class="dropdown-item" href="#">Last Year</a></li>
+                                    </ul>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- <div class="d-flex justify-content-between align-items-center"> -->
+                            <!-- <h4 class="card-title mb-0 flex-grow-1">Filtres</h4> -->
+                            <div class="d-flex justify-content-end align-items-center form-check-success">
+                                <label class="form-check-label me-2" for="formCheck8">
+                                    Masquer les filtres
+                                </label>
+                                <input [(ngModel)]="masquerfiltresListeDepots" class="form-check-input" type="checkbox" id="formCheck8">
+                            </div>
+                        <!-- </div> -->
+                        
+                        <form *ngIf="!masquerfiltresListeDepots" [formGroup]="filtresListeDepotsForm">
+                            <div class="row gy-4 mt-4 mb-4">                      
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="requisition" class="form-label text-muted">Numéro de réquisition</label>
+                                        <input type="text" class="form-control" id="requisition" formControlName="requisition">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="creatDebut" class="form-label text-muted">Dates de création (début)</label>
+                                        <input type="date" class="form-control" id="creatDebut" formControlName="creatDebut">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="creatFin" class="form-label text-muted">Dates de création (fin)</label>
+                                        <input type="date" class="form-control" id="creatFin" formControlName="creatFin">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="alienateur" class="form-label text-muted">Aliénateur</label>
+                                        <input type="text" class="form-control" id="alienateur" formControlName="alienateur">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6">
+                                    <div>
+                                        <label for="acquereur" class="form-label text-muted">Acquereur</label>
+                                        <input type="text" class="form-control" id="acquereur" formControlName="acquereur">
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-end align-items-center form-check-success mb-4">
+                                <button (click)="filtrerListeDepots()" class="btn btn-success add-btn"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des dossiers</h4>
+                        <!-- <div class="flex-shrink-0">
+                            <div class="dropdown card-header-dropdown">
+                                <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="text-muted">02 Nov 2021 to 31 Dec 2021<i class="mdi mdi-chevron-down ms-1"></i></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Today</a>
+                                    <a class="dropdown-item" href="#">Last Week</a>
+                                    <a class="dropdown-item" href="#">Last Month</a>
+                                    <a class="dropdown-item" href="#">Current Year</a>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th>#</th>
+                                        <th scope="col">N° d'ordre</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Statut</th>
+                                        <th scope="col">Aliénateur(s)</th>
+                                        <th scope="col">Acquéreur(s)</th>
+                                        <!-- <th scope="col">N° de réquisition</th> -->
+                                        <th scope="col">Date du dépôt</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" align="center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let depot of listeDepots.data; index as depotIndex">
+                                        <td>
+                                            {{ (listeDepots.paginationSize! * listeDepots.currentPage!) + depotIndex + 1 }}
+                                        </td>
+                                        <td>{{ depot.acteRegistre?.numeroOrdre?.padStart(5, '0') ?? '-----' }}</td>
+                                        <td>
+                                            <div *ngIf="depot.typeDepot && depot.typeDepot.post == false"><span class="badge bg-success-subtle text-success text-uppercase">{{ depot.typeDepot.libelle }}</span></div>
+                                            <div *ngIf="depot.typeDepot && depot.typeDepot.post == true"><span class="badge bg-info-subtle text-info text-uppercase">{{ depot.typeDepot.libelle }}</span></div>
+                                            <div *ngIf="!depot.typeDepot"><span class="badge bg-danger-subtle text-danger text-uppercase">Non spécifié</span></div>
+                                        </td>
+                                        <td>
+                                            <div [ngSwitch]="depot.statut">
+                                                <div *ngSwitchCase="statutsDepot.A_VALIDER"><span class="badge bg-warning-subtle text-warning text-uppercase">A Valider</span></div>
+                                                <div *ngSwitchCase="statutsDepot.VALIDE"><span class="badge bg-success-subtle text-success text-uppercase">Valide</span></div>
+                                                <div *ngSwitchCase="statutsDepot.ANNULE"><span class="badge bg-danger-subtle text-danger text-uppercase">Annulé</span></div>
+                                                <div *ngSwitchDefault>----</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <app-parties-prenantes-table [partiesPrenantes]="depot.partiesPrenantes ?? []" [typePartiePrenante]="typesPartiePrenante.ALIENATEUR" noPartiePrenanteText="Aucun aliénateur"></app-parties-prenantes-table>
+                                        </td>
+                                        <td>
+                                            <app-parties-prenantes-table [partiesPrenantes]="depot.partiesPrenantes ?? []" [typePartiePrenante]="typesPartiePrenante.ACQUEREUR" noPartiePrenanteText="Aucun acquereur"></app-parties-prenantes-table>
+                                        </td>
+                                        <!-- <td>
+                                            <span *ngIf="!depot.depotsTitresFonciers || depot.depotsTitresFonciers.length == 0" class="text-muted"><i>Aucune réquisition</i></span>
+                                            <div *ngFor="let depotRequisition of depot.depotsTitresFonciers">
+                                                {{ depotRequisition.numeroTitreFoncier }}
+                                                <a [routerLink]="'/dossiers/formalites/' + depot?.id"><i class="ri-share-forward-2-fill text-info ms-1 fs-5"></i></a>
+                                            </div>
+                                        </td> -->
+                                        <td>{{ depot.dateDepot | date: 'dd MMM YYYY' | titlecase }}</td>
+                                        <td>{{ depot.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}</td>
+                                        <td align="center">
+                                            <a [routerLink]="'./' + depot.id!"><i class="ri-edit-box-line fs-5"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeDepots.currentPage" [totalItems]="listeDepots.totalItems" [totalPages]="listeDepots.totalPages" (paginationChange)="getDepots($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeDepots.data.length == 0" text="Aucun dépôt"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->

@@ -1,0 +1,161 @@
+<div class="page-content">
+  <div class="container-fluid">
+    <!-- Page title -->
+    <div class="row">
+      <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+          <h4 class="mb-sm-0">Digitalisation des Dépôts de Documents</h4>
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+              <li class="breadcrumb-item active">Saisie Dépôt</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two-column layout -->
+    <div class="row pag-layout">
+      <!-- LEFT COLUMN: PDF Viewer -->
+      <div class="col-lg-5 col-md-12 pag-pdf-column">
+        <div class="card pag-pdf-card">
+          <div class="card-header d-flex justify-content-between align-items-center py-2">
+            <h6 class="mb-0 text-uppercase fw-semibold fs-13">Document Dépôt</h6>
+            <div class="d-flex gap-1">
+              <label for="pdfUpload" class="btn btn-sm btn-ghost-secondary material-shadow-none mb-0" title="Charger un fichier PDF">
+                <i class="ri-upload-2-line fs-5"></i>
+              </label>
+              <input type="file" id="pdfUpload" accept=".pdf,application/pdf" class="d-none" (change)="onFileSelected($event)">
+            </div>
+          </div>
+          <div class="card-body p-0 pag-pdf-body">
+            <div *ngIf="!pdfSrc" class="d-flex align-items-center justify-content-center h-100 text-muted flex-column gap-2">
+              <i class="ri-file-pdf-2-line fs-1 text-secondary"></i>
+              <span class="small">Aucun document chargé</span>
+              <label for="pdfUploadEmpty" class="btn btn-sm btn-outline-primary material-shadow-none mt-1">
+                <i class="ri-upload-2-line me-1"></i> Charger un PDF
+              </label>
+              <input type="file" id="pdfUploadEmpty" accept=".pdf,application/pdf" class="d-none" (change)="onFileSelected($event)">
+            </div>
+            <app-custom-pdf-viewer
+              *ngIf="pdfSrc"
+              [src]="pdfSrc"
+              [fullScreen]="false"
+              [dispositionVerticale]="true"
+              style="width: 100%; height: 100%;">
+            </app-custom-pdf-viewer>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Form -->
+      <div class="col-lg-7 col-md-12 pag-form-column">
+        <form [formGroup]="depotForm" class="pag-form-container">
+
+          <!-- SECTION I: Détails du dépôt -->
+          <div class="card pag-section-card">
+            <div class="card-header pag-section-header">
+              <h5 class="mb-0">INFORMATIONS SUR LE DÉPÔT</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Date du dépôt <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control" formControlName="dateDepot">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Montant de l'opération</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" formControlName="montantOperation" placeholder="0">
+                    <span class="input-group-text">FCFA</span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">N° Réquisition</label>
+                  <input type="text" class="form-control" formControlName="numeroRequisition" placeholder="Facultatif">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Statut</label>
+                  <select class="form-select" formControlName="statut">
+                    <option value="A_VALIDER">À valider</option>
+                    <option value="VALIDE">Validé</option>
+                    <option value="ANNULE">Annulé</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Droit réel concerné</label>
+                  <textarea class="form-control" formControlName="designationDroitReel" rows="2" placeholder="Description du droit..."></textarea>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Observations</label>
+                  <textarea class="form-control" formControlName="informationsStatut" rows="2" placeholder="Informations complémentaires..."></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION II: Parties Prenantes -->
+          <div class="card pag-section-card">
+            <div class="card-header pag-section-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">PARTIES PRENANTES (DÉPOSANTS)</h5>
+              <button type="button" class="btn btn-sm btn-light" (click)="addPartiePrenante()">
+                <i class="ri-add-line me-1"></i>Ajouter
+              </button>
+            </div>
+            <div class="card-body">
+              <div formArrayName="partiesPrenantes">
+                <div *ngFor="let pp of partiesPrenantes.controls; index as i" class="pag-repeat-block mb-3 border p-3 rounded">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-bold">Déposant n° {{ i + 1 }}</span>
+                    <button type="button" class="btn btn-sm btn-outline-danger" (click)="removePartiePrenante(i)">
+                      <i class="ri-delete-bin-line"></i>
+                    </button>
+                  </div>
+                  <div [formGroupName]="i" class="row g-2">
+                    <div class="col-md-6">
+                      <input type="text" class="form-control" formControlName="nom" placeholder="Nom">
+                    </div>
+                    <div class="col-md-6">
+                      <input type="text" class="form-control" formControlName="prenom" placeholder="Prénom">
+                    </div>
+                    <div class="col-md-6">
+                      <select class="form-select" formControlName="qualite">
+                        <option value="DEPOSANT">Déposant</option>
+                        <option value="MANDATAIRE">Mandataire</option>
+                        <option value="AUTRE">Autre</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <input type="text" class="form-control" formControlName="domicile" placeholder="Domicile">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="partiesPrenantes.length === 0" class="text-center text-muted py-3">
+                Aucun déposant ajouté
+              </div>
+            </div>
+          </div>
+
+          <!-- Global Actions -->
+          <div class="card pag-section-card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-danger material-shadow-none" (click)="annulerSaisie()">
+                  <i class="ri-close-line me-1"></i>Réinitialiser
+                </button>
+                <button type="button" class="btn btn-primary material-shadow-none" (click)="validerSaisie()" [disabled]="loading">
+                  <i class="ri-save-line me-1" *ngIf="!loading"></i>
+                  <span class="spinner-border spinner-border-sm me-1" *ngIf="loading"></span>
+                  Valider la saisie
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

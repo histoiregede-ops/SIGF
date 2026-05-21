@@ -1,0 +1,95 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Types de registre</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/admin">Administration</a></li>
+                            <li class="breadcrumb-item active">Types de registre</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form [formGroup]="filtresListeTypesRegistreForm" class="app-search">
+                                <div class="position-relative">
+                                    <input (change)="filtrerListeTypesRegistre()" type="text" formControlName="search" class="form-control bg-light border-light" placeholder="Rechercher un type de registre..." autocomplete="off">
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+                                    <span role="button" (click)="annulerRechercheTypeRegistre()" *ngIf="filtresListeTypesRegistreForm.get('search')!.value != null" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <!-- <button class="btn btn-primary add-btn" role="button" (click)="openNouveauTypeRegistreModal()"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button> -->
+                                <!-- <button class="btn btn-success disabled" role="button" (click)="null"><i class="ri-file-download-line me-1 align-bottom"></i>Importer un typeRegistre</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Liste des types de registre</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-striped table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th scope="col" style="width: 50px;">#</th>
+                                        <th scope="col">Libellé</th>
+                                        <th scope="col">Abbréviation</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Dernière modification</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let typeRegistre of listeTypesRegistre.data; index as typeRegistreIndex">
+                                        <td>
+                                            {{ (listeTypesRegistre.paginationSize! * listeTypesRegistre.currentPage!) + typeRegistreIndex + 1 }}
+                                        </td>
+                                        <td>{{ typeRegistre.libelle }}</td>
+                                        <td>{{ typeRegistre.abbreviation }}</td>
+                                        <td>
+                                            <span *ngIf="typeRegistre.description">{{ typeRegistre.description }}</span>
+                                            <span *ngIf="!typeRegistre.description" class="text-muted text-end"><i>Aucune description</i></span>
+                                        </td>
+                                        <td>
+                                            {{ typeRegistre.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}
+                                        </td>
+                                    </tr>
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeTypesRegistre.currentPage" [totalItems]="listeTypesRegistre.totalItems" [totalPages]="listeTypesRegistre.totalPages" (paginationChange)="getTypesRegistre($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeTypesRegistre.data.length == 0" text="Aucun type de registre"></app-no-data-banner>
+                        </div><!-- end table responsive -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->

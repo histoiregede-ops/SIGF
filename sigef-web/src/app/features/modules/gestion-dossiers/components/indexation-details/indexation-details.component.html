@@ -1,0 +1,44 @@
+<div *ngIf="donneeIndexation">
+    <p class="text-muted mb-4">Les informations dont provient ce dossier sont renseignées ci-dessous: </p>
+
+    <div class="row gx-3 gy-5 text-muted mb-4">
+        <div class="col-lg-6 col-sm-6">
+            <div>
+                <p class="mb-2">Qualité:</p>
+                <h5 class="fs-15 mb-0">{{ donneeIndexation.progressionTacheIndexation && donneeIndexation.progressionTacheIndexation.qualiteDocument ? donneeIndexation.progressionTacheIndexation.qualiteDocument.libelle : '----' }}</h5>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6">
+            <div>
+                <p class="mb-2">Type de registre:</p>
+                <h5 class="fs-15 mb-0">{{ donneeIndexation.typeRegistre ? donneeIndexation.typeRegistre.libelle : '----' }}</h5>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6">
+            <div>
+                <p class="mb-2">Période:</p>
+                <h5 class="fs-15 mb-0">{{ donneeIndexation.region && donneeIndexation.region.periode ? donneeIndexation.region.periode.libelle : '----' }}</h5>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6">
+            <div>
+                <p class="mb-2">Région:</p>
+                <h5 class="fs-15 mb-0">{{ donneeIndexation.region ? donneeIndexation.region.libelle : '----' }}</h5>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6">
+            <div>
+                <p class="mb-2">Volume:</p>
+                <h5 class="fs-15 mb-0">{{ donneeIndexation.volumeRegistre ?? '--' }}</h5>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6">
+            <div>
+                <p class="mb-2">Folio:</p>
+                <h5 class="fs-15 mb-0">{{ donneeIndexation.folioRegistre ?? '--' }}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-no-data-banner [show]="!donneeIndexation" text="Aucune information trouvée"></app-no-data-banner>

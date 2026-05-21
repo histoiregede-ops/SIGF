@@ -1,0 +1,351 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Registres <span *ngIf="typeRegistre"> - {{ typeRegistre.libelle }}</span></h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers">Dossiers</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dossiers/registres">Registres</a></li>
+                            <li *ngIf="typeRegistre" class="breadcrumb-item active">{{ typeRegistre.libelle }}</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form class="app-search" [formGroup]="rechercheDossiersForm">
+                                <!-- <div class="search-box">
+                                    <input type="text" class="form-control bg-light border-light" placeholder="Rechercher...">
+                                    <i class="ri-search-2-line search-icon"></i>
+                                </div> -->
+                                <div class="position-relative">
+                                    <input (change)="rechercherDossier()" type="text" formControlName="nom" class="form-control bg-light border-light" placeholder="Rechercher un dossier..." autocomplete="off">
+
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+
+                                    <span role="button" (click)="annulerRechercheDossier()" *ngIf="rechercheDossiersForm.get('show')!.value == true" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                                <div class="dropdown-menu dropdown-menu-lg" [ngClass]="{'show': rechercheDossiersForm.get('show')!.value == true}" id="search-dropdown">
+                                    <div style="max-height: 320px;overflow-y: auto;" class="">
+                                        <div class="" style="padding: 0px;">
+                                            <!-- item-->
+                                            <div class="dropdown-header mt-2">
+                                                <h6 class="text-overflow fw-medium mb-2 text-uppercase">{{ resultatsRechercheDossiers.length }} résulat(s) trouvés</h6>
+                                            </div>
+                
+                                            <div class="">
+                                                <a *ngFor="let dossier of resultatsRechercheDossiers" role="button" (click)="getDossier(dossier.id!)" class="dropdown-item notify-item py-2" style="display: block;">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="me-3">
+                                                            <i [ngClass]="{'text-primary': dossier.estRegistre, 'text-warning': !dossier.estRegistre}" class="ri-folder-2-fill align-bottom text-warning fs-1"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1 text-muted">
+                                                            <h6 class="fs-6 text-body mb-1">{{ dossier.nom }}</h6>
+                                                            <div class="d-flex align-items-center justify-content-between">
+                                                                <span *ngIf="dossier.estRegistre" class="m-0"><b>{{ dossier.actesRegistres?.length ?? 0 }}</b> actes</span>
+                                                                <span *ngIf="dossier.estRegistre" class="m-0"><b>{{ dossier.region?.sigle ?? '---' }}</b></span>
+                                                                <span *ngIf="!dossier.estRegistre" class="m-0"><b>{{ dossier.sousDossiersRegistres?.length ?? 0 }}</b> dossiers</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <app-no-data-banner [show]="resultatsRechercheDossiers.length == 0" text="Aucun dossier trouvé"></app-no-data-banner>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <!-- <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="file-type">
+                                    <option value="">File Type</option>
+                                    <option value="All" selected>All</option>
+                                    <option value="Video">Video</option>
+                                    <option value="Images">Images</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Documents">Documents</option>
+                                </select> -->
+
+                                <button (click)="openNouveauDossierModal(false)" class="btn btn-success w-sm flex-shrink-0"><i class="ri-add-line align-bottom me-1"></i> Nouveau dossier</button>
+                                <button (click)="openNouveauDossierModal(true)" class="btn btn-primary w-sm flex-shrink-0"><i class="ri-add-line align-bottom me-1"></i> Nouveau registre</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row justify-content-between mb-4">
+                            <div class="col-auto">
+                                <ol *ngIf="arborescenceDossiers.length != 0" class="breadcrumb m-0">
+                                    <li><i class="ri-home-4-line text-muted me-1"></i></li>
+                                    <li *ngFor="let dossier of arborescenceDossiers; index as dossierIndex" class="breadcrumb-item" [ngClass]="{'active pe-none': (dossierIndex == arborescenceDossiers.length - 1), 'text-primary text-uppercase fw-bold': dossierIndex == 0}"><a (click)="(dossierIndex == arborescenceDossiers.length - 1) ? null : revenirAuDossier(dossierIndex)" role="button">{{ dossier.nom }}</a></li>
+                                    <!-- <li class="breadcrumb-item">Maritime</li> -->
+                                </ol>
+                            </div>
+                            <div class="col-auto">
+                                <button (click)="actualiser()" type="button" class="btn btn-ghost-secondary btn-icon btn-sm  material-shadow-none" title="Actualiser">
+                                    <i class="ri-refresh-line align-botto text-body-secondary fs-16"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div *ngFor="let dossier of listeDossiers.data; index as dossierIndex" class="col-lg-3 col-lg-3 col-md-4 col-6 folder-card">
+                                <div class="card bg-light shadow-none">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-end mb-1">
+                                            <div class="mb-3"></div>
+                                            <!-- <div class="form-check mb-3 fs-15 flex-grow-1">
+                                                <input class="form-check-input" type="checkbox" value="" id="folderlistCheckbox_1">
+                                                <label class="form-check-label" for="folderlistCheckbox_1"></label>
+                                            </div> -->
+                                            <div class="dropdown">
+                                                <button class="btn btn-ghost-primary btn-icon btn-sm dropdown material-shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="ri-more-2-fill fs-16 align-bottom"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li><a class="dropdown-item edit-folder-list" role="button" (click)="openModificationDossierModal(dossierIndex)">Modifier</a></li>
+                                                    <li><a class="dropdown-item text-danger" role="button" (click)="openSuppressionDossierModal(dossierIndex)">Supprimer</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <!-- <a [routerLink]="'../formalites'" [queryParams]="{dossierId: dossier.id}" class="d-block"> -->
+                                        <a (click)="getDossier(dossier.id!)" role="button" class="d-block">
+                                            <div class="text-center">
+                                                <div class="mb-2">
+                                                    <i [ngClass]="{'text-primary': dossier.estRegistre, 'text-warning': !dossier.estRegistre}" class="ri-folder-2-fill align-bottom display-5"></i>
+                                                </div>
+                                                <h6 class="text-body">{{ dossier.nom }} <span *ngIf="dossier.estRegistre"> - Vol. {{ dossier.volume }}</span></h6>
+                                            </div>
+                                            <div class="hstack mt-4 text-muted">
+                                                <span *ngIf="dossier.estRegistre" class="me-auto"><b>{{ dossier.actesRegistres?.length ?? 0 }}</b> actes</span>
+                                                <span *ngIf="dossier.estRegistre" class="m-0"><b>{{ dossier.region?.sigle ?? '---' }}</b></span>
+                                                <span *ngIf="!dossier.estRegistre" class="me-auto"><b>{{ dossier.sousDossiersRegistres?.length ?? 0 }}</b> dossiers</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <app-custom-pagination-controls [currentPage]="listeDossiers.currentPage" [totalItems]="listeDossiers.totalItems" [totalPages]="listeDossiers.totalPages" (paginationChange)="onDossierPaginationChange($event)" [paginationSize]="8"></app-custom-pagination-controls>
+                            </div>
+                        </div>
+
+                        <app-no-data-banner [show]="listeDossiers.data.length == 0" text="Aucun dossier"></app-no-data-banner>
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div>
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+<!-- // Modals -->
+<app-custom-modal [title]="nouveauDossierForm.get('estRegistre')!.value == true ? 'Nouveau registre' : 'Nouveau dossier'" [show]="showNouveauDossierModal" (modalClose)="annulerCreationDossier()">
+    <div body>
+        <form *ngIf="nouveauDossierForm.get('estRegistre')!.value == true" [formGroup]="nouveauDossierForm">
+            <div class="row g-3">
+                <div class="col-lg-8 col-md-12">
+                    <div>
+                        <label for="nom" class="form-label">Nom *</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="nouveauDossierForm.get('nom')!.invalid && (nouveauDossierForm.get('nom')!.dirty || nouveauDossierForm.get('nom')!.touched)">
+                            <app-form-message [show]="nouveauDossierForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div>
+                        <label for="volume" class="form-label">Volume *</label>
+                        <input type="text" class="form-control" id="volume" formControlName="volume">
+                        <div *ngIf="nouveauDossierForm.get('volume')!.invalid && (nouveauDossierForm.get('volume')!.dirty || nouveauDossierForm.get('volume')!.touched)">
+                            <app-form-message [show]="nouveauDossierForm.get('volume')!.errors?.['required']" type="danger" text="Entrer le volume"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="periode" class="form-label">Période</label>
+                        <ng-select (change)="onPeriodeChange(nouveauDossierForm.get('periode')!.value)" formControlName="periode">
+                            <ng-option *ngFor="let periode of periodes" [value]="periode.id">{{ periode.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="nouveauDossierForm.get('periode')!.invalid && (nouveauDossierForm.get('periode')!.dirty || nouveauDossierForm.get('periode')!.touched)">
+                            <app-form-message [show]="nouveauDossierForm.get('periode')!.errors?.['required']" type="danger" text="Choisir une période"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="regionId" class="form-label">Région</label>
+                        <ng-select formControlName="regionId" notFoundText="Sélectionner une période">
+                            <ng-option *ngFor="let region of regions" [value]="region.id">{{ region.libelle }} ({{region.sigle}})</ng-option>
+                        </ng-select>
+                        <div *ngIf="nouveauDossierForm.get('regionId')!.invalid && (nouveauDossierForm.get('regionId')!.dirty || nouveauDossierForm.get('regionId')!.touched)">
+                            <app-form-message [show]="nouveauDossierForm.get('regionId')!.errors?.['required']" type="danger" text="Choisir une région"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="centreConservationFonciereId" class="form-label">Centre de conservation</label>
+                        <ng-select formControlName="centreConservationFonciereId" [items]="listeCentresConservationFonciere" bindValue="id" bindLabel="nom" (open)="getCentresConservationFonciere()"></ng-select>
+                        <div *ngIf="nouveauDossierForm.get('centreConservationFonciereId')!.invalid && (nouveauDossierForm.get('centreConservationFonciereId')!.dirty || nouveauDossierForm.get('centreConservationFonciereId')!.touched)">
+                            <app-form-message [show]="nouveauDossierForm.get('centreConservationFonciereId')!.errors?.['required']" type="danger" text="Choisir un centre"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form *ngIf="nouveauDossierForm.get('estRegistre')!.value == false" [formGroup]="nouveauDossierForm">
+            <div class="row g-3">
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="nom" class="form-label">Nom *</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="nouveauDossierForm.get('nom')!.invalid && (nouveauDossierForm.get('nom')!.dirty || nouveauDossierForm.get('nom')!.touched)">
+                            <app-form-message [show]="nouveauDossierForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationDossier()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationDossier()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal [title]="'Modifier ce ' + (modificationDossierForm.get('estRegistre')!.value == true ? 'registre' : 'dossier')" [show]="showModificationDossierModal" (modalClose)="annulerModificationDossier()">
+    <div body>
+        <form *ngIf="modificationDossierForm.get('estRegistre')!.value == true" [formGroup]="modificationDossierForm">
+            <div class="row g-3">
+                <div class="col-lg-8 col-md-12">
+                    <div>
+                        <label for="nom" class="form-label">Nom *</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="modificationDossierForm.get('nom')!.invalid && (modificationDossierForm.get('nom')!.dirty || modificationDossierForm.get('nom')!.touched)">
+                            <app-form-message [show]="modificationDossierForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div>
+                        <label for="volume" class="form-label">Volume *</label>
+                        <input type="text" class="form-control" id="volume" formControlName="volume">
+                        <div *ngIf="modificationDossierForm.get('volume')!.invalid && (modificationDossierForm.get('volume')!.dirty || modificationDossierForm.get('volume')!.touched)">
+                            <app-form-message [show]="modificationDossierForm.get('volume')!.errors?.['required']" type="danger" text="Entrer le volume"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="periode" class="form-label">Période</label>
+                        <ng-select (change)="onPeriodeChange(modificationDossierForm.get('periode')!.value)" formControlName="periode">
+                            <ng-option *ngFor="let periode of periodes" [value]="periode.id">{{ periode.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="modificationDossierForm.get('periode')!.invalid && (modificationDossierForm.get('periode')!.dirty || modificationDossierForm.get('periode')!.touched)">
+                            <app-form-message [show]="modificationDossierForm.get('periode')!.errors?.['required']" type="danger" text="Choisir une période"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="regionId" class="form-label">Région</label>
+                        <ng-select formControlName="regionId" notFoundText="Sélectionner une période">
+                            <ng-option *ngFor="let region of regions" [value]="region.id">{{ region.libelle }} ({{region.sigle}})</ng-option>
+                        </ng-select>
+                        <div *ngIf="modificationDossierForm.get('regionId')!.invalid && (modificationDossierForm.get('regionId')!.dirty || modificationDossierForm.get('regionId')!.touched)">
+                            <app-form-message [show]="modificationDossierForm.get('regionId')!.errors?.['required']" type="danger" text="Choisir une région"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="centreConservationFonciereId" class="form-label">Centre de conservation</label>
+                        <ng-select formControlName="centreConservationFonciereId" [items]="listeCentresConservationFonciere" bindValue="id" bindLabel="nom" (open)="getCentresConservationFonciere()"></ng-select>
+                        <div *ngIf="modificationDossierForm.get('centreConservationFonciereId')!.invalid && (modificationDossierForm.get('centreConservationFonciereId')!.dirty || modificationDossierForm.get('centreConservationFonciereId')!.touched)">
+                            <app-form-message [show]="modificationDossierForm.get('centreConservationFonciereId')!.errors?.['required']" type="danger" text="Choisir un centre"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form *ngIf="modificationDossierForm.get('estRegistre')!.value == false" [formGroup]="modificationDossierForm">
+            <div class="row g-3">
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="nom" class="form-label">Nom *</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="modificationDossierForm.get('nom')!.invalid && (modificationDossierForm.get('nom')!.dirty || modificationDossierForm.get('nom')!.touched)">
+                            <app-form-message [show]="modificationDossierForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationDossier()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationDossier()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal [title]="suppressionDossierForm.get('estRegistre')!.value == true ? 'Supprimer ce registre' : 'Supprimer ce dossier'" [show]="showSuppressionDossierModal" (modalClose)="closeSuppressionDossierModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer ce {{suppressionDossierForm.get('estRegistre')!.value == true ? 'registre' : 'dossier'}} ? <span class="fw-bold">Il sera déplacé dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionDossierModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionDossier()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

@@ -1,0 +1,268 @@
+<div class="card">
+    <div class="card-header">
+        <form>
+            <div class="row g-3 justify-content-between">
+                <div class="col-lg-10 col-md-8">
+                    <form [formGroup]="filtresListePrivilegesHypothequesForm" class="row g-3">
+                        <div class="col-lg-5 col-md-12 col-sm-12">
+                            <div class="search-box">
+                                <input type="text" class="form-control" formControlName="search" placeholder="Rechercher...">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
+                        </div>
+                        <!--end col-->
+
+                        <div class="col-lg-3 col-md-4">
+                            <input type="date" class="form-control" formControlName="dateInscription" placeholder="Date d'inscription...">
+                        </div>
+                        <!--end col-->
+
+                        <div class="col-lg-3 col-md-4">
+                            <input type="date" class="form-control" formControlName="dateRadiation" placeholder="Date de radiation...">
+                        </div>
+                        <!--end col-->
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <div class="d-flex gap-2 align-items-center justify-content-end">
+                        <button (click)="filtrerListePrivilegesHypotheques()" class="btn btn-success"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                        <button (click)="openNouvellePrivilegeHypothequeModal()" class="btn btn-primary"><i class="ri-add-fill me-1 align-bottom"></i>Ajouter</button>
+                    </div>
+                </div>
+                <!--end col-->
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive no-min-height mt-2 mb-3">
+            <table class="table table-borderless table-striped table-hover align-middle mb-0">
+                <thead class="">
+                    <tr class="">
+                        <th>#</th>
+                        <th scope="col">N° BA de constitution</th>
+                        <th scope="col">Date d'inscription</th>
+                        <th scope="col">Désignation du droit constitué</th>
+                        <th scope="col">Bénéficiaire</th>
+                        <th scope="col">Montant de la charge</th>
+                        <th scope="col">N° BA de radiation</th>
+                        <th scope="col">Date de radiation</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let privilegeHypotheque of listePrivilegesHypotheques.data; index as privilegeHypothequeIndex">
+                        <td>
+                            {{ (listePrivilegesHypotheques.paginationSize! * listePrivilegesHypotheques.currentPage!) + privilegeHypothequeIndex + 1 }}
+                        </td>
+                        <td>{{ privilegeHypotheque.numeroBordereauAnalytiqueConstitution }}</td>
+                        <td>{{ privilegeHypotheque.dateInscription | date: 'dd MMM YYYY' | titlecase }}</td>
+                        <td>{{ privilegeHypotheque.designationDroitConstitue }}</td>
+                        <td>{{ privilegeHypotheque.beneficiaire }}</td>
+                        <td>
+                            <span *ngIf="!privilegeHypotheque.montantCharge">-----</span>
+                            <span *ngIf="privilegeHypotheque.montantCharge">{{ privilegeHypotheque.montantCharge | number: '1.0-0' }}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="!privilegeHypotheque.numeroBordereauAnalytiqueRadiation" class="badge bg-danger-subtle text-danger text-uppercase">Non radié</span>
+                            <span *ngIf="privilegeHypotheque.numeroBordereauAnalytiqueRadiation">{{ privilegeHypotheque.numeroBordereauAnalytiqueRadiation }}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="!privilegeHypotheque.dateRadiation" class="badge bg-danger-subtle text-danger text-uppercase">Non radié</span>
+                            <span *ngIf="privilegeHypotheque.dateRadiation">{{ privilegeHypotheque.dateRadiation | date: 'dd MMM YYYY' | titlecase }}</span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-flex gap-3 justify-content-end align-items-center">
+                                <a role="button" (click)="openModificationPrivilegeHypothequeModal(privilegeHypothequeIndex)"><i class="ri-pencil-line text-secondary fs-5"></i></a>
+                                <a role="button" (click)="openSuppressionPrivilegeHypothequeModal(privilegeHypothequeIndex)"><i class="ri-delete-bin-line text-danger fs-5"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <app-custom-pagination-controls [currentPage]="listePrivilegesHypotheques.currentPage" [totalItems]="listePrivilegesHypotheques.totalItems" [totalPages]="listePrivilegesHypotheques.totalPages" (paginationChange)="getPrivilegesHypotheques($event)"></app-custom-pagination-controls>
+            </div>
+
+            <app-no-data-banner [show]="listePrivilegesHypotheques.data.length == 0" text="Aucune privilège/hypothèque"></app-no-data-banner>
+        </div>
+    </div>
+    <!-- end card body -->
+</div>
+<!-- end card -->
+
+<!-- Modals -->
+<app-custom-modal title="Nouvelle privilège/hypothèque" [show]="showNouvellePrivilegeHypothequeModal" (modalClose)="annulerCreationPrivilegeHypotheque()">
+    <div body>
+        <form [formGroup]="nouvellePrivilegeHypothequeForm">
+            <div class="row gy-4 mb-3">
+                <div class="col-12">
+                    <h5 class="fs-14 mb-0 text-uppercase text-muted">Constitution</h5>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroBordereauAnalytiqueConstitution" class="form-label">Numéro de bordereau analytique <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroBordereauAnalytiqueConstitution" formControlName="numeroBordereauAnalytiqueConstitution">
+
+                        <div *ngIf="nouvellePrivilegeHypothequeForm.get('numeroBordereauAnalytiqueConstitution')!.invalid && (nouvellePrivilegeHypothequeForm.get('numeroBordereauAnalytiqueConstitution')!.dirty || nouvellePrivilegeHypothequeForm.get('numeroBordereauAnalytiqueConstitution')!.touched)">
+                            <app-form-message [show]="nouvellePrivilegeHypothequeForm.get('numeroBordereauAnalytiqueConstitution')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="dateInscription" class="form-label">Date d'inscription <span class="text-muted">*</span></label>
+                        <input type="date" class="form-control" id="dateInscription" formControlName="dateInscription">
+
+                        <div *ngIf="nouvellePrivilegeHypothequeForm.get('dateInscription')!.invalid && (nouvellePrivilegeHypothequeForm.get('dateInscription')!.dirty || nouvellePrivilegeHypothequeForm.get('dateInscription')!.touched)">
+                            <app-form-message [show]="nouvellePrivilegeHypothequeForm.get('dateInscription')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="designationDroitConstitue" class="form-label">Désignation du droit constitué <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="designationDroitConstitue" formControlName="designationDroitConstitue" rows="3"></textarea>
+
+                        <div *ngIf="nouvellePrivilegeHypothequeForm.get('designationDroitConstitue')!.invalid && (nouvellePrivilegeHypothequeForm.get('designationDroitConstitue')!.dirty || nouvellePrivilegeHypothequeForm.get('designationDroitConstitue')!.touched)">
+                            <app-form-message [show]="nouvellePrivilegeHypothequeForm.get('designationDroitConstitue')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="beneficiaire" class="form-label">Bénéficiaire <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="beneficiaire" formControlName="beneficiaire">
+
+                        <div *ngIf="nouvellePrivilegeHypothequeForm.get('beneficiaire')!.invalid && (nouvellePrivilegeHypothequeForm.get('beneficiaire')!.dirty || nouvellePrivilegeHypothequeForm.get('beneficiaire')!.touched)">
+                            <app-form-message [show]="nouvellePrivilegeHypothequeForm.get('beneficiaire')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="montantCharge" class="form-label">Montant de la charge</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="montantCharge" formControlName="montantCharge">
+                            <span class="input-group-text">F CFA</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <h5 class="fs-14 mb-0 text-uppercase text-muted">Libération</h5>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroBordereauAnalytiqueRadiation" class="form-label">Numéro de bordereau analytique</label>
+                        <input type="text" class="form-control" id="numeroBordereauAnalytiqueRadiation" formControlName="numeroBordereauAnalytiqueRadiation">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="dateRadiation" class="form-label">Date de radiation</label>
+                        <input type="date" class="form-control" id="dateRadiation" formControlName="dateRadiation">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationPrivilegeHypotheque()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationPrivilegeHypotheque()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier cette privilège/hypothèque" [show]="showModificationPrivilegeHypothequeModal" (modalClose)="annulerModificationPrivilegeHypotheque()">
+    <div body>
+        <form [formGroup]="modificationPrivilegeHypothequeForm">
+            <div class="row gy-4 mb-3">
+                <div class="col-12">
+                    <h5 class="fs-14 mb-0 text-uppercase text-muted">Constitution</h5>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroBordereauAnalytiqueConstitution" class="form-label">Numéro de bordereau analytique <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="numeroBordereauAnalytiqueConstitution" formControlName="numeroBordereauAnalytiqueConstitution">
+
+                        <div *ngIf="modificationPrivilegeHypothequeForm.get('numeroBordereauAnalytiqueConstitution')!.invalid && (modificationPrivilegeHypothequeForm.get('numeroBordereauAnalytiqueConstitution')!.dirty || modificationPrivilegeHypothequeForm.get('numeroBordereauAnalytiqueConstitution')!.touched)">
+                            <app-form-message [show]="modificationPrivilegeHypothequeForm.get('numeroBordereauAnalytiqueConstitution')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="dateInscription" class="form-label">Date d'inscription <span class="text-muted">*</span></label>
+                        <input type="date" class="form-control" id="dateInscription" formControlName="dateInscription">
+
+                        <div *ngIf="modificationPrivilegeHypothequeForm.get('dateInscription')!.invalid && (modificationPrivilegeHypothequeForm.get('dateInscription')!.dirty || modificationPrivilegeHypothequeForm.get('dateInscription')!.touched)">
+                            <app-form-message [show]="modificationPrivilegeHypothequeForm.get('dateInscription')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        <label for="designationDroitConstitue" class="form-label">Désignation du droit constitué <span class="text-muted">*</span></label>
+                        <textarea class="form-control" id="designationDroitConstitue" formControlName="designationDroitConstitue" rows="3"></textarea>
+
+                        <div *ngIf="modificationPrivilegeHypothequeForm.get('designationDroitConstitue')!.invalid && (modificationPrivilegeHypothequeForm.get('designationDroitConstitue')!.dirty || modificationPrivilegeHypothequeForm.get('designationDroitConstitue')!.touched)">
+                            <app-form-message [show]="modificationPrivilegeHypothequeForm.get('designationDroitConstitue')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="beneficiaire" class="form-label">Bénéficiaire <span class="text-muted">*</span></label>
+                        <input type="text" class="form-control" id="beneficiaire" formControlName="beneficiaire">
+
+                        <div *ngIf="modificationPrivilegeHypothequeForm.get('beneficiaire')!.invalid && (modificationPrivilegeHypothequeForm.get('beneficiaire')!.dirty || modificationPrivilegeHypothequeForm.get('beneficiaire')!.touched)">
+                            <app-form-message [show]="modificationPrivilegeHypothequeForm.get('beneficiaire')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="montantCharge" class="form-label">Montant de la charge</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="montantCharge" formControlName="montantCharge">
+                            <span class="input-group-text">F CFA</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <h5 class="fs-14 mb-0 text-uppercase text-muted">Libération</h5>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="numeroBordereauAnalytiqueRadiation" class="form-label">Numéro de bordereau analytique</label>
+                        <input type="text" class="form-control" id="numeroBordereauAnalytiqueRadiation" formControlName="numeroBordereauAnalytiqueRadiation">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div>
+                        <label for="dateRadiation" class="form-label">Date de radiation</label>
+                        <input type="date" class="form-control" id="dateRadiation" formControlName="dateRadiation">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationPrivilegeHypotheque()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationPrivilegeHypotheque()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Supprimer cette privilège/hypothèque" [show]="showSuppressionPrivilegeHypothequeModal" (modalClose)="closeSuppressionPrivilegeHypothequeModal()">
+    <div body>
+        <p class="text-muted my-4">Êtes-vous sûr de vouloir supprimer cette privilège/hypothèque ? <span class="fw-bold">Elle sera déplacée dans la corbeille</span> </p>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="closeSuppressionPrivilegeHypothequeModal()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerSuppressionPrivilegeHypotheque()" class="btn btn-danger">Confirmer</button>
+        </div>  
+    </div>
+</app-custom-modal>

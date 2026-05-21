@@ -1,0 +1,634 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <h4 class="mb-sm-0">Documents</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a routerLink="/">Tableau de bord</a></li>
+                            <li class="breadcrumb-item active">Documents</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <form class="app-search" [formGroup]="rechercheDossiersForm">
+                                <!-- <div class="search-box">
+                                    <input type="text" class="form-control bg-light border-light" placeholder="Rechercher...">
+                                    <i class="ri-search-2-line search-icon"></i>
+                                </div> -->
+                                <div class="position-relative">
+                                    <input (change)="rechercherDossier()" type="text" formControlName="nom" class="form-control bg-light border-light" placeholder="Rechercher un dossier..." autocomplete="off">
+
+                                    <span class="mdi mdi-magnify search-widget-icon"></span>
+
+                                    <span role="button" (click)="annulerRechercheDossier()" *ngIf="rechercheDossiersForm.get('show')!.value == true" class="mdi mdi-close-circle search-widget-icon search-widget-icon-close"></span>
+                                </div>
+                                <div class="dropdown-menu dropdown-menu-lg" [ngClass]="{'show': rechercheDossiersForm.get('show')!.value == true}" id="search-dropdown">
+                                    <div style="max-height: 320px;overflow-y: auto;" class="">
+                                        <div class="" style="padding: 0px;">
+                                            <!-- item-->
+                                            <div class="dropdown-header mt-2">
+                                                <h6 class="text-overflow fw-medium mb-2 text-uppercase">{{ resultatsRechercheDossiers.length }} résulat(s) trouvés</h6>
+                                            </div>
+                
+                                            <div class="">
+                                                <a *ngFor="let dossier of resultatsRechercheDossiers" role="button" (click)="getDossier(dossier.id!)" class="dropdown-item notify-item py-2" style="display: block;">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="me-3">
+                                                            <i class="ri-folder-2-fill align-bottom text-warning fs-1"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1 text-muted">
+                                                            <h6 class="fs-6 text-body mb-1">{{ dossier.nom }}</h6>
+                                                            <div class="d-flex align-items-center justify-content-between">
+                                                                <span class="m-0"><b>{{ dossier.sousDossiers?.length }}</b> dossiers</span>
+                                                                <span><b>{{ dossier.fichiers?.length }}</b> fichiers</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <app-no-data-banner [show]="resultatsRechercheDossiers.length == 0" text="Aucun dossier trouvé"></app-no-data-banner>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="d-flex gap-2 align-items-start">
+                                <!-- <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="file-type">
+                                    <option value="">File Type</option>
+                                    <option value="All" selected>All</option>
+                                    <option value="Video">Video</option>
+                                    <option value="Images">Images</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Documents">Documents</option>
+                                </select> -->
+
+                                <button (click)="openNouveauDossierModal()" class="btn btn-primary w-sm flex-shrink-0"><i class="ri-add-line align-bottom me-1"></i> Nouveau dossier</button>
+                                <!-- <button (click)="openNouveauFichierModal()" class="btn btn-success w-sm flex-shrink-0"><i class="ri-upload-2-line align-bottom me-1"></i>Importer</button> -->
+                                <div *ngIf="rolesProfil.includes(rolesIDs.INDEXATION_ADMINISTRATEUER) || rolesProfil.includes(rolesIDs.INDEXATION_CONTROLEUR)" class="btn-group material-shadow">
+                                    <button (click)="openNouveauFichierModal()" type="button" class="btn btn-success w-sm flex-shrink-0 material-shadow-none"><i class="ri-upload-2-line align-bottom me-1"></i> Importer</button>
+                                    <button type="button" class="btn btn-success material-shadow-none dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                    <div class="dropdown-menu">
+                                        <a (click)="null" class="dropdown-item" role="button" (click)="openImportationPlusieursFichiersModal(typesMedia.PDF)"><i class="ri-file-pdf-line me-2"></i> Importer plusieurs fichiers PDF</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a (click)="null" class="dropdown-item" role="button" (click)="openImportationPlusieursFichiersModal(typesMedia.TIFF)"><i class="ri-gallery-line me-2"></i> Importer plusieurs fichiers TIFF</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a (click)="null" class="dropdown-item" role="button" (click)="openImportationPlusieursFichiersModal(typesMedia.IMAGE)"><i class="ri-gallery-line me-2"></i> Importer plusieurs images</a>
+                                    </div>
+                                </div><!-- /btn-group -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row justify-content-between mb-4">
+                            <div class="col-auto">
+                                <ol *ngIf="arborescenceDossiers.length != 0" class="breadcrumb m-0">
+                                    <li><i class="ri-home-4-line text-muted me-1"></i></li>
+                                    <li *ngFor="let dossier of arborescenceDossiers; index as dossierIndex" class="breadcrumb-item" [ngClass]="{'active pe-none': (dossierIndex == arborescenceDossiers.length - 1), 'text-primary text-uppercase fw-bold': dossierIndex == 0}"><a (click)="(dossierIndex == arborescenceDossiers.length - 1) ? null : revenirAuDossier(dossierIndex)" role="button">{{ dossier.nom }}</a></li>
+                                    <!-- <li class="breadcrumb-item">Maritime</li> -->
+                                </ol>
+                            </div>
+                            <div class="col-auto">
+                                <button (click)="actualiser()" type="button" class="btn btn-ghost-secondary btn-icon btn-sm  material-shadow-none" title="Actualiser">
+                                    <i class="ri-refresh-line align-botto text-body-secondary fs-16"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div *ngFor="let dossier of listeDossiers.data" class="col-lg-3 col-lg-3 col-md-4 col-6 folder-card">
+                                <div class="card bg-light shadow-none">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-end mb-1">
+                                            <div class="mb-3"></div>
+                                            <!-- <div class="form-check mb-3 fs-15 flex-grow-1">
+                                                <input class="form-check-input" type="checkbox" value="" id="folderlistCheckbox_1">
+                                                <label class="form-check-label" for="folderlistCheckbox_1"></label>
+                                            </div> -->
+                                            <div class="dropdown">
+                                                <button class="btn btn-ghost-primary btn-icon btn-sm dropdown material-shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="ri-more-2-fill fs-16 align-bottom"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li><a class="dropdown-item edit-folder-list" href="#createFolderModal" data-bs-toggle="modal" role="button">Renommer</a></li>
+                                                    <li><a class="dropdown-item text-danger" href="#removeFolderModal" data-bs-toggle="modal" role="button">Supprimer</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <!-- <a [routerLink]="'../formalites'" [queryParams]="{dossierId: dossier.id}" class="d-block"> -->
+                                        <a (click)="getDossier(dossier.id!)" role="button" class="d-block">
+                                            <div class="text-center">
+                                                <div class="mb-2">
+                                                    <i class="ri-folder-2-fill align-bottom text-warning display-5"></i>
+                                                </div>
+                                                <h6 class="text-body">{{ dossier.nom }}</h6>
+                                            </div>
+                                            <div class="hstack mt-4 text-muted">
+                                                <span class="me-auto"><b>{{ dossier.sousDossiers?.length }}</b> dossiers</span>
+                                                <span><b>{{ dossier.fichiers?.length }}</b> fichiers</span>
+                                                <!-- <span><b>65</b>%</span> -->
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <app-custom-pagination-controls [currentPage]="listeDossiers.currentPage" [totalItems]="listeDossiers.totalItems" [totalPages]="listeDossiers.totalPages" (paginationChange)="onDossierPaginationChange($event)" [paginationSize]="8"></app-custom-pagination-controls>
+                            </div>
+                        </div>
+
+                        <app-no-data-banner [show]="listeDossiers.data.length == 0" text="Aucun dossier"></app-no-data-banner>
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+
+            <div class="col-lg-12 h-100">
+                <div class="card">
+                    <div class="card-header">
+                        <form [formGroup]="filtresListeFichiersForm">
+                            <div class="row g-3">
+                                <div class="col-lg-5 col-md-12 col-sm-12">
+                                    <div class="search-box">
+                                        <input type="text" class="form-control" formControlName="fichier" placeholder="Filtrer sur le nom...">
+                                        <i class="ri-search-line search-icon"></i>
+                                    </div>
+                                </div>
+                                <!--end col-->
+    
+                                <div class="col-lg-3 col-md-4">
+                                    <ng-select (change)="onPeriodeChange(filtresListeFichiersForm.get('periode')!.value)" formControlName="periode" placeholder="Toutes les périodes">
+                                        <ng-option *ngFor="let periode of periodes" [value]="periode.id">{{ periode.libelle }}</ng-option>
+                                    </ng-select>
+                                </div>
+                                
+                                <div class="col-lg-3 col-md-4">
+                                    <ng-select formControlName="region" placeholder="Toutes les régions" notFoundText="Sélectionner une période">
+                                        <ng-option *ngFor="let region of regions" [value]="region.id">{{ region.libelle }} <span *ngIf="region.sigle">({{ region.sigle }})</span></ng-option>
+                                    </ng-select>
+                                </div>
+                                <!--end col-->
+                                <div class="col-lg-1 col-md-4">
+                                    <button (click)="filtrerListeFichiers(0)" class="btn btn-success w-100"><i class="ri-filter-3-fill me-1 align-bottom"></i>Filtrer</button>
+                                </div>
+                                <!--end col-->
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover table-striped table-nowrap align-middle mb-0">
+                                <thead class="">
+                                    <tr class="">
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nom</th>
+                                        <!-- <th scope="col">Etat de saisie</th>
+                                        <th scope="col">Etat de contrôle</th> -->
+                                        <th scope="col">Taille</th>
+                                        <th scope="col" class="text-center">Nombre de pages</th>
+                                        <th scope="col">Région</th>
+                                        <th scope="col">Période</th>
+                                        <th scope="col">Indexable</th>
+                                        <th scope="col">Dernière modification</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let fichier of listeFichiers.data; index as fichierIndex">
+                                        <td>
+                                            {{ (listeFichiers.paginationSize! * listeFichiers.currentPage!) + fichierIndex + 1 }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div *ngIf="fichier.extension" [ngClass]="getFichierRessourceIcone(fichier.extension)" class="file-icon flex-shrink-0 me-2"></div>
+                                                <div *ngIf="!fichier.extension" class="flex-shrink-0 fs-17 me-2 filelist-icon"><i class="ri-file-3-line align-bottom text-primary"></i></div>
+                                                <div class="flex-grow-1">{{ fichier.nom }}</div>
+                                            </div>
+                                        </td>
+                                        <!-- <td>
+                                            <span *ngIf="!fichier.tacheIndexation?.indexeurUtilisateur" class="badge bg-primary-subtle text-primary text-uppercase">Non assigné</span>
+                                            <span *ngIf="fichier.tacheIndexation && fichier.tacheIndexation.indexeurUtilisateur && fichier.tacheIndexation.etatSaisie == etatsSaisieIndexation.A_INDEXER" class="badge bg-danger-subtle text-danger text-uppercase">A indexer</span>
+                                            <span *ngIf="fichier.tacheIndexation && fichier.tacheIndexation.indexeurUtilisateur && fichier.tacheIndexation.etatSaisie == etatsSaisieIndexation.EN_COURS" class="badge bg-secondary-subtle text-secondary text-uppercase">En cours</span>
+                                            <span *ngIf="fichier.tacheIndexation && fichier.tacheIndexation.indexeurUtilisateur && fichier.tacheIndexation.etatSaisie == etatsSaisieIndexation.INDEXE" class="badge bg-success-subtle text-success text-uppercase">Indexé</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="!fichier.tacheIndexation?.controleurUtilisateur" class="badge bg-primary-subtle text-primary text-uppercase">Non assigné</span>
+                                            <span *ngIf="fichier.tacheIndexation && fichier.tacheIndexation.controleurUtilisateur && fichier.tacheIndexation.etatControle == etatsControleIndexation.EN_ATTENTE" class="badge bg-warning-subtle text-warning text-uppercase">En attente</span>
+                                            <span *ngIf="fichier.tacheIndexation && fichier.tacheIndexation.controleurUtilisateur && fichier.tacheIndexation.etatControle == etatsControleIndexation.A_CONTROLER" class="badge bg-danger-subtle text-danger text-uppercase">A contrôler</span>
+                                            <span *ngIf="fichier.tacheIndexation && fichier.tacheIndexation.controleurUtilisateur && fichier.tacheIndexation.etatControle == etatsControleIndexation.EN_COURS" class="badge bg-secondary-subtle text-secondary text-uppercase">En cours</span>
+                                            <span *ngIf="fichier.tacheIndexation && fichier.tacheIndexation.controleurUtilisateur && fichier.tacheIndexation.etatControle == etatsControleIndexation.CONTROLE" class="badge bg-success-subtle text-success text-uppercase">Contrôlé</span>
+                                        </td> -->
+                                        
+                                        <td>{{ fichier.tailleEnOctets | fileSize }}</td>
+                                        <td class="text-center">{{ fichier.nombrePages ?? '--' }}</td>
+                                        <td>{{ fichier.region ? fichier.region.libelle : '---' }}</td>
+                                        <td>{{ fichier.region && fichier.region.periode ? fichier.region.periode.libelle  : '---' }}</td>
+                                        <td>
+                                            <span *ngIf="fichier.indexable == true" class="badge bg-success-subtle text-success text-uppercase">Oui</span>
+                                            <span *ngIf="fichier.indexable == false" class="badge bg-danger-subtle text-danger text-uppercase">Non</span>
+                                        </td>
+                                        <td>{{ fichier.updatedAt | date: 'dd MMM YYYY HH:mm' | titlecase }}</td>
+                                        <td>
+                                            <div class="d-flex gap-3 justify-content-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-icon btn-sm dropdown" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" role="button" (click)="visualiserFichier(fichier)">Visualiser</a></li>
+                                                        <li><a class="dropdown-item" role="button" (click)="openModificationFichierModal(fichier)">Modifier</a></li>
+                                                        <li><a class="dropdown-item" role="button" (click)="openRemplacementFichierModal(fichier)">Remplacer le fichier</a></li>
+                                                        <li class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a class="dropdown-item text-danger" role="button" (click)="null">Supprimer</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <app-custom-pagination-controls [currentPage]="listeFichiers.currentPage" [totalItems]="listeFichiers.totalItems" [totalPages]="listeFichiers.totalPages" (paginationChange)="onPaginationChange($event)"></app-custom-pagination-controls>
+                            </div>
+
+                            <app-no-data-banner [show]="listeFichiers.data.length == 0" text="Aucun fichier"></app-no-data-banner>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+<ng-template #pdfViewerModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">{{ selectedPdfName }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body p-0">
+        <div class="d-flex justify-content-center align-items-center p-4" *ngIf="loadingPdfPreview">
+            <span class="spinner-border" role="status" aria-hidden="true"></span>
+            <span class="ms-2">Chargement du PDF...</span>
+        </div>
+        <div class="alert alert-danger m-3" *ngIf="pdfPreviewError">
+            Impossible de charger le PDF. Veuillez réessayer.
+        </div>
+        <div *ngIf="selectedPdfToPreview" class="pdf-viewer-modal-body" style="height: calc(100vh - 220px);">
+            <app-custom-pdf-viewer [src]="selectedPdfToPreview" [page]="selectedPdfPage" class="h-100"></app-custom-pdf-viewer>
+        </div>
+        <div *ngIf="!selectedPdfToPreview && selectedPdfUrl && !loadingPdfPreview && !pdfPreviewError" class="pdf-viewer-modal-body" style="height: calc(100vh - 220px);">
+            <iframe [src]="selectedPdfUrl" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.close()">Fermer</button>
+    </div>
+</ng-template>
+
+<!-- // Modals -->
+<app-custom-modal title="Nouveau dossier" [show]="showNouveauDossierModal" (modalClose)="annulerCreationDossier()">
+    <div body>
+        <form [formGroup]="nouveauDossierForm">
+            <div class="row g-3">
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="nouveauDossierForm.get('nom')!.invalid && (nouveauDossierForm.get('nom')!.dirty || nouveauDossierForm.get('nom')!.touched)">
+                            <app-form-message [show]="nouveauDossierForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationDossier()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationDossier()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+
+<app-custom-modal title="Importer un fichier" [show]="showNouveauFichierModal" (modalClose)="annulerCreationFichier()">
+    <div body>
+        <form [formGroup]="nouveauFichierForm">
+            <div class="row g-3">
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="firstName" class="form-label">Fichier</label>
+                        <!-- <p class="text-muted">DropzoneJS is an open source library that provides drag'n'drop file uploads with image previews.</p> -->
+                        
+                        <app-custom-file-picker #customFilePicker [mediaType]="typesMedia.ALL" inputID="fichier" (onFileChanged)="onFichierChange($event)"></app-custom-file-picker>
+                    </div>
+                </div>
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="nouveauFichierForm.get('nom')!.invalid && (nouveauFichierForm.get('nom')!.dirty || nouveauFichierForm.get('nom')!.touched)">
+                            <app-form-message [show]="nouveauFichierForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="periode" class="form-label">Période</label>
+                        <ng-select (change)="onPeriodeChange(nouveauFichierForm.get('periode')!.value)" formControlName="periode">
+                            <ng-option *ngFor="let periode of periodes" [value]="periode.id">{{ periode.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="nouveauFichierForm.get('periode')!.invalid && (nouveauFichierForm.get('periode')!.dirty || nouveauFichierForm.get('periode')!.touched)">
+                            <app-form-message [show]="nouveauFichierForm.get('periode')!.errors?.['required']" type="danger" text="Choisir une période"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="region" class="form-label">Région</label>
+                        <ng-select formControlName="region" notFoundText="Sélectionner une période">
+                            <ng-option *ngFor="let region of regions" [value]="region.id">{{ region.libelle }} ({{region.sigle}})</ng-option>
+                        </ng-select>
+                        <div *ngIf="nouveauFichierForm.get('region')!.invalid && (nouveauFichierForm.get('region')!.dirty || nouveauFichierForm.get('region')!.touched)">
+                            <app-form-message [show]="nouveauFichierForm.get('region')!.errors?.['required']" type="danger" text="Choisir une région"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="indexable" class="form-label">Ce fichier sera t-il indexé ?</label>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="me-4">
+                                <input class="form-check-input" type="radio" [id]="'Oui'" formControlName="indexable" [value]="true">
+                                <label class="form-check-label ps-2" [for]="'Oui'">
+                                    Oui
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input" type="radio" [id]="'Non'" formControlName="indexable" [value]="false">
+                                <label class="form-check-label ps-2" [for]="'Non'">
+                                    Non
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="nouveauFichierForm.get('indexable')!.invalid && (nouveauFichierForm.get('indexable')!.dirty || nouveauFichierForm.get('indexable')!.touched)">
+                            <app-form-message [show]="nouveauFichierForm.get('indexable')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationFichier()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationFichier()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Modifier ce fichier" [show]="showModificationFichierModal" (modalClose)="annulerModificationFichier()">
+    <div body>
+        <form [formGroup]="modificationFichierForm">
+            <div class="row g-3">
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" formControlName="nom">
+                        <div *ngIf="modificationFichierForm.get('nom')!.invalid && (modificationFichierForm.get('nom')!.dirty || modificationFichierForm.get('nom')!.touched)">
+                            <app-form-message [show]="modificationFichierForm.get('nom')!.errors?.['required']" type="danger" text="Entrer un nom"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="periode" class="form-label">Période</label>
+                        <ng-select (change)="onPeriodeChange(modificationFichierForm.get('periode')!.value)" formControlName="periode">
+                            <ng-option *ngFor="let periode of periodes" [value]="periode.id">{{ periode.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="modificationFichierForm.get('periode')!.invalid && (modificationFichierForm.get('periode')!.dirty || modificationFichierForm.get('periode')!.touched)">
+                            <app-form-message [show]="modificationFichierForm.get('periode')!.errors?.['required']" type="danger" text="Choisir une période"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="region" class="form-label">Région</label>
+                        <ng-select formControlName="region" notFoundText="Sélectionner une période">
+                            <ng-option *ngFor="let region of regions" [value]="region.id">{{ region.libelle }} ({{region.sigle}})</ng-option>
+                        </ng-select>
+                        <div *ngIf="modificationFichierForm.get('region')!.invalid && (modificationFichierForm.get('region')!.dirty || modificationFichierForm.get('region')!.touched)">
+                            <app-form-message [show]="modificationFichierForm.get('region')!.errors?.['required']" type="danger" text="Choisir une région"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="nombrePages" class="form-label">Nombre de pages</label>
+                        <input type="number" class="form-control" id="nombrePages" formControlName="nombrePages">
+                        <div *ngIf="modificationFichierForm.get('nombrePages')!.invalid && (modificationFichierForm.get('nombrePages')!.dirty || modificationFichierForm.get('nombrePages')!.touched)">
+                            <app-form-message [show]="modificationFichierForm.get('nombrePages')!.errors?.['required']" type="danger" text="Entrer un nombre de pages"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div>
+                        <label for="indexable" class="form-label">Ce fichier sera t-il indexé ?</label>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="me-4">
+                                <input class="form-check-input" type="radio" [id]="'Oui'" formControlName="indexable" [value]="true">
+                                <label class="form-check-label ps-2" [for]="'Oui'">
+                                    Oui
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input" type="radio" [id]="'Non'" formControlName="indexable" [value]="false">
+                                <label class="form-check-label ps-2" [for]="'Non'">
+                                    Non
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="nouveauFichierForm.get('indexable')!.invalid && (nouveauFichierForm.get('indexable')!.dirty || nouveauFichierForm.get('indexable')!.touched)">
+                            <app-form-message [show]="nouveauFichierForm.get('indexable')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerModificationFichier()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerModificationFichier()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal title="Remplacer ce fichier" [show]="showRemplacementFichierModal" (modalClose)="annulerRemplacementFichier()">
+    <div body>
+        <div class="alert alert-warning material-shadow" role="alert">
+            Assurez-vous que le nombre de pages du nouveau fichier correspond au celui du fichier à remplacer, avant de continuer
+        </div>
+        <form [formGroup]="remplacementFichierForm">
+            <div class="row g-3">
+                <div class="col-xxl-12">
+                    <div>
+                        <label for="fichier" class="form-label">Fichier</label>
+                        <!-- <p class="text-muted">DropzoneJS is an open source library that provides drag'n'drop file uploads with image previews.</p> -->
+                        
+                        <app-custom-file-picker #customFilePicker [mediaType]="typesMedia.ALL" inputID="fichier" (onFileChanged)="onRemplacementFichierChange($event)"></app-custom-file-picker>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerRemplacementFichier()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerRemplacementFichier()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
+
+<app-custom-modal [title]="'Importer plusieurs ' + (importationPlusieursFichiersForm.get('type')!.value == typesMedia.PDF ? 'PDF' : importationPlusieursFichiersForm.get('type')!.value == typesMedia.TIFF ? 'TIFF' : ' images')" [show]="showImportationPlusieursFichiersModal" (modalClose)="annulerCreationPlusieursFichiers()">
+    <div body>
+        <form [formGroup]="importationPlusieursFichiersForm">
+            <div class="row g-3">
+                <div *ngIf="progressionImportationPlusieursFichiers.length == 0" class="col-xxl-12">
+                    <div>
+                        <!-- <p class="text-muted">DropzoneJS is an open source library that provides drag'n'drop file uploads with image previews.</p> -->
+                        
+                        <app-custom-file-picker #customFilePicker [multiple]="true" [mediaType]="typesMedia.ALL" inputID="fichier" (onFilesChanged)="onFichiersChange($event)"></app-custom-file-picker>
+                    </div>
+                </div>
+                <div *ngIf="progressionImportationPlusieursFichiers.length == 0" class="col-xxl-6">
+                    <div>
+                        <label for="periode" class="form-label">Période</label>
+                        <ng-select (change)="onPeriodeChange(importationPlusieursFichiersForm.get('periode')!.value)" formControlName="periode">
+                            <ng-option *ngFor="let periode of periodes" [value]="periode.id">{{ periode.libelle }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="importationPlusieursFichiersForm.get('periode')!.invalid && (importationPlusieursFichiersForm.get('periode')!.dirty || importationPlusieursFichiersForm.get('periode')!.touched)">
+                            <app-form-message [show]="importationPlusieursFichiersForm.get('periode')!.errors?.['required']" type="danger" text="Choisir une période"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="progressionImportationPlusieursFichiers.length == 0" class="col-xxl-6">
+                    <div>
+                        <label for="region" class="form-label">Région</label>
+                        <ng-select formControlName="region" notFoundText="Sélectionner une période">
+                            <ng-option *ngFor="let region of regions" [value]="region.id">{{ region.libelle }} ({{region.sigle}})</ng-option>
+                        </ng-select>
+                        <div *ngIf="importationPlusieursFichiersForm.get('region')!.invalid && (importationPlusieursFichiersForm.get('region')!.dirty || importationPlusieursFichiersForm.get('region')!.touched)">
+                            <app-form-message [show]="importationPlusieursFichiersForm.get('region')!.errors?.['required']" type="danger" text="Choisir une région"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="progressionImportationPlusieursFichiers.length == 0" class="col-xxl-6">
+                    <div>
+                        <label for="indexable" class="form-label">Ce fichier sera t-il indexé ?</label>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="me-4">
+                                <input class="form-check-input" type="radio" [id]="'Oui'" formControlName="indexable" [value]="true">
+                                <label class="form-check-label ps-2" [for]="'Oui'">
+                                    Oui
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input" type="radio" [id]="'Non'" formControlName="indexable" [value]="false">
+                                <label class="form-check-label ps-2" [for]="'Non'">
+                                    Non
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="nouveauFichierForm.get('indexable')!.invalid && (nouveauFichierForm.get('indexable')!.dirty || nouveauFichierForm.get('indexable')!.touched)">
+                            <app-form-message [show]="nouveauFichierForm.get('indexable')!.errors?.['required']" type="danger" text="Donnée obligatoire"></app-form-message>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="progressionImportationPlusieursFichiers.length != 0" class="col-xxl-12">
+                    <div class="table-responsve">
+                        <table class="table table-borderless table-hover align-middle table-nowrap mb-0">
+                            <!-- <thead class="">
+                                <tr>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Progression</th>
+                                </tr>
+                            </thead> -->
+                            <tbody>
+                                <tr *ngFor="let fichier of importationPlusieursFichiersFormListeFichiers.value; index as index">
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div [ngClass]="getFichierRessourceIcone(fichier.nom)" class="file-icon flex-shrink-0 me-2"></div>
+                                            <div class="flex-grow-1">{{ fichier.nom }}</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="row align-items-center pe-2">
+                                            <div *ngIf="!progressionImportationPlusieursFichiers[index].error" class="col-7">
+                                                <div class="progress progress-sm" style="width: 100%;">
+                                                    <div class="progress-bar rounded" role="progressbar" [ngClass]="{'bg-success': progressionImportationPlusieursFichiers[index].value == 100, 'bg-info': progressionImportationPlusieursFichiers[index].value != 100}" [ngStyle]="{width: progressionImportationPlusieursFichiers[index].value + '%'}"></div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!progressionImportationPlusieursFichiers[index].error" class="col-5">
+                                                <div class="text-muted me-1">{{ progressionImportationPlusieursFichiers[index].value }}%</div>
+                                            </div>
+                                            <div *ngIf="progressionImportationPlusieursFichiers[index].error" class="text-end text-danger">Erreur de chargement</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div *ngIf="progressionImportationPlusieursFichiers.length == 0" footer>
+        <div class="d-flex gap-2 justify-content-end">
+            <button type="button" (click)="annulerCreationPlusieursFichiers()" class="btn btn-light">Annuler</button>
+            <button type="button" (click)="validerCreationPlusieursFichiers()" class="btn btn-primary">Valider</button>
+        </div>
+    </div>
+</app-custom-modal>
